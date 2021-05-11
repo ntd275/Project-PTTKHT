@@ -1,4 +1,5 @@
 const config = require('../config/config')
+
 const knex = require('knex')({
     client: 'mysql',
     connection: {
@@ -6,9 +7,9 @@ const knex = require('knex')({
         user: config.userDB,
         password: config.passwordDB,
         database: config.db,
-        acquireConnectionTimeout: 10000,
         timezone: "+00:00"
-    }
+    },
+    acquireConnectionTimeout: 30000,
 });
 
 const { attachPaginate } = require('knex-paginate');

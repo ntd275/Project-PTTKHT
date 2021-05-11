@@ -4,9 +4,9 @@ const authController = require('../controllers/authController')
 const notFound = require('./404')
 
 authRouter.post('/login', authController.login)
-authRouter.post('/logout', authController.logout)
+authRouter.post('/logout', authController.logOut)
+authRouter.post('/change_password', authController.changePassword)
 authRouter.post('/refresh-token', authController.refreshToken)
-authRouter.post('/register', authController.register)
 authRouter.use(authMiddleWare.isAuth)
 authRouter.get('/checkAuth', authController.checkAuth)
 authRouter.use(notFound);
