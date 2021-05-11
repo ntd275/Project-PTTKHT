@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.4",
     "knex-paginate": "^2.1.0",
+    "mssql": "^7.0.0",
     "mysql": "^2.18.1"
   }
 }

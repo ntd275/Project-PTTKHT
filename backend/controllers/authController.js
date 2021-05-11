@@ -1,4 +1,4 @@
-const Account = require('../models/Account')
+const Account = require('../models/Accounts')
 const config = require('../config/config')
 const jwtHelper = require('../helpers/jwtToken')
 const bcrypt = require('bcrypt')
