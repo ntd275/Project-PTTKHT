@@ -7,10 +7,11 @@ const port = require('./config/config').port
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://yourapp.com'];
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001/', 'http://yourapp.com'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);
+        //console.log(origin)
         if (allowedOrigins.indexOf(origin) === -1) {
             var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
             return callback(new Error(msg), false);

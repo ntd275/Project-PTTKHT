@@ -7,7 +7,7 @@ let tokenList = {}
 
 exports.login = async function (req, res) {
     try {
-        let user = await Account.getAccount(req.body.username)
+        let user = await Account.getAccountByUsername(req.body.accountName)
         if (!user) {
             res.status(401).json({
                 success: false,

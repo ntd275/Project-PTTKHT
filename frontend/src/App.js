@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/App.css'
 
 import Login from './components/Login/login'
+import ForgetPassword from './components/ForgetPassword/forgetPassword'
 
 class App extends React.Component {
   constructor(props) {
@@ -28,6 +29,9 @@ class App extends React.Component {
               </Route> */}
               <Route path="/login">
                 <Login />
+              </Route>
+              <Route path="/forgetpassword">
+                <ForgetPassword />
               </Route>
             </Switch>
           </div>
