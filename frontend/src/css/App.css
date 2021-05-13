@@ -1,0 +1,4 @@
+.content {
+  min-height: calc(100% - 130px);
+  display: flex
+}
