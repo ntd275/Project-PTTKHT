@@ -114,34 +114,6 @@ exports.logOut = function (req, res) {
 //     }
 // }
 
-exports.changePassword = async function (req, res) {
-    try {
-        let username = req.body.username
-        let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds) 
-        let newPassword = req.body.new_password
-        let account = Account.getAccountByUsername(username)
-        
-        let match = await bcrypt.compare(oldPassword, user.password)
-        if (!match) {
-            res.status(401).json({
-                success: false,
-                message: "Password incorrect"
-            })
-            return
-        }
-
-        let id = await Account.updatePassword(username, newPassword)
-        res.status(200),json({
-            success: true,
-            id: id
-        })
-
-    } catch (err) {
-        console.log(err)
-        res.status(409).send({success: false, error: err})
-    }
-}
-
 exports.checkAuth = function (req, res) {
     res.json({
         success: true

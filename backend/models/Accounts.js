@@ -1,24 +1,35 @@
 const knex = require('./database')
 
+exports.getAccountList = async () => {
+    return await knex.select().table('Accounts')
+}
+
 exports.getAccountByUsername = async (username) => {
     let account = await knex('Accounts').where('accountName', username).first()
     return account
 }
 
-exports.getAccount = async function (id) {
-    return knex('Accounts').where('accountId', id).first()
+exports.getAccount = async function (accountId) {
+    return knex('Accounts').where('accountId', accountId).first()
 }
 
-// exports.getAccountList = async function (page, perpage) {
-//   return knex('Accounts').paginate({ perPage: perpage, currentPage: page, isLengthAware: true });
-// }
+exports.editAccount = async function (account) {
+    knex('Accounts')
+    .where('accountId', account.accountId)
+    .update({
+        role: account.role,
+        accountName: account.username,
+        password: account.password,
+        userCode: account.userCode
+    })
+}
 
 exports.updatePassword = async function (username, newPassword) {
     return knex('Accounts').where('accountName', username).update('password', newPassword)
 }
 
-exports.deleteAccount = async function (id) {
-    return knex('Accounts').where('accountId', id).del()
+exports.deleteAccount = async function (accountId) {
+    return knex('Accounts').where('accountId', accountId).del()
 }
 
 // exports.dropTable = async function () {
