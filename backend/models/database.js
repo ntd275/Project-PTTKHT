@@ -9,7 +9,7 @@ const knex = require('knex')({
         database: config.db,
         timezone: "+00:00"
     },
-    acquireConnectionTimeout: 30000,
+    acquireConnectionTimeout: 30000
 });
 
 const { attachPaginate } = require('knex-paginate');

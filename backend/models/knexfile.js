@@ -1,7 +1,7 @@
 // Update with your config settings.
 const config = require('../config/config')
 
-console.log(config);
+// console.log(config);
 
 module.exports = {
 
@@ -14,7 +14,7 @@ module.exports = {
       database: config.db,
       timezone: "+00:00"
     },
-    acquireConnectionTimeout: 30000,
+    acquireConnectionTimeout: 30000
   },
 
   // staging: {

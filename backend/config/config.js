@@ -1,5 +1,6 @@
 const path = require('path')
-require('dotenv').config({path: path.resolve('../.env')});
+require('dotenv').config()
+
 exports.port = process.env.PORT || 3001
 exports.accessTokenLife = process.env.ACCESS_TOKEN_LIFE || "1h"
 exports.accessTokenSecret = process.env.ACCESS_TOKEN_SECRET || "ACCESS_TOKEN_SECRET"

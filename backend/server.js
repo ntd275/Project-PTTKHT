@@ -7,7 +7,7 @@ const port = require('./config/config').port
 
 const app = express();
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001', 'http://yourapp.com'];
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);

@@ -3,12 +3,14 @@ const config = require('../config/config')
 const jwtHelper = require('../helpers/jwtToken')
 const bcrypt = require('bcrypt')
 const { json } = require('express')
+const { isAuth } = require('../middlewares/authentication')
 
 let tokenList = {}
 
 exports.login = async function (req, res) {
     try {
-        let user = await Account.getAccount(req.body.username)
+        let user = await Account.getAccountByUsername(req.body.username)
+
         if (!user) {
             res.status(401).json({
                 success: false,
@@ -16,6 +18,7 @@ exports.login = async function (req, res) {
             })
             return
         }
+
         let match = await bcrypt.compare(req.body.password, user.password)
         if (!match) {
             res.status(401).json({
@@ -24,6 +27,7 @@ exports.login = async function (req, res) {
             })
             return
         }
+
         const accessToken = await jwtHelper.generateToken(user, config.accessTokenSecret, config.accessTokenLife)
         const refreshToken = await jwtHelper.generateToken(user, config.refreshTokenSecret, config.refreshTokenLife)
         tokenList[refreshToken] = { accessToken, refreshToken };
@@ -32,6 +36,7 @@ exports.login = async function (req, res) {
             success: true,
             accessToken,
         });
+
     } catch (err) {
         console.log(err)
         return res.status(500).json({
@@ -75,15 +80,21 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.logOut = function (req, res) {
-    // console.log("cookies: ", req.cookies)
     var refreshToken = req.cookies.refreshToken;
+    
     if (refreshToken) {
         delete tokenList[refreshToken];
         res.clearCookie('refreshToken');
+        res.status(200).json({
+            success: true,
+        })
+
+    } else {
+        res.status(403).json({
+            success: false
+        })
     }
-    res.status(200).json({
-        success: true,
-    });
+    
 }
 
 // exports.register = async function (req, res) {
