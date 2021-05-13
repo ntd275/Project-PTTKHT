@@ -81,7 +81,7 @@ exports.refreshToken = async (req, res) => {
 
 exports.logOut = function (req, res) {
     var refreshToken = req.cookies.refreshToken;
-    
+
     if (refreshToken) {
         delete tokenList[refreshToken];
         res.clearCookie('refreshToken');
@@ -94,7 +94,7 @@ exports.logOut = function (req, res) {
             success: false
         })
     }
-    
+
 }
 
 // exports.register = async function (req, res) {
@@ -114,6 +114,37 @@ exports.logOut = function (req, res) {
 //     }
 // }
 
+<<<<<<< HEAD
+=======
+exports.changePassword = async function (req, res) {
+    try {
+        let username = req.body.username
+        let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds)
+        let newPassword = req.body.new_password
+        let account = Account.getAccountByUsername(username)
+
+        let match = await bcrypt.compare(oldPassword, user.password)
+        if (!match) {
+            res.status(401).json({
+                success: false,
+                message: "Password incorrect"
+            })
+            return
+        }
+
+        let id = await Account.updatePassword(username, newPassword)
+        res.status(200), json({
+            success: true,
+            id: id
+        })
+
+    } catch (err) {
+        console.log(err)
+        res.status(409).send({ success: false, error: err })
+    }
+}
+
+>>>>>>> 3d1b4435066fd681510db6aa1050ef8ce65d9cc4
 exports.checkAuth = function (req, res) {
     res.json({
         success: true

@@ -36,7 +36,6 @@ class Header extends React.Component {
                                     </div>
                                 }
                                 id="basic-nav-dropdown"
-                                menuAlign="right"
                             >
                                 <Link to="/" className="dropdown-item">
                                     Quản lý danh mục năm học
@@ -180,7 +179,6 @@ class Header extends React.Component {
                                     </div>
                                 }
                                 id="basic-nav-dropdown"
-                                className="dropdown-menu-right"
                             >
                                 <Link to="/" className="dropdown-item">
                                     Xem thông tin tài khoản

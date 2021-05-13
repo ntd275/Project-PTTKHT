@@ -8,6 +8,6 @@ authRouter.post('/logout', authController.logOut)
 authRouter.post('/change_password', authController.changePassword)
 authRouter.post('/refresh-token', authController.refreshToken)
 authRouter.use(authMiddleWare.isAuth)
-authRouter.get('/checkAuth', authController.checkAuth)
+authRouter.get('/check-auth', authController.checkAuth)
 authRouter.use(notFound);
 module.exports = authRouter

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Api from "../../api/api";
 
 class Login extends Component {
     constructor(props) {
@@ -15,10 +16,13 @@ class Login extends Component {
         formData[name] = value;
         this.setState({ 'formData': formData });
     }
-    submitHandler = (e) => {
+    submitHandler = async (e) => {
         let data = this.state.formData;
         e.preventDefault();
         console.log(data);
+        let res = await Api.login(data.username, data.password)
+        console.log(res)
+
     }
     render() {
         return (
