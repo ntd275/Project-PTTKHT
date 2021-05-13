@@ -1,6 +1,5 @@
 const Account = require('../models/Accounts')
 const config = require('../config/config')
-const jwtHelper = require('../helpers/jwtToken')
 const bcrypt = require('bcrypt')
 const { json } = require('express')
 
@@ -9,7 +8,7 @@ async function getAccountList(req, res) {
         let accountList = await Account.getAccountList()
 
         if (!accountList) {
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "Cannot get account list"
             })
@@ -34,7 +33,7 @@ async function getAccount(req, res) {
         let account = await Account.getAccount(req.body.accountId)
 
         if (!account) {
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "Account does not exist"
             })
@@ -60,7 +59,7 @@ async function editAccount(req, res) {
         let ok = Account.editAccount(account)
 
         if (!ok) {
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "Cannot update account"
             })
@@ -80,10 +79,20 @@ async function editAccount(req, res) {
     }
 }
 
+//Only admin can delete account
 async function deleteAccount(req, res) {
     try {
-        let ok = Account.deleteAccount(req.body.accountId)
+        //First check if is admin
+        let account = Account.getAccount(req.body.accountId)
+        if(account.role != 2) {
+            return res.status(403).json({
+                success: false,
+                message: "Not admin"
+            })
+        }
 
+        //Delete
+        let ok = Account.deleteAccount(req.body.account.accountId)
         if (!ok) {
             res.status(401).json({
                 success: false,
@@ -110,7 +119,7 @@ async function checkPassword(req, res) {
         let match = await bcrypt.compare(req.body.password, account.password)
 
         if (!match) {
-            return res.status(401).json({
+            return res.status(400).json({
                 success: false,
                 message: "Password incorrect"
             })
@@ -139,7 +148,7 @@ async function changePassword(req, res) {
 
         let match = await bcrypt.compare(oldPassword, account.password)
         if (!match) {
-            return res.status(401).json({
+            return res.status(400).json({
                 success: false,
                 message: "Password incorrect"
             })
@@ -147,7 +156,7 @@ async function changePassword(req, res) {
 
         let id = await Account.updatePassword(username, newPassword)
         if (!id) {
-            return res.status(401).json({
+            return res.status(418).json({
                 success: false,
                 message: "Cannot change password"
             })
