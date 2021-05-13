@@ -21,6 +21,6 @@ exports.deleteAccount = async function (id) {
     return knex('Accounts').where('accountId', id).del()
 }
 
-exports.dropTable = async function () {
-    return knex.schema.dropTable('Accounts');
-};
+// exports.dropTable = async function () {
+//     return knex.schema.dropTable('Accounts');
+// };
