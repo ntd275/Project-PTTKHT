@@ -9,6 +9,7 @@ import './css/App.css';
 import Home from './components/Home/Home';
 import Login from './components/Login/login';
 import ForgetPassword from './components/ForgetPassword/forgetPassword';
+import StudentScore from './components/StudentScore/StudentScore';
 
 class App extends React.Component {
   constructor(props) {
@@ -33,6 +34,9 @@ class App extends React.Component {
               </Route>
               <Route path="/forgetpassword">
                 <ForgetPassword />
+              </Route>
+              <Route path="/student/score">
+                <StudentScore />
               </Route>
             </Switch>
           </div>
