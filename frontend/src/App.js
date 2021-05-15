@@ -10,6 +10,7 @@ import Home from './components/Home/Home';
 import Login from './components/Login/login';
 import ForgetPassword from './components/ForgetPassword/forgetPassword';
 import StudentScore from './components/StudentScore/StudentScore';
+import StudentPLL from './components/StudentPLL/StudentPLL';
 
 class App extends React.Component {
   constructor(props) {
@@ -37,6 +38,9 @@ class App extends React.Component {
               </Route>
               <Route path="/student/score">
                 <StudentScore />
+              </Route>
+              <Route path="/student/pll">
+                <StudentPLL />
               </Route>
             </Switch>
           </div>
