@@ -1,13 +1,14 @@
 import React from "react";
-import AppContext from './context/AppContext'
+import AppContext from './context/AppContext';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Footer from "./components/Footer/Footer"
-import Header from "./components/Header/Header"
+import Footer from "./components/Footer/Footer";
+import Header from "./components/Header/Header";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './css/App.css'
+import './css/App.css';
 
-import Login from './components/Login/login'
-import ForgetPassword from './components/ForgetPassword/forgetPassword'
+import Home from './components/Home/Home';
+import Login from './components/Login/login';
+import ForgetPassword from './components/ForgetPassword/forgetPassword';
 
 class App extends React.Component {
   constructor(props) {
@@ -24,9 +25,9 @@ class App extends React.Component {
           <Header />
           <div className="content">
             <Switch>
-              {/* <Route exact path="/">
+              <Route exact path="/">
                 <Home />
-              </Route> */}
+              </Route>
               <Route path="/login">
                 <Login />
               </Route>
