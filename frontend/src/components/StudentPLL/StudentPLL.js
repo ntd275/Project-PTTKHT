@@ -17,7 +17,13 @@ class StudentPLL extends Component {
             iconSize: '15px'
         };
     }
-
+    changeHandler = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({ [name]: value }, () => {
+            console.log(this.state);
+        }); 
+    }
     render() {
         return (
             <div className="container">
@@ -25,8 +31,8 @@ class StudentPLL extends Component {
                     <div className="col-3">
                         <div className="form-inline">
                             <label style={{ marginRight: "5px" }}>Năm học:</label>
-                            <select className="custom-select" name="schoolYear" id="schoolYear">
-                                <option selected>Chọn năm học</option>
+                            <select className="custom-select" name="schoolYear" id="schoolYear" onChange={e => this.changeHandler(e)}>
+                                <option>Chọn năm học</option>
                                 <option value="0">{this.state.schoolYearList[0]}</option>
                                 <option value="1">{this.state.schoolYearList[1]}</option>
                                 <option value="2">{this.state.schoolYearList[2]}</option>
@@ -35,7 +41,7 @@ class StudentPLL extends Component {
                         </div>
                     </div>
                     <div className="col-4">
-                        <button type="button" class="btn btn-primary">Xuất file phiếu liên lạc</button>
+                        <button type="button" className="btn btn-primary">Xuất file phiếu liên lạc</button>
                     </div>
                 </div>
                 <hr />
@@ -47,7 +53,7 @@ class StudentPLL extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="row mt-3">
+                <div className="row mt-2">
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
                         <div>
                             <b>Học sinh: </b>{this.state.student.name}
@@ -69,7 +75,7 @@ class StudentPLL extends Component {
                         </div>
                     </div>
                 </div>
-                <div className="row mt-4">
+                <div className="row mt-3">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <table className="table table-bordered">
                             <thead className="text-center">
@@ -133,7 +139,7 @@ class StudentPLL extends Component {
                         </table>
                     </div>
                 </div>
-                <div className="row mt-4">
+                <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <table className="table table-bordered">
                             <thead className="text-center">
@@ -195,7 +201,7 @@ class StudentPLL extends Component {
                         </table>
                     </div>
                 </div>
-                <div className="row mt-4">
+                <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <table className="table table-bordered">
                             <thead className="text-center">
@@ -245,7 +251,7 @@ class StudentPLL extends Component {
                         </table>
                     </div>
                 </div>
-                <div className="row mt-4">
+                <div className="row mt-2">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                         <table className="table table-bordered">
                             <thead className="text-center">

@@ -18,7 +18,13 @@ class StudentScore extends Component {
             iconSize: '15px'
         };
     }
-    
+    changeHandler = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({ [name]: value }, () => {
+            console.log(this.state);
+        }); 
+    }
     render() {
         return (
             <div className="container">
@@ -26,8 +32,8 @@ class StudentScore extends Component {
                     <div className="col-4">
                         <div className="form-inline">
                             <label style={{ marginRight: "5px" }}>Năm học:</label>
-                            <select className="custom-select" name="schoolYear" id="schoolYear">
-                                <option selected>Chọn năm học</option>
+                            <select className="custom-select" name="schoolYear" id="schoolYear" onChange={e => this.changeHandler(e)}>
+                                <option>Chọn năm học</option>
                                 <option value="0">{this.state.schoolYearList[0]}</option>
                                 <option value="1">{this.state.schoolYearList[1]}</option>
                                 <option value="2">{this.state.schoolYearList[2]}</option>
