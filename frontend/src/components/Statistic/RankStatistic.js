@@ -29,12 +29,19 @@ class RankStatistic extends Component {
             console.log(this.state);
         }); 
     }
+    submitHandler = async (e) => {
+        let data = this.state;
+        e.preventDefault();
+        console.log(data);
+        // let res = await Api.login(data.username, data.password)
+        // console.log(res)
+    }
     render() {
         return (
             <div className="container">
                 <div className="row mt-3">
-                    <div className="col-7">
-                        <div className="form-inline">
+                    <div className="col-9">
+                        <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
                             <label>Năm học:</label>
                             <select className="custom-select" name="schoolYear" id="schoolYear">
                                 <option>Chọn năm học</option>
@@ -58,10 +65,11 @@ class RankStatistic extends Component {
                                 <option value="1">Học kỳ 1</option>
                                 <option value="2">Học kỳ 2</option>
                             </select>
-                        </div>
+                            <button type="submit" className="btn btn-primary">Xem kết quả</button>
+                        </form>
                     </div>
-                    <div className="col-5">
-                        <button type="button" className="btn btn-primary">Xuất file thống kê</button>
+                    <div className="col-3">
+                        <button type="button" className="btn btn-primary">Xuất file</button>
                         <button type="button" className="btn btn-primary">In thống kê</button>
                     </div>
                 </div>
