@@ -11,6 +11,7 @@ import Login from './components/Login/login';
 import ForgetPassword from './components/ForgetPassword/forgetPassword';
 import StudentScore from './components/StudentScore/StudentScore';
 import StudentPLL from './components/StudentPLL/StudentPLL';
+import RankStatistic from './components/Statistic/RankStatistic';
 
 class App extends React.Component {
   constructor(props) {
@@ -41,6 +42,9 @@ class App extends React.Component {
               </Route>
               <Route path="/student/pll">
                 <StudentPLL />
+              </Route>
+              <Route path="/statistic/rank">
+                <RankStatistic />
               </Route>
             </Switch>
           </div>
