@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Api from "../../api/api";
-// import '../../css/StudentScore.css';
+import '../../css/StudentPLL.css';
 
 class StudentPLL extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class StudentPLL extends Component {
             iconSize: '15px'
         };
     }
-    
+
     render() {
         return (
             <div className="container">
@@ -39,7 +39,15 @@ class StudentPLL extends Component {
                     </div>
                 </div>
                 <hr />
-                <div className="row">
+                <div className="row mt-3">
+                    <div className="col-12 text-center pll-title">
+                        <div>
+                            <b>Phiếu liên lạc điện tử</b><br />
+                            Trường Trung học cơ sở ABC
+                        </div>
+                    </div>
+                </div>
+                <div className="row mt-3">
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
                         <div>
                             <b>Học sinh: </b>{this.state.student.name}
@@ -252,7 +260,7 @@ class StudentPLL extends Component {
                                     <td colSpan="2"></td>
                                     <td colSpan="2"></td>
                                     <td colSpan="2">
-                                        Được lên lớp:<br/>
+                                        Được lên lớp:<br />
                                         Thi lại môn:
                                     </td>
                                 </tr>
@@ -261,12 +269,12 @@ class StudentPLL extends Component {
                                         <b>Hiệu trưởng</b>
                                     </td>
                                     <td colSpan="3">
-                                        Hà Nội, ngày 15 tháng 05 năm 2021<br/>
-                                        Giáo viên chủ nhiệm<br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
+                                        Hà Nội, ngày 15 tháng 05 năm 2021<br />
+                                        Giáo viên chủ nhiệm<br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
                                         Bùi Minh Tuấn
                                     </td>
                                 </tr>
