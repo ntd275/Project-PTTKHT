@@ -8,7 +8,7 @@ async function getAccountList(req, res) {
         let accountList = await Account.getAccountList()
 
         if (!accountList) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Cannot get account list"
             })
@@ -16,7 +16,7 @@ async function getAccountList(req, res) {
 
         return res.status(200).json({
             success: true,
-            accounts: accountList
+            account_list: accountList
         })
 
     } catch (error) {
@@ -33,7 +33,7 @@ async function getAccount(req, res) {
         let account = await Account.getAccount(req.body.accountId)
 
         if (!account) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Account does not exist"
             })
@@ -41,7 +41,7 @@ async function getAccount(req, res) {
 
         return res.status(200).json({
             success: true,
-            accounts: account
+            account: account
         })
 
     } catch (error) {
@@ -56,10 +56,10 @@ async function getAccount(req, res) {
 async function editAccount(req, res) {
     try {
         let account = req.body
-        let ok = Account.editAccount(account)
+        let ok = await Account.editAccount(account)
 
         if (!ok) {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Cannot update account"
             })
@@ -67,7 +67,7 @@ async function editAccount(req, res) {
 
         return res.status(200).json({
             success: true,
-            accounts: account
+            account: account
         })
 
     } catch (error) {
@@ -82,19 +82,9 @@ async function editAccount(req, res) {
 //Only admin can delete account
 async function deleteAccount(req, res) {
     try {
-        //First check if is admin
-        let account = Account.getAccount(req.body.accountId)
-        if(account.role != 2) {
-            return res.status(403).json({
-                success: false,
-                message: "Not admin"
-            })
-        }
-
-        //Delete
-        let ok = Account.deleteAccount(req.body.account.accountId)
+        let ok = await Account.deleteAccount(req.body.account.accountId)
         if (!ok) {
-            res.status(401).json({
+            return res.status(401).json({
                 success: false,
                 message: "Cannot delete account"
             })
@@ -104,6 +94,7 @@ async function deleteAccount(req, res) {
             success: true,
             message: "Account deleted"
         })
+
     } catch (error) {
         console.log(err)
         return res.status(500).json({
@@ -115,7 +106,7 @@ async function deleteAccount(req, res) {
 
 async function checkPassword(req, res) {
     try {
-        let account = Account.getAccount(req.body.accountId)
+        let account = await Account.getAccount(req.body.accountId)
         let match = await bcrypt.compare(req.body.password, account.password)
 
         if (!match) {
@@ -144,7 +135,7 @@ async function changePassword(req, res) {
         let username = req.body.username
         let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds)
         let newPassword = req.body.new_password
-        let account = Account.getAccountByUsername(username)
+        let account = await Account.getAccountByUsername(username)
 
         let match = await bcrypt.compare(oldPassword, account.password)
         if (!match) {
