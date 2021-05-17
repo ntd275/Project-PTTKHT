@@ -1,0 +1,12 @@
+.statistic-title {
+    font-size: 30px;
+}
+label {
+    margin-right: 5px;
+}
+select {
+    margin-right: 10px;
+}
+input {
+    width: 20px;
+}
