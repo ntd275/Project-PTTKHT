@@ -7,6 +7,117 @@ const { isAuth } = require('../middlewares/authentication')
 
 let tokenList = {}
 
+exports.forgetPassword = async (req, res) => {
+    // frontend nhận được otp, thấy người dùng nhập đúng otp thì gửi otpToken và newPassword lên
+    const otpToken = req.body.otpToken
+    if (otpToken) {
+        try {
+            // decode data của user đã mã hóa vào otpToken
+            const { data } = await jwtHelper.verifyToken(config.otpToken, config.otpTokenSecret);
+            bcrypt.hash(req.body.newPassword, config.saltRounds, function (err, hash) {
+                if (err) {
+                    return res.status(500).send({
+                        status: 0,
+                        message:
+                            err.message || "Some errors occur while changing password"
+                    });
+                }
+                db.accounts.update({
+                    password: hash,
+                }, {
+                    where: { username: data.username },
+                    returning: true,
+                    plain: true
+                })
+                .then(function () {
+                    return res.json({
+                        status: 1,
+                    });
+                });
+            });
+        } catch (error) {
+            return res.status(400).json({
+                status: 0,
+                message: error.message || 'Some errors occur while changing password',
+            });
+        }
+    } else {
+        return res.status(400).send({
+            status: 0,
+            message: 'No otp token provided',
+        });
+    }
+}
+
+exports.sendOtp = async (req, res) => {
+    // option của tài khoản gửi email cho người dùng
+    const emailOption = {
+        service: config.emailService,
+        auth: {
+            user: config.emailUser,
+            pass: config.emailPassword
+        }
+    };
+    let transporter = nodemailer.createTransport(emailOption);
+    try {
+        // người dùng nhập username hoặc email vào 1 ô, 
+        // frontend gửi lên 2 trường username và email có nội dung giống nhau
+        const user = await db.accounts.findOne({
+            where: {
+                [Op.or]: [
+                    { username: req.body.username },
+                    { email: req.body.email }
+                ]
+            }
+        });
+        if (user == null) {
+            return res.status(400).send({
+                status: 0,
+                message: "user does not exist"
+            });
+        } else {
+            transporter.verify(function(error, success) {
+                if (error) {
+                    return res.status(500).send({
+                        status: 0,
+                        message: error.message || "Some errors occur while sending email"
+                    });
+                } else {
+                    let otp = Math.floor(100000 + Math.random() * 900000);
+                    let mail = {
+                        from: config.emailUser,
+                        to: user.email, 
+                        subject: 'Xác thực tài khoản Room4U',
+                        text: 'Mã xác thực của bạn là ' + otp + '. Mã này có hiệu lực trong vòng 3 phút',
+                    };
+                    transporter.sendMail(mail, async function(error, info) {
+                        if (error) {
+                            return res.status(500).send({
+                                status: 0,
+                                message: error.message || "Some errors occur while sending email"
+                            });
+                        } else {
+                            user.password = undefined;
+                            let userData = user;
+                            let otpToken = await jwtHelper.generateToken(userData, config.otpTokenSecret, config.otpTokenLife);
+                            return res.json({
+                                status: 1,
+                                otp: otp,
+                                otpToken: otpToken
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    } catch (error) {
+        return res.status(500).send({
+            status: 0,
+            message: error.message || "Some errors occur while sending email"
+        });
+    }
+}
+
 exports.login = async function (req, res) {
     try {
         let user = await Account.getAccountByUsername(req.body.username)

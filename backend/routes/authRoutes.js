@@ -9,5 +9,7 @@ authRouter.post('/change_password', authController.changePassword)
 authRouter.post('/refresh-token', authController.refreshToken)
 authRouter.use(authMiddleWare.isAuth)
 authRouter.get('/check-auth', authController.checkAuth)
+authRouter.post('/sendotp', authController.sendOtp)
+authRouter.post('/forgetpassword', authController.forgetPassword)
 authRouter.use(notFound);
 module.exports = authRouter
