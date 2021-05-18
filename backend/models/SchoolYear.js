@@ -1,7 +1,7 @@
 const knex = require('./database')
 
-exports.getSchoolYearList = async () => {
-    return await knex.select().table('SchoolYear')
+exports.getSchoolYearList = async (perpage, page) => {
+    return await knex.select().table('SchoolYear').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 //Get current school year is that has biggest schoolYearId (added latest)

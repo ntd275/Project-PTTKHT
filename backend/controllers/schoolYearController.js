@@ -4,18 +4,13 @@ const { json } = require('express')
 
 async function getSchoolYearList(req, res) {
     try {
-        let schoolYearList = await SchoolYear.getSchoolYearList()
-
-        if (!schoolYearList) {
-            return res.status(400).json({
-                success: false,
-                message: "Cannot get school year list"
-            })
-        }
+        let page = req.query.page || config.pageItem
+        let perpage = req.query.perpage || config.perPageItem
+        let schoolYearList = await SchoolYear.getSchoolYearList(page, perpage)
 
         return res.status(200).json({
             success: true,
-            school_year_list: schoolYearList
+            result: schoolYearList
         })
     } catch (error) {
         console.log(err)

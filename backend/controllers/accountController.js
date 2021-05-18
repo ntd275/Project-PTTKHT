@@ -5,8 +5,8 @@ const { json } = require('express')
 
 async function getAccountList(req, res) {
     try {
-        let page = req.query.page || 1
-        let perpage = req.query.perpage || 30
+        let page = req.query.page || config.pageItem
+        let perpage = req.query.perpage || config.perPageItem
         let accountList = await Account.getAccountList(page, perpage)
 
         return res.status(200).json({
@@ -39,6 +39,23 @@ async function getAccount(req, res) {
             result: account
         })
 
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
+}
+
+async function addAccount(req, res) {
+    try {
+        let account = Account.createAccount(req.body)
+
+        return res.status(200).json({
+            success: true,
+            result: account
+        })
     } catch (error) {
         console.log(err)
         return res.status(500).json({
@@ -166,6 +183,7 @@ async function changePassword(req, res) {
 module.exports = {
     getAccountList: getAccountList,
     getAccount: getAccount,
+    addAccount: addAccount,
     editAccount: editAccount,
     deleteAccount: deleteAccount,
     checkPassword: checkPassword,
