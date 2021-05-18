@@ -7,16 +7,17 @@ import {
   BsChevronDoubleRight,
   BsChevronDoubleLeft,
 } from "react-icons/bs";
-import Dialog from "react-bootstrap-dialog";
-import { AiOutlineSearch } from "react-icons/ai";
 import { Modal } from "react-bootstrap";
 import { Col, Row, Form } from "react-bootstrap";
 import { GoPlus } from "react-icons/go";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaRegCalendarAlt } from "react-icons/fa";
 import React from "react";
 import "../../css/Student.css";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
+import DatePicker from "react-datepicker";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "react-datepicker/dist/react-datepicker.css";
 class Student extends React.Component {
   constructor(props) {
     super(props); //since we are extending class Table so we have to use super in order to override Component class constructor
@@ -127,6 +128,8 @@ class Student extends React.Component {
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
   close() {
     this.setState({ showModal: false });
@@ -134,6 +137,16 @@ class Student extends React.Component {
 
   open() {
     this.setState({ showModal: true });
+  }
+  handleChange(date) {
+    this.setState({
+      startDate: date,
+    });
+  }
+
+  onFormSubmit(e) {
+    e.preventDefault();
+    console.log(this.state.startDate);
   }
 
   renderTableData() {
@@ -215,16 +228,13 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="studentName">
                     <Form.Label>Họ Tên</Form.Label>
-                    <Form.Control type="studentName" placeholder="Họ Tên" />
+                    <Form.Control type="text" placeholder="Họ Tên" />
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="studentCode">
                     <Form.Label>Mã học sinh</Form.Label>
-                    <Form.Control
-                      type="studentCode"
-                      placeholder="Mã học sinh"
-                    />
+                    <Form.Control type="text" placeholder="Mã học sinh" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -232,16 +242,21 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="dateOfBirth">
                     <Form.Label>Ngày sinh</Form.Label>
-                    <Form.Control type="dateOfBirth" placeholder="Ngày sinh" />
+                    <FaRegCalendarAlt style={{ marginLeft: 10 }} />
+                    <div className="form-group">
+                      <DatePicker
+                        selected={this.state.startDate}
+                        onChange={this.handleChange}
+                        name="startDate"
+                        dateFormat="MM/dd/yyyy"
+                      />
+                    </div>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="phoneNumBer">
                     <Form.Label>Số điện thoại</Form.Label>
-                    <Form.Control
-                      type="phoneNumBer"
-                      placeholder="Số điện thoại"
-                    />
+                    <Form.Control type="text" placeholder="Số điện thoại" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -249,13 +264,13 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="gender">
                     <Form.Label>Giới tính</Form.Label>
-                    <Form.Control type="gender" placeholder="Giới tính" />
+                    <Form.Control type="text" placeholder="Giới tính" />
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="email">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control type="email" placeholder="Email" />
+                    <Form.Control type="text" placeholder="Email" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -268,7 +283,7 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="fartherName">
                     <Form.Label>Họ tên bố</Form.Label>
-                    <Form.Control type="fartherName" placeholder="Họ tên bố" />
+                    <Form.Control type="text" placeholder="Họ tên bố" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -276,16 +291,13 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="pID">
                     <Form.Label>Số CMND</Form.Label>
-                    <Form.Control type="pID" placeholder="Số CMND" />
+                    <Form.Control type="text" placeholder="Số CMND" />
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="fartherPhone">
                     <Form.Label>Số điện thoại bố</Form.Label>
-                    <Form.Control
-                      type="fartherPhone"
-                      placeholder="Số điện thoại bố"
-                    />
+                    <Form.Control type="text" placeholder="Số điện thoại bố" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -294,7 +306,7 @@ class Student extends React.Component {
                   <Form.Group controlId="permanentResidence">
                     <Form.Label>Hộ khẩu thường trú</Form.Label>
                     <Form.Control
-                      type="permanentResidence"
+                      type="text"
                       placeholder="Hộ khẩu thường trú"
                     />
                   </Form.Group>
@@ -302,7 +314,7 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="fatherEmail">
                     <Form.Label>Email bố</Form.Label>
-                    <Form.Control type="fatherEmail" placeholder="Email bố" />
+                    <Form.Control type="text" placeholder="Email bố" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -310,13 +322,13 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="address">
                     <Form.Label>Nơi ở hiện nay</Form.Label>
-                    <Form.Control type="address" placeholder="Nơi ở hiện nay" />
+                    <Form.Control type="text" placeholder="Nơi ở hiện nay" />
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="motherName">
                     <Form.Label>Họ tên mẹ</Form.Label>
-                    <Form.Control type="motherName" placeholder="Họ tên mẹ" />
+                    <Form.Control type="text" placeholder="Họ tên mẹ" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -324,19 +336,21 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="dateOfUnion">
                     <Form.Label>Ngày vào Đoàn</Form.Label>
-                    <Form.Control
-                      type="dateOfUnion"
-                      placeholder="Ngày vào Đoàn"
-                    />
+                    <FaRegCalendarAlt style={{ marginLeft: 10 }} />
+                    <div className="form-group">
+                      <DatePicker
+                        selected={this.state.startDate}
+                        onChange={this.handleChange}
+                        name="startDate"
+                        dateFormat="MM/dd/yyyy"
+                      />
+                    </div>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="motherPhone">
                     <Form.Label>Số điện thoại mẹ</Form.Label>
-                    <Form.Control
-                      type="motherPhone"
-                      placeholder="Số điện thoại mẹ"
-                    />
+                    <Form.Control type="text" placeholder="Số điện thoại mẹ" />
                   </Form.Group>
                 </Col>
               </Form.Row>
@@ -344,19 +358,21 @@ class Student extends React.Component {
                 <Col>
                   <Form.Group controlId="dateOfParty">
                     <Form.Label>Ngày vào Đảng</Form.Label>
-                    <Form.Control
-                      type="dateOfParty"
-                      placeholder="Ngày vào Đảng"
-                    />
+                    <FaRegCalendarAlt style={{ marginLeft: 10 }} />
+                    <div className="form-group">
+                      <DatePicker
+                        selected={this.state.startDate}
+                        onChange={this.handleChange}
+                        name="startDate"
+                        dateFormat="MM/dd/yyyy"
+                      />
+                    </div>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="motherMail">
                     <Form.Label>Email mẹ</Form.Label>
-                    <Form.Control
-                      type="motherMail"
-                      placeholder="Email Mẹ"
-                    />
+                    <Form.Control type="text" placeholder="Email Mẹ" />
                   </Form.Group>
                 </Col>
               </Form.Row>
