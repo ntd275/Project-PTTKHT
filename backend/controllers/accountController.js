@@ -25,7 +25,7 @@ async function getAccountList(req, res) {
 
 async function getAccount(req, res) {
     try {
-        let account = await Account.getAccount(req.params.accountId)
+        let account = await Account.getAccount(req.params.id)
 
         if (!account) {
             return res.status(404).json({
@@ -68,7 +68,7 @@ async function addAccount(req, res) {
 async function editAccount(req, res) {
     try {
         //Return number of affected row
-        let count = await Account.editAccount(req.params.accountId, req.body)
+        let count = await Account.editAccount(req.params.id, req.body)
 
         if (count == 0) {
             return res.status(404).json({
@@ -94,7 +94,7 @@ async function editAccount(req, res) {
 //Only admin can delete account
 async function deleteAccount(req, res) {
     try {
-        let count = await Account.deleteAccount(req.params.accountId)
+        let count = await Account.deleteAccount(req.params.id)
         if (count == 0) {
             return res.status(401).json({
                 success: false,
@@ -118,7 +118,7 @@ async function deleteAccount(req, res) {
 
 async function checkPassword(req, res) {
     try {
-        let account = await Account.getAccount(req.params.accountId)
+        let account = await Account.getAccount(req.params.id)
         let match = await bcrypt.compare(req.body.password, account.password)
 
         if (!match) {
@@ -144,7 +144,7 @@ async function checkPassword(req, res) {
 
 async function changePassword(req, res) {
     try {
-        let accountId = req.params.accountId
+        let accountId = req.params.id
         let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds)
         let newPassword = req.body.new_password
 
