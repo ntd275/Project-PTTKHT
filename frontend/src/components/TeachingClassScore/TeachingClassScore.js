@@ -72,39 +72,39 @@ class TeachingClassScore extends Component {
                                         <td>1</td>
                                         <td>HS01</td>
                                         <td>Nguyễn Thế Đức</td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
                                     </tr>
                                     <tr className="text-center">
                                         <td>1</td>
                                         <td>HS01</td>
                                         <td>Nguyễn Thế Đức</td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="" /></td>
-                                        <td><input type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="" /></td>
+                                        <td><input className="score-input" type="text" id="" placeholder="9" /></td>
                                     </tr>
                                 </tbody>
                             </table>
