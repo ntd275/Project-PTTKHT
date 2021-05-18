@@ -5,18 +5,13 @@ const { json } = require('express')
 
 async function getAccountList(req, res) {
     try {
-        let accountList = await Account.getAccountList()
-
-        if (!accountList) {
-            res.status(400).json({
-                success: false,
-                message: "Cannot get account list"
-            })
-        }
+        let page = req.query.page || 1
+        let perpage = req.query.perpage || 30
+        let accountList = await Account.getAccountList(page, perpage)
 
         return res.status(200).json({
             success: true,
-            accounts: accountList
+            result: accountList
         })
 
     } catch (error) {
@@ -30,18 +25,18 @@ async function getAccountList(req, res) {
 
 async function getAccount(req, res) {
     try {
-        let account = await Account.getAccount(req.body.accountId)
+        let account = await Account.getAccount(req.params.accountId)
 
         if (!account) {
-            res.status(400).json({
+            return res.status(404).json({
                 success: false,
-                message: "Account does not exist"
+                message: "Account not found"
             })
         }
 
         return res.status(200).json({
             success: true,
-            accounts: account
+            result: account
         })
 
     } catch (error) {
@@ -55,19 +50,19 @@ async function getAccount(req, res) {
 
 async function editAccount(req, res) {
     try {
-        let account = req.body
-        let ok = Account.editAccount(account)
+        //Return number of affected row
+        let count = await Account.editAccount(req.params.accountId, req.body)
 
-        if (!ok) {
-            res.status(400).json({
+        if (count == 0) {
+            return res.status(404).json({
                 success: false,
-                message: "Cannot update account"
+                message: "Account not found"
             })
         }
 
         return res.status(200).json({
             success: true,
-            accounts: account
+            result: count
         })
 
     } catch (error) {
@@ -82,28 +77,19 @@ async function editAccount(req, res) {
 //Only admin can delete account
 async function deleteAccount(req, res) {
     try {
-        //First check if is admin
-        let account = Account.getAccount(req.body.accountId)
-        if(account.role != 2) {
-            return res.status(403).json({
+        let count = await Account.deleteAccount(req.params.accountId)
+        if (count == 0) {
+            return res.status(401).json({
                 success: false,
-                message: "Not admin"
-            })
-        }
-
-        //Delete
-        let ok = Account.deleteAccount(req.body.account.accountId)
-        if (!ok) {
-            res.status(401).json({
-                success: false,
-                message: "Cannot delete account"
+                message: "Account not found"
             })
         }
 
         return res.status(200).json({
             success: true,
-            message: "Account deleted"
+            result: count
         })
+
     } catch (error) {
         console.log(err)
         return res.status(500).json({
@@ -115,7 +101,7 @@ async function deleteAccount(req, res) {
 
 async function checkPassword(req, res) {
     try {
-        let account = Account.getAccount(req.body.accountId)
+        let account = await Account.getAccount(req.params.accountId)
         let match = await bcrypt.compare(req.body.password, account.password)
 
         if (!match) {
@@ -127,7 +113,7 @@ async function checkPassword(req, res) {
 
         return res.status(200).json({
             success: true,
-            message: "Password matched"
+            result: "Password matched"
         })
 
     } catch (error) {
@@ -141,10 +127,11 @@ async function checkPassword(req, res) {
 
 async function changePassword(req, res) {
     try {
-        let username = req.body.username
+        let accountId = req.params.accountId
         let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds)
         let newPassword = req.body.new_password
-        let account = Account.getAccountByUsername(username)
+
+        let account = await Account.getAccount(accountId)
 
         let match = await bcrypt.compare(oldPassword, account.password)
         if (!match) {
@@ -154,8 +141,8 @@ async function changePassword(req, res) {
             })
         }
 
-        let id = await Account.updatePassword(username, newPassword)
-        if (!id) {
+        let count = await Account.updatePassword(accountId, newPassword)
+        if (count == 0) {
             return res.status(418).json({
                 success: false,
                 message: "Cannot change password"
@@ -164,7 +151,7 @@ async function changePassword(req, res) {
 
         return res.status(200).json({
             success: true,
-            message: "password changed"
+            result: "password changed"
         })
 
     } catch (err) {
