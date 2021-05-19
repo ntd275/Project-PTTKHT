@@ -20,6 +20,7 @@ async function getClassList(req, res) {
     }
 }
 
+//Lấy thông tin lớp học dựa trên classId
 async function getClass(req, res) {
     try {
         let myClass = await Class.getClass(req.params.id)
@@ -38,7 +39,7 @@ async function getClass(req, res) {
     }
 }
 
-//Lấy danh sách thông tin lớp học ứng với giáo viên chủ nhiệm
+//Lấy danh sách lớp học ứng với teacherId của giáo viên chủ nhiệm
 //= getClass(teacher)
 async function getHomeroomClass(req, res) {
     try {
