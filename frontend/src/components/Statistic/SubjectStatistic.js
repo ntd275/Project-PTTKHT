@@ -42,35 +42,35 @@ class SubjectStatistic extends Component {
                 <div className="row mt-3">
                     <div className="col-9">
                         <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
-                            <label>Năm học:</label>
-                            <select className="custom-select" name="schoolYear" id="schoolYear" onChange={e => this.changeHandler(e)}>
+                            <label className="mr-1">Năm học:</label>
+                            <select className="custom-select mr-2" name="schoolYear" id="schoolYear" onChange={e => this.changeHandler(e)}>
                                 <option>Chọn năm học</option>
                                 <option value="0">{this.state.schoolYearList[0]}</option>
                                 <option value="1">{this.state.schoolYearList[1]}</option>
                                 <option value="2">{this.state.schoolYearList[2]}</option>
                                 <option value="3">{this.state.schoolYearList[3]}</option>
                             </select>
-                            <label>Lớp:</label>
-                            <select className="custom-select" name="class" id="class" onChange={e => this.changeHandler(e)}>
+                            <label className="mr-1">Lớp:</label>
+                            <select className="custom-select mr-2" name="class" id="class" onChange={e => this.changeHandler(e)}>
                                 <option>Chọn lớp</option>
                                 <option value="0">{this.state.classList[0]}</option>
                                 <option value="1">{this.state.classList[1]}</option>
                                 <option value="2">{this.state.classList[2]}</option>
                                 <option value="3">{this.state.classList[3]}</option>
                             </select>
-                            <label>Học kỳ:</label>
-                            <select className="custom-select" name="term" id="term" onChange={e => this.changeHandler(e)}>
+                            <label className="mr-1">Học kỳ:</label>
+                            <select className="custom-select mr-2" name="term" id="term" onChange={e => this.changeHandler(e)}>
                                 <option>Chọn học kỳ</option>
                                 <option value="0">Cả năm</option>
                                 <option value="1">Học kỳ 1</option>
                                 <option value="2">Học kỳ 2</option>
                             </select>
-                            <button type="submit" className="btn btn-primary">Xem kết quả</button>
+                            <button type="submit" className="btn btn-primary mr-2">Xem kết quả</button>
                         </form>
                     </div>
                     <div className="col-3">
-                        <button type="button" className="btn btn-primary">Xuất file</button>
-                        <button type="button" className="btn btn-primary">In thống kê</button>
+                        <button type="button" className="btn btn-primary mr-2">Xuất file</button>
+                        <button type="button" className="btn btn-primary mr-2">In thống kê</button>
                     </div>
                 </div>
                 <hr />
