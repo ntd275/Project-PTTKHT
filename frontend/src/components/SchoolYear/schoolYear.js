@@ -24,7 +24,6 @@ class SchoolYear extends React.Component {
     super(props); //since we are extending class Table so we have to use super in order to override Component class constructor
     this.state = {
       //state is by default an object
-      startDate: new Date(),
       years: [
         {
           stt: 1,
@@ -97,11 +96,18 @@ class SchoolYear extends React.Component {
           toAdd: "",
         },
       ],
+      startFirstSemester: new Date(),
+      finishFirstSemester: new Date(),
+      startSecondSemester: new Date(),
+      finishSecondSemester: new Date(),
+
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleStartFirstSemesterChange = this.handleStartFirstSemesterChange.bind(this);
+    this.handleFinishFirstSemesterChange = this.handleFinishFirstSemesterChange.bind(this);
+    this.handleStartSecondSemesterChange = this.handleStartSecondSemesterChange.bind(this);
+    this.handleFinishSecondSemesterChange = this.handleFinishSecondSemesterChange.bind(this);
   }
   close() {
     this.setState({ showModal: false });
@@ -110,16 +116,27 @@ class SchoolYear extends React.Component {
   open() {
     this.setState({ showModal: true });
   }
-  handleChange(date) {
+  handleStartFirstSemesterChange(date) {
     this.setState({
-      startDate: date,
+      startFirstSemester: date,
+    });
+  }
+  handleFinishFirstSemesterChange(date) {
+    this.setState({
+      finishFirstSemester: date,
+    });
+  }
+  handleStartSecondSemesterChange(date) {
+    this.setState({
+      startSecondSemester: date,
+    });
+  }
+  handleFinishSecondSemesterChange(date) {
+    this.setState({
+      finishSecondSemester: date,
     });
   }
 
-  onFormSubmit(e) {
-    e.preventDefault();
-    console.log(this.state.startDate);
-  }
   renderTableData() {
     return this.state.years.map((student, index) => {
       const { stt, schoolYear, description, toDelete, toAdd } = student;
@@ -177,7 +194,7 @@ class SchoolYear extends React.Component {
             <Form>
               <Form.Group controlId="schoolYear">
                 <Form.Label>Năm học</Form.Label>
-                <Form.Control type="schoolYear" placeholder="Năm học " />
+                <Form.Control type="text" placeholder="Năm học " />
               </Form.Group>
 
               <Form.Group controlId="startFirstSemester">
@@ -187,9 +204,9 @@ class SchoolYear extends React.Component {
                 </Form.Label>
                 <div className="form-group">
                     <DatePicker
-                      selected={this.state.startDate}
-                      onChange={this.handleChange}
-                      name="startDate"
+                      selected={this.state.startFirstSemester}
+                      onChange={this.handleStartFirstSemesterChange}
+                      name="startFirstSemester"
                       dateFormat="MM/dd/yyyy"
                     />
                 </div>
@@ -202,24 +219,24 @@ class SchoolYear extends React.Component {
                 </Form.Label>
                 <div className="form-group">
                     <DatePicker
-                      selected={this.state.startDate}
-                      onChange={this.handleChange}
-                      name="startDate"
+                      selected={this.state.finishFirstSemester}
+                      onChange={this.handleFinishFirstSemesterChange}
+                      name="finishFirstSemester"
                       dateFormat="MM/dd/yyyy"
                     />
                 </div>
               </Form.Group>
 
-              <Form.Group controlId="startSecondtSemester">
+              <Form.Group controlId="startSecondSemester">
                 <Form.Label>
                   Bắt đầu kì 2
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
                 <div className="form-group">
                     <DatePicker
-                      selected={this.state.startDate}
-                      onChange={this.handleChange}
-                      name="startDate"
+                      selected={this.state.startSecondSemester}
+                      onChange={this.handleStartSecondSemesterChange}
+                      name="startSecondSemester"
                       dateFormat="MM/dd/yyyy"
                     />
                 </div>
@@ -232,9 +249,9 @@ class SchoolYear extends React.Component {
                 </Form.Label>
                 <div className="form-group">
                     <DatePicker
-                      selected={this.state.startDate}
-                      onChange={this.handleChange}
-                      name="startDate"
+                      selected={this.state.finishSecondSemester}
+                      onChange={this.handleFinishSecondSemesterChange}
+                      name="finishSecondSemester"
                       dateFormat="MM/dd/yyyy"
                     />
                 </div>
@@ -245,7 +262,7 @@ class SchoolYear extends React.Component {
                  Mô tả
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
-                <Form.Control type="description" placeholder="Mô tả" />
+                <Form.Control type="text" placeholder="Mô tả" />
               </Form.Group>
             </Form>
           </Modal.Body>

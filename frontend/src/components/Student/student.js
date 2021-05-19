@@ -125,11 +125,15 @@ class Student extends React.Component {
           toAdd: "",
         },
       ],
+      dateOfUnion: new Date(),
+      dateOfBirth: new Date(),
+      dateOfParty: new Date(),
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleDateOfUnionChange = this.handleDateOfUnionChange.bind(this);
+    this.handleDateOfBirthChange = this.handleDateOfBirthChange.bind(this);
+    this.handleDateOfPartyChange = this.handleDateOfPartyChange.bind(this);
   }
   close() {
     this.setState({ showModal: false });
@@ -138,15 +142,20 @@ class Student extends React.Component {
   open() {
     this.setState({ showModal: true });
   }
-  handleChange(date) {
+  handleDateOfUnionChange(date) {
     this.setState({
-      startDate: date,
+        dateOfUnion: date,
     });
   }
-
-  onFormSubmit(e) {
-    e.preventDefault();
-    console.log(this.state.startDate);
+  handleDateOfBirthChange(date) {
+    this.setState({
+        dateOfBirth: date,
+    });
+  }
+  handleDateOfPartyChange(date) {
+    this.setState({
+        dateOfParty: date,
+    });
   }
 
   renderTableData() {
@@ -245,9 +254,9 @@ class Student extends React.Component {
                     <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                     <div className="form-group">
                       <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleChange}
-                        name="startDate"
+                        selected={this.state.dateOfBirth}
+                        onChange={this.handleDateOfBirthChange}
+                        name="dateOfBirth"
                         dateFormat="MM/dd/yyyy"
                       />
                     </div>
@@ -339,8 +348,8 @@ class Student extends React.Component {
                     <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                     <div className="form-group">
                       <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleChange}
+                        selected={this.state.dateOfUnion}
+                        onChange={this.handleDateOfUnionChange}
                         name="startDate"
                         dateFormat="MM/dd/yyyy"
                       />
@@ -361,8 +370,8 @@ class Student extends React.Component {
                     <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                     <div className="form-group">
                       <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleChange}
+                        selected={this.state.dateOfParty}
+                        onChange={this.handleDateOfPartyChange}
                         name="startDate"
                         dateFormat="MM/dd/yyyy"
                       />

@@ -23,6 +23,9 @@ class Teacher extends React.Component {
     super(props); //since we are extending class Table so we have to use super in order to override Component class constructor
     this.state = {
       //state is by default an object
+      dateOfUnion: new Date(),
+      dateOfBirth: new Date(),
+      dateOfParty: new Date(),
       teachers: [
         {
           stt: 1,
@@ -128,8 +131,9 @@ class Teacher extends React.Component {
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.handleDateOfUnionChange = this.handleDateOfUnionChange.bind(this);
+    this.handleDateOfBirthChange = this.handleDateOfBirthChange.bind(this);
+    this.handleDateOfPartyChange = this.handleDateOfPartyChange.bind(this);
   }
   close() {
     this.setState({ showModal: false });
@@ -138,15 +142,20 @@ class Teacher extends React.Component {
   open() {
     this.setState({ showModal: true });
   }
-  handleChange(date) {
+  handleDateOfUnionChange(date) {
     this.setState({
-      startDate: date,
+        dateOfUnion: date,
     });
   }
-
-  onFormSubmit(e) {
-    e.preventDefault();
-    console.log(this.state.startDate);
+  handleDateOfBirthChange(date) {
+    this.setState({
+        dateOfBirth: date,
+    });
+  }
+  handleDateOfPartyChange(date) {
+    this.setState({
+        dateOfParty: date,
+    });
   }
 
   renderTableData() {
@@ -237,9 +246,9 @@ class Teacher extends React.Component {
                     <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                     <div className="form-group">
                       <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleChange}
-                        name="startDate"
+                        selected={this.state.dateOfUnion}
+                        onChange={this.handleDateOfUnionChange}
+                        name="dateOfUnion"
                         dateFormat="MM/dd/yyyy"
                       />
                     </div>
@@ -253,9 +262,9 @@ class Teacher extends React.Component {
                     <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                     <div className="form-group">
                       <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleChange}
-                        name="startDate"
+                        selected={this.state.dateOfBirth}
+                        onChange={this.handleDateOfBirthChange}
+                        name="dateOfBirth"
                         dateFormat="MM/dd/yyyy"
                       />
                     </div>
@@ -267,9 +276,9 @@ class Teacher extends React.Component {
                     <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                     <div className="form-group">
                       <DatePicker
-                        selected={this.state.startDate}
-                        onChange={this.handleChange}
-                        name="startDate"
+                        selected={this.state.dateOfParty}
+                        onChange={this.handleDateOfPartyChange}
+                        name="dateOfParty"
                         dateFormat="MM/dd/yyyy"
                       />
                     </div>
