@@ -53,21 +53,21 @@ class ScoreLock extends Component {
                                     </td>
                                     <td>{this.state.lockStateList[this.state.lockState]}</td>
                                     <td>
-                                        <button type="button" onClick={e => this.changeStateHandler(e)}>{this.state.lockStateList[1-this.state.lockState]}</button>
+                                        <button type="button" className="change-state-btn" onClick={e => this.changeStateHandler(e)}>{this.state.lockStateList[1-this.state.lockState]}</button>
                                     </td>
                                 </tr>
                                 <tr className="text-center school-year-row">
                                     <td>1</td>
                                     <td>2020-2021</td>
                                     <td>
-                                        <select className="cell" name="term">
+                                        <select className="term-cell" name="term">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                         </select>    
                                     </td>
                                     <td>{this.state.lockStateList[this.state.lockState]}</td>
                                     <td>
-                                        <button type="button">{this.state.lockStateList[1-this.state.lockState]}</button>
+                                        <button type="button" className="change-state-btn" onClick={e => this.changeStateHandler(e)}>{this.state.lockStateList[1-this.state.lockState]}</button>
                                     </td>
                                 </tr>
                             </tbody>

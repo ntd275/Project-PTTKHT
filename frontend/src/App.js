@@ -15,6 +15,7 @@ import RankStatistic from './components/Statistic/RankStatistic';
 import SubjectStatistic from './components/Statistic/SubjectStatistic';
 import TeachingClassScore from './components/TeachingClassScore/TeachingClassScore';
 import ConductAssessment from './components/ConductAssessment/ConductAssessment';
+import StudentAttendance from './components/StudentAttendance/StudentAttendance';
 import ScoreLock from './components/ScoreLock/ScoreLock';
 
 class App extends React.Component {
@@ -54,6 +55,10 @@ class App extends React.Component {
               {/* GVCN đánh giá hạnh kiểm */}
               <Route path="/ConductAssessment">
                 <ConductAssessment />
+              </Route>
+              {/* GVCN điểm danh */}
+              <Route path="/StudentAttendance">
+                <StudentAttendance />
               </Route>
               <Route path="/statistic/rank">
                 <RankStatistic />

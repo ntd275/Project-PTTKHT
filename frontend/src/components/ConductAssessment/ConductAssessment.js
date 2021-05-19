@@ -153,7 +153,7 @@ class ConductAssessment extends Component {
                                 </tr>
                             </tbody>
                         </table>
-                        <button type="button" className="btn btn-primary" onClick={() => this.modalHandler()}>
+                        <button type="button" className="btn btn-primary">
                             Lưu
                         </button>
                     </div>

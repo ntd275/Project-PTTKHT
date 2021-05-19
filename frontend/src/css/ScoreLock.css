@@ -4,7 +4,10 @@
     height: 20px;
     text-align: center;
 }
-.cell {
+.term-cell {
     width: 30px;
     height: 25px;
+}
+.change-state-btn {
+    width: 60px;
 }
