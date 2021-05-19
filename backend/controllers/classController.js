@@ -12,7 +12,7 @@ async function getClassList(req, res) {
             result: myClassList
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -31,7 +31,7 @@ async function getClass(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -52,7 +52,7 @@ async function getHomeroomClass(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -70,7 +70,7 @@ async function createClass(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -102,7 +102,7 @@ async function updateClass(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -128,7 +128,7 @@ async function deleteClass(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err

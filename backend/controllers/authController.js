@@ -197,7 +197,7 @@ exports.logOut = function (req, res) {
         delete tokenList[refreshToken];
         res.clearCookie('refreshToken');
         res.status(200).json({
-            success: true,
+            success: true
         })
 
     } else {

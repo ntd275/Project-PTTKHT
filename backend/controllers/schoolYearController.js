@@ -13,7 +13,7 @@ async function getSchoolYearList(req, res) {
             result: schoolYearList
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -32,7 +32,7 @@ async function getSchoolYear(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -49,7 +49,7 @@ async function getSchoolYearById(req, res) {
             school_year: schoolYear
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -67,7 +67,7 @@ async function createSchoolYear(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -104,7 +104,7 @@ async function updateSchoolYear(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -129,7 +129,7 @@ async function deleteSchoolYear(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err

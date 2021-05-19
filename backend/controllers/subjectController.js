@@ -13,7 +13,7 @@ async function getSubjectList(req, res) {
             result: subjectList
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -38,7 +38,7 @@ async function getSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -56,7 +56,7 @@ async function createSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -87,7 +87,7 @@ async function updateSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -113,7 +113,7 @@ async function deleteSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
