@@ -220,7 +220,7 @@ class Student extends React.Component {
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title>Thêm lớp học</Modal.Title>
+            <Modal.Title>Thêm học sinh</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
