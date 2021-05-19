@@ -23,13 +23,13 @@ exports.createSubject = async (subject) => {
     ])
 }
 
-exports.updateSubject = async (subject) => {
+exports.updateSubject = async (id, data) => {
     return await knex('Subject')
-        .where('schoolYearId', schoolYear.schoolYearId)
+        .where('subjectId', id)
         .update({
-            subjectCode: subject.subjectCode,
-            subjectName: subject.subjectName,
-            description: subject.description
+            subjectCode: data.subjectCode,
+            subjectName: data.subjectName,
+            description: data.description
         })
 }
 

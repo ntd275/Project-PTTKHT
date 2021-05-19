@@ -26,14 +26,14 @@ exports.createClass = async (myClass) => {
     ])
 }
 
-exports.updateClass = async (myClass) => {
-    return await knex('Subject')
-        .where('schoolYearId', schoolYear.schoolYearId)
+exports.updateClass = async (id, data) => {
+    return await knex('Class')
+        .where('classId', id)
         .update({
-            schoolYearId = myClass.schoolYearId,
-            classCode = myClass.classCode,
-            className = myClass.className,
-            description = myClass.description
+            schoolYearId = data.schoolYearId,
+            classCode = data.classCode,
+            className = data.className,
+            description = data.description
         })
 }
 

@@ -27,16 +27,16 @@ exports.createSchoolYear = async (schoolYear) => {
     ])
 }
 
-exports.updateSchoolYear = async (schoolYear) => {
+exports.updateSchoolYear = async (id, data) => {
     return await knex('SchoolYear')
-        .where('schoolYearId', schoolYear.schoolYearId)
+        .where('schoolYearId', id)
         .update({
-            schoolYear: schoolYear.schoolYear,
-            beginSemester1: schoolYear.beginSemester1,
-            endSemester1: schoolYear.endSemester1,
-            beginSemester2: schoolYear.beginSemester2,
-            endSemester2: schoolYear.endSemester2,
-            description: schoolYear.description
+            schoolYear: data.schoolYear,
+            beginSemester1: data.beginSemester1,
+            endSemester1: data.endSemester1,
+            beginSemester2: data.beginSemester2,
+            endSemester2: data.endSemester2,
+            description: data.description
         })
 }
 
