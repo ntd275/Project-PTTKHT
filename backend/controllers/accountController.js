@@ -5,8 +5,8 @@ const { json } = require('express')
 
 async function getAccountList(req, res) {
     try {
-        let page = req.query.page || 1
-        let perpage = req.query.perpage || 30
+        let page = req.query.page || config.pageItem
+        let perpage = req.query.perpage || config.perPageItem
         let accountList = await Account.getAccountList(page, perpage)
 
         return res.status(200).json({
@@ -25,7 +25,7 @@ async function getAccountList(req, res) {
 
 async function getAccount(req, res) {
     try {
-        let account = await Account.getAccount(req.params.accountId)
+        let account = await Account.getAccount(req.params.id)
 
         if (!account) {
             return res.status(404).json({
@@ -48,10 +48,27 @@ async function getAccount(req, res) {
     }
 }
 
+async function addAccount(req, res) {
+    try {
+        let account = Account.createAccount(req.body)
+
+        return res.status(200).json({
+            success: true,
+            result: account
+        })
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
+}
+
 async function editAccount(req, res) {
     try {
         //Return number of affected row
-        let count = await Account.editAccount(req.params.accountId, req.body)
+        let count = await Account.editAccount(req.params.id, req.body)
 
         if (count == 0) {
             return res.status(404).json({
@@ -77,7 +94,7 @@ async function editAccount(req, res) {
 //Only admin can delete account
 async function deleteAccount(req, res) {
     try {
-        let count = await Account.deleteAccount(req.params.accountId)
+        let count = await Account.deleteAccount(req.params.id)
         if (count == 0) {
             return res.status(401).json({
                 success: false,
@@ -101,7 +118,7 @@ async function deleteAccount(req, res) {
 
 async function checkPassword(req, res) {
     try {
-        let account = await Account.getAccount(req.params.accountId)
+        let account = await Account.getAccount(req.params.id)
         let match = await bcrypt.compare(req.body.password, account.password)
 
         if (!match) {
@@ -127,7 +144,7 @@ async function checkPassword(req, res) {
 
 async function changePassword(req, res) {
     try {
-        let accountId = req.params.accountId
+        let accountId = req.params.id
         let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds)
         let newPassword = req.body.new_password
 
@@ -166,6 +183,7 @@ async function changePassword(req, res) {
 module.exports = {
     getAccountList: getAccountList,
     getAccount: getAccount,
+    addAccount: addAccount,
     editAccount: editAccount,
     deleteAccount: deleteAccount,
     checkPassword: checkPassword,

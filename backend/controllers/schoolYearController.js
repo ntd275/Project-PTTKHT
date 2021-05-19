@@ -4,18 +4,13 @@ const { json } = require('express')
 
 async function getSchoolYearList(req, res) {
     try {
-        let schoolYearList = await SchoolYear.getSchoolYearList()
-
-        if (!schoolYearList) {
-            return res.status(400).json({
-                success: false,
-                message: "Cannot get school year list"
-            })
-        }
+        let page = req.query.page || config.pageItem
+        let perpage = req.query.perpage || config.perPageItem
+        let schoolYearList = await SchoolYear.getSchoolYearList(page, perpage)
 
         return res.status(200).json({
             success: true,
-            school_year_list: schoolYearList
+            result: schoolYearList
         })
     } catch (error) {
         console.log(err)
@@ -26,9 +21,28 @@ async function getSchoolYearList(req, res) {
     }
 }
 
+//Get the latest school year
 async function getSchoolYear(req, res) {
     try {
         let schoolYear = await SchoolYear.getSchoolYear()
+
+        return res.status(200).json({
+            success: true,
+            result: schoolYear
+        })
+
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
+}
+
+async function getSchoolYearById(req, res) {
+    try {
+        let schoolYear = await SchoolYear.getSchoolYearById(req.params.id)
 
         return res.status(200).json({
             success: true,
@@ -45,18 +59,11 @@ async function getSchoolYear(req, res) {
 
 async function createSchoolYear(req, res) {
     try {
-        let ok = await SchoolYear.createSchoolYear(req.body.schoolYear)
-
-        if (!ok) {
-            return res.status(401).json({
-                success: false,
-                message: "Cannot create school year"
-            })
-        }
+        let schoolYear = await SchoolYear.createSchoolYear(req.body)
 
         return res.status(200).json({
             success: true,
-            message: "School year created"
+            result: schoolYear
         })
 
     } catch (error) {
@@ -71,28 +78,29 @@ async function createSchoolYear(req, res) {
 async function updateSchoolYear(req, res) {
     try {
         //Get info of current school year that need to be updated
-        schoolYear = await SchoolYear.getSchoolYearById(req.body.schoolYearId)
+        schoolYear = await SchoolYear.getSchoolYearById(req.params.id)
         //Get update info from request
-        schoolYear.schoolYear = schoolYear.schoolYear || req.body.schoolYear
-        schoolYear.beginSemester1 = schoolYear.beginSemester1 || req.body.beginSemester1
-        schoolYear.endSemester1 = schoolYear.endSemester1 || req.body.endSemester1
-        schoolYear.beginSemester2 = schoolYear.beginSemester2 || req.body.beginSemester2
-        schoolYear.endSemester2 = schoolYear.endSemester2 || req.body.endSemester2
-        schoolYear.description = schoolYear.description || req.body.description 
+        schoolYear.schoolYear = req.body.schoolYear || schoolYear.schoolYear
+        schoolYear.beginSemester1 = req.body.beginSemester1 || schoolYear.beginSemester1
+        schoolYear.endSemester1 = req.body.endSemester1 || schoolYear.endSemester1
+        schoolYear.beginSemester2 = req.body.beginSemester2 || schoolYear.beginSemester2
+        schoolYear.endSemester2 = req.body.endSemester2 || schoolYear.endSemester2
+        schoolYear.description = req.body.description || schoolYear.description
 
         //Update & check
-        let ok = await SchoolYear.updateSchoolYear(schoolYear)
+        //SQL update return number of rows affected
+        let count = await SchoolYear.updateSchoolYear(schoolYear)
 
-        if (!ok) {
-            return res.status(401).json({
+        if (count == 0) {
+            return res.status(404).json({
                 success: false,
-                message: "Cannot update school year"
+                message: "School year not found"
             })
         }
 
         return res.status(200).json({
             success: true,
-            message: "School year updated"
+            result: count
         })
 
     } catch (error) {
@@ -106,18 +114,18 @@ async function updateSchoolYear(req, res) {
 
 async function deleteSchoolYear(req, res) {
     try {
-        let ok = await SchoolYear.deleteSchoolYear(req.body.schoolYearId)
+        let count = await SchoolYear.deleteSchoolYear(req.params.id)
 
-        if (!ok) {
-            return res.status(401).json({
+        if (!count) {
+            return res.status(404).json({
                 success: false,
-                message: "Cannot delete school year"
+                message: "School year not found"
             })
         }
 
         return res.status(200).json({
             success: true,
-            message: "School year deleted"
+            result: count
         })
 
     } catch (error) {
@@ -134,5 +142,6 @@ module.exports = {
     getSchoolYear: getSchoolYear,
     createSchoolYear: createSchoolYear,
     updateSchoolYear: updateSchoolYear,
-    deleteSchoolYear: deleteSchoolYear
+    deleteSchoolYear: deleteSchoolYear,
+    getSchoolYearById: getSchoolYearById
 }
