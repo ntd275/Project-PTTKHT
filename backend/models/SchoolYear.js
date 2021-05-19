@@ -38,7 +38,6 @@ exports.updateSchoolYear = async (schoolYear) => {
             endSemester2: schoolYear.endSemester2,
             description: schoolYear.description
         })
-
 }
 
 exports.deleteSchoolYear = async (schoolYearId) => {
