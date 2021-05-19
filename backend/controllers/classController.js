@@ -1,16 +1,15 @@
-const Subject = require('../models/Subject')
+const Class = require('../models/Class')
 const config = require('../config/config')
 
-//Lấy danh sách tất cả môn học
-async function getSubjectList(req, res) {
+async function getClassList(req, res) {
     try {
         let page = req.query.page || config.pageItem
         let perpage = req.query.perpage || config.perPageItem
-        let subjectList = await Subject.getSubjectList(page, perpage)
+        let myClassList = await Class.getClassList(page, perpage)
 
         return res.status(200).json({
             success: true,
-            result: subjectList
+            result: myClassList
         })
     } catch (error) {
         console.log(err)
@@ -21,20 +20,13 @@ async function getSubjectList(req, res) {
     }
 }
 
-//Lấy danh sách các môn học giảng dạy của 1 giáo viên
-// = getSubjectList(teacher)
-async function getTeachingSubjectList(req, res) {
-    let teachingSubject = await Subject.getTeachingSubjectList(req.params.id)
-    
-}
-
-async function getSubject(req, res) {
+async function getClass(req, res) {
     try {
-        let subject = await Subject.getSubject(req.params.id)
+        let myClass = await Class.getClass(req.params.id)
 
         return res.status(200).json({
             success: true,
-            result: subject
+            result: myClass
         })
 
     } catch (error) {
@@ -46,13 +38,16 @@ async function getSubject(req, res) {
     }
 }
 
-async function createSubject(req, res) {
+//Lấy danh sách thông tin lớp học ứng với giáo viên chủ nhiệm
+//= getClass(teacher)
+async function getHomeroomClass(req, res) {
     try {
-        let subject = await Subject.createSubject(req.body)
+        //req.query.key == teacherId
+        let homeroom = Class.getHomeroomClass(req.query.key)
 
         return res.status(200).json({
             success: true,
-            result: subject
+            result: homeroom
         })
 
     } catch (error) {
@@ -64,16 +59,35 @@ async function createSubject(req, res) {
     }
 }
 
-async function updateSubject(req, res) {
+async function createClass(req, res) {
+    try {
+        let myClass = await Class.createClass(req.body)
+
+        return res.status(200).json({
+            success: true,
+            result: myClass
+        })
+
+    } catch (error) {
+        console.log(err)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
+}
+
+async function updateClass(req, res) {
     try {
         //Get info of current school year that need to be updated
-        subject = await Subject.getSubject(req.params.id)
+        myClass = await Class.getClass(req.params.id)
         //Get update info from request
-        subject.subjectCode = req.body.subjectCode || subject.subjectCode
-        subject.subjectName = req.body.subjectName || subject.subjectName
-        subject.description = req.body.description || subject.description
+        myClass.schoolYearId = req.body.schoolYearId || myClass.schoolYearId
+        myClass.classCode = req.body.classCode || myClass.classCode
+        myClass.className = req.body.className || myClass.className
+        myClass.description = req.body.description || myClass.description
 
-        let count = await Subject.updateSubject(subject)
+        let count = await Class.updateClass(myClass)
         if (count == 0) {
             return res.status(404).json({
                 success: false,
@@ -95,15 +109,15 @@ async function updateSubject(req, res) {
     }
 }
 
-async function deleteSubject(req, res) {
+async function deleteClass(req, res) {
     try {
         //Return number of affected rows
-        let count = await Subject.deleteSubject(req.params.id)
+        let count = await Class.deleteClass(req.params.id)
 
         if (!count) {
             return res.status(404).json({
                 success: false,
-                message: "Subject not found"
+                message: "Class not found"
             })
         }
 
@@ -122,12 +136,12 @@ async function deleteSubject(req, res) {
 }
 
 module.exports = {
-    getSubjectList: getSubjectList,
-    getTeachingSubjectList: getTeachingSubjectList,
-    getSubject: getSubject,
-    createSubject: createSubject,
-    updateSubject: updateSubject,
-    deleteSubject: deleteSubject
+    getClassList: getClassList,
+    getClass: getClass,
+    getHomeroomClass: getHomeroomClass,
+    createClass: createClass,
+    updateClass: updateClass,
+    deleteClass: deleteClass
 }
 
 
