@@ -89,7 +89,7 @@ async function updateSchoolYear(req, res) {
 
         //Update & check
         //SQL update return number of rows affected
-        let count = await SchoolYear.updateSchoolYear(schoolYear)
+        let count = await SchoolYear.updateSchoolYear(req.params.id, schoolYear)
 
         if (count == 0) {
             return res.status(404).json({

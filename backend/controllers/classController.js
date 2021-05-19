@@ -88,7 +88,7 @@ async function updateClass(req, res) {
         myClass.className = req.body.className || myClass.className
         myClass.description = req.body.description || myClass.description
 
-        let count = await Class.updateClass(myClass)
+        let count = await Class.updateClass(req.params.id, myClass)
         if (count == 0) {
             return res.status(404).json({
                 success: false,

@@ -75,7 +75,7 @@ async function updateSpecialistTeam(req, res) {
         sTeam.specialistName = req.body.specialistName || sTeam.specialistName
         sTeam.description = req.body.description || sTeam.description
 
-        let count = await Subject.updateSubject(subject)
+        let count = await SpecialistTeam.updateSpecialistTeam(req.params.id, sTeam)
         if (count == 0) {
             return res.status(404).json({
                 success: false,

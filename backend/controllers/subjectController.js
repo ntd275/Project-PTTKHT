@@ -86,7 +86,7 @@ async function updateSubject(req, res) {
         subject.subjectName = req.body.subjectName || subject.subjectName
         subject.description = req.body.description || subject.description
 
-        let count = await Subject.updateSubject(subject)
+        let count = await Subject.updateSubject(req.params.id, subject)
         if (count == 0) {
             return res.status(404).json({
                 success: false,
