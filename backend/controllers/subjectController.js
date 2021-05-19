@@ -24,7 +24,20 @@ async function getSubjectList(req, res) {
 //Lấy danh sách các môn học giảng dạy của 1 giáo viên
 // = getSubjectList(teacher)
 async function getTeachingSubjectList(req, res) {
-    let teachingSubject = await Subject.getTeachingSubjectList(req.params.id)
+    try {
+        let teachingSubject = await Subject.getTeachingSubjectList(req.params.id)
+
+        return res.status(200).json({
+            success: true,
+            result: teachingSubject
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
     
 }
 
