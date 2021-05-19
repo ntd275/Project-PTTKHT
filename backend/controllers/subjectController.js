@@ -120,5 +120,14 @@ async function deleteSubject(req, res) {
     }
 }
 
+module.exports = {
+    getSubjectList: getSubjectList,
+    getTeachingSubjectList: getTeachingSubjectList,
+    getSubject: getSubject,
+    createSubject: createSubject,
+    updateSubject: updateSubject,
+    deleteSubject: deleteSubject
+}
+
 
 
