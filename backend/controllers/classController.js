@@ -1,16 +1,15 @@
-const SchoolYear = require('../models/SchoolYear')
+const Class = require('../models/Class')
 const config = require('../config/config')
-const { json } = require('express')
 
-async function getSchoolYearList(req, res) {
+async function getClassList(req, res) {
     try {
         let page = req.query.page || config.pageItem
         let perpage = req.query.perpage || config.perPageItem
-        let schoolYearList = await SchoolYear.getSchoolYearList(page, perpage)
+        let myClassList = await Class.getClassList(page, perpage)
 
         return res.status(200).json({
             success: true,
-            result: schoolYearList
+            result: myClassList
         })
     } catch (error) {
         console.log(error)
@@ -21,14 +20,14 @@ async function getSchoolYearList(req, res) {
     }
 }
 
-//Get the latest school year
-async function getSchoolYear(req, res) {
+//Lấy thông tin lớp học dựa trên classId
+async function getClass(req, res) {
     try {
-        let schoolYear = await SchoolYear.getSchoolYear()
+        let myClass = await Class.getClass(req.params.id)
 
         return res.status(200).json({
             success: true,
-            result: schoolYear
+            result: myClass
         })
 
     } catch (error) {
@@ -40,14 +39,18 @@ async function getSchoolYear(req, res) {
     }
 }
 
-async function getSchoolYearById(req, res) {
+//Lấy danh sách lớp học ứng với teacherId của giáo viên chủ nhiệm
+//= getClass(teacher)
+async function getHomeroomClass(req, res) {
     try {
-        let schoolYear = await SchoolYear.getSchoolYearById(req.params.id)
+        //req.query.key == teacherId
+        let homeroom = Class.getHomeroomClass(req.query.key)
 
         return res.status(200).json({
             success: true,
-            school_year: schoolYear
+            result: homeroom
         })
+
     } catch (error) {
         console.log(error)
         return res.status(500).json({
@@ -57,13 +60,13 @@ async function getSchoolYearById(req, res) {
     }
 }
 
-async function createSchoolYear(req, res) {
+async function createClass(req, res) {
     try {
-        let schoolYear = await SchoolYear.createSchoolYear(req.body)
+        let myClass = await Class.createClass(req.body)
 
         return res.status(200).json({
             success: true,
-            result: schoolYear
+            result: myClass
         })
 
     } catch (error) {
@@ -75,22 +78,17 @@ async function createSchoolYear(req, res) {
     }
 }
 
-async function updateSchoolYear(req, res) {
+async function updateClass(req, res) {
     try {
         //Get info of current school year that need to be updated
-        schoolYear = await SchoolYear.getSchoolYearById(req.params.id)
+        myClass = await Class.getClass(req.params.id)
         //Get update info from request
-        schoolYear.schoolYear = req.body.schoolYear || schoolYear.schoolYear
-        schoolYear.beginSemester1 = req.body.beginSemester1 || schoolYear.beginSemester1
-        schoolYear.endSemester1 = req.body.endSemester1 || schoolYear.endSemester1
-        schoolYear.beginSemester2 = req.body.beginSemester2 || schoolYear.beginSemester2
-        schoolYear.endSemester2 = req.body.endSemester2 || schoolYear.endSemester2
-        schoolYear.description = req.body.description || schoolYear.description
+        myClass.schoolYearId = req.body.schoolYearId || myClass.schoolYearId
+        myClass.classCode = req.body.classCode || myClass.classCode
+        myClass.className = req.body.className || myClass.className
+        myClass.description = req.body.description || myClass.description
 
-        //Update & check
-        //SQL update return number of rows affected
-        let count = await SchoolYear.updateSchoolYear(schoolYear)
-
+        let count = await Class.updateClass(myClass)
         if (count == 0) {
             return res.status(404).json({
                 success: false,
@@ -112,14 +110,15 @@ async function updateSchoolYear(req, res) {
     }
 }
 
-async function deleteSchoolYear(req, res) {
+async function deleteClass(req, res) {
     try {
-        let count = await SchoolYear.deleteSchoolYear(req.params.id)
+        //Return number of affected rows
+        let count = await Class.deleteClass(req.params.id)
 
         if (!count) {
             return res.status(404).json({
                 success: false,
-                message: "School year not found"
+                message: "Class not found"
             })
         }
 
@@ -138,10 +137,13 @@ async function deleteSchoolYear(req, res) {
 }
 
 module.exports = {
-    getSchoolYearList: getSchoolYearList,
-    getSchoolYear: getSchoolYear,
-    createSchoolYear: createSchoolYear,
-    updateSchoolYear: updateSchoolYear,
-    deleteSchoolYear: deleteSchoolYear,
-    getSchoolYearById: getSchoolYearById
+    getClassList: getClassList,
+    getClass: getClass,
+    getHomeroomClass: getHomeroomClass,
+    createClass: createClass,
+    updateClass: updateClass,
+    deleteClass: deleteClass
 }
+
+
+

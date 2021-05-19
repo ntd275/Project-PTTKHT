@@ -13,7 +13,7 @@ async function getSubjectList(req, res) {
             result: subjectList
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -24,7 +24,21 @@ async function getSubjectList(req, res) {
 //Lấy danh sách các môn học giảng dạy của 1 giáo viên
 // = getSubjectList(teacher)
 async function getTeachingSubjectList(req, res) {
+    try {
+        let teachingSubject = await Subject.getTeachingSubjectList(req.params.id)
 
+        return res.status(200).json({
+            success: true,
+            result: teachingSubject
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
+    
 }
 
 async function getSubject(req, res) {
@@ -37,7 +51,7 @@ async function getSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -55,7 +69,7 @@ async function createSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -86,7 +100,7 @@ async function updateSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -112,7 +126,7 @@ async function deleteSubject(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err

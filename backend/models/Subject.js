@@ -9,7 +9,8 @@ exports.getSubject = async (subjectId) => {
 }
 
 exports.getTeachingSubjectList = async(teacherId) => {
-    
+    let subQuery = await knex('TeachingAssignment').where('teacherId', teacherId).select('subjectId')
+    return await knex('Subject').where('SubjectId', subQuery)
 }
 
 exports.createSubject = async (subject) => {

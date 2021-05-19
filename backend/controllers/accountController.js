@@ -15,7 +15,7 @@ async function getAccountList(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -40,7 +40,7 @@ async function getAccount(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -57,7 +57,7 @@ async function addAccount(req, res) {
             result: account
         })
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -83,7 +83,7 @@ async function editAccount(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -108,7 +108,7 @@ async function deleteAccount(req, res) {
         })
 
     } catch (error) {
-        console.log(err)
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
@@ -171,8 +171,8 @@ async function changePassword(req, res) {
             result: "password changed"
         })
 
-    } catch (err) {
-        console.log(err)
+    } catch (error) {
+        console.log(error)
         return res.status(500).json({
             success: false,
             message: err
