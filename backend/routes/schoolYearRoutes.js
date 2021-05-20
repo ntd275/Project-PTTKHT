@@ -4,13 +4,13 @@ const authMiddleware = require('../middlewares/authentication')
 const adminMiddleware = require('../middlewares/administrator')
 const notFound = require('./404')
 
-schoolYearRouter.use(authMiddleware)
+schoolYearRouter.use(authMiddleware.isAuth)
 
 schoolYearRouter.get('/', schoolYearController.getSchoolYear)
 schoolYearRouter.get('/list', schoolYearController.getSchoolYearList)
 schoolYearRouter.get('/:id', schoolYearController.getSchoolYearById)
 
-// schoolYearRouter.use(adminMiddleware)
+// schoolYearRouter.use(adminMiddleware.isAdmin)
 
 schoolYearRouter.post('/', schoolYearController.createSchoolYear)
 schoolYearRouter.put('/:id', schoolYearController.updateSchoolYear)
