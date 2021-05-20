@@ -146,6 +146,8 @@ exports.login = async function (req, res) {
         return res.status(200).json({
             success: true,
             accessToken,
+            id: user.accountId,
+            userCode: user.userCode
         });
 
     } catch (err) {

@@ -1,9 +1,13 @@
+//Notes: account role:
+//0: student
+//1: teacher
+//2: admin
 const knex = require('./database')
 const bcrypt = require('bcrypt')
 const config = require('../config/config')
 
 exports.getAccountList = async (page, perpage) => {
-    return await knex.select().table('Accounts').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return await knex.select('accountId','accountName', 'role', 'userCode').table('Accounts').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getAccountByUsername = async (accountName) => {
@@ -40,7 +44,9 @@ exports.editAccount = async function (id, data) {
 }
 
 exports.updatePassword = async function (accountId, newPassword) {
-    return await knex('Accounts').where('accountId', accountId).update('password', newPassword)
+    let password = await bcrypt.hash(newPassword, config.saltRounds)
+
+    return await knex('Accounts').where('accountId', accountId).update('password', password)
 }
 
 exports.deleteAccount = async function (accountId) {

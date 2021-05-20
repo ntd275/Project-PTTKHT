@@ -6,8 +6,8 @@ const notFound = require('./404')
 
 accountRouter.use(authMiddleware.isAuth)
 
-accountRouter.get('/:id', accountController.getAccount)
-accountRouter.get('/:username', accountController.getAccountByUsername)
+accountRouter.get('/id/:id', accountController.getAccount)
+accountRouter.get('/username/:username', accountController.getAccountByUsername)
 accountRouter.put('/change-password/:id', accountController.changePassword)
 
 // accountRouter.use(adminMiddleware.isAdmin)

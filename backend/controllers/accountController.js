@@ -7,6 +7,7 @@ async function getAccountList(req, res) {
     try {
         let page = req.query.page || config.pageItem
         let perpage = req.query.perpage || config.perPageItem
+
         let accountList = await Account.getAccountList(page, perpage)
 
         return res.status(200).json({
@@ -18,7 +19,7 @@ async function getAccountList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -43,15 +44,15 @@ async function getAccount(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
 
 async function getAccountByUsername(req, res) {
     try {
-        let account = Account.getAccountByUsername(req.params.username)
-        
+        let account = await Account.getAccountByUsername(req.params.username)
+
         if (!account) {
             return res.status(404).json({
                 success: false,
@@ -68,7 +69,7 @@ async function getAccountByUsername(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -85,7 +86,7 @@ async function addAccount(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -111,7 +112,7 @@ async function editAccount(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -136,7 +137,7 @@ async function deleteAccount(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -161,7 +162,7 @@ async function checkPassword(req, res) {
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 
@@ -170,7 +171,7 @@ async function checkPassword(req, res) {
 async function changePassword(req, res) {
     try {
         let accountId = req.params.id
-        let oldPassword = await bcrypt.hash(req.body.old_password, config.saltRounds)
+        let oldPassword = req.body.old_password
         let newPassword = req.body.new_password
 
         let account = await Account.getAccount(accountId)
@@ -200,7 +201,7 @@ async function changePassword(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
