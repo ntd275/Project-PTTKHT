@@ -15,13 +15,14 @@ exports.getSchoolYearById = async (schoolYearId) => {
 }
 
 exports.createSchoolYear = async (schoolYear) => {
+    
     return await knex('SchoolYear').insert([
         {
-            schoolYear: schoolYear.schoolYear,
-            beginSemester1: schoolYear.beginSemester1,
-            endSemester1: schoolYear.endSemester1,
-            beginSemester2: schoolYear.beginSemester2,
-            endSemester2: schoolYear.endSemester2,
+            schoolYear: schoolYear.schoolYear, 
+            beginSemester1: new Date(schoolYear.beginSemester1).toISOString.slice(0,10).replace('T', ' '),
+            endSemester1: new Date(schoolYear.endSemester1).toISOString.slice(0,10).replace('T', ' '),
+            beginSemester2: new Date(schoolYear.beginSemester2).toISOString.slice(0,10).replace('T', ' '),
+            endSemester2: new Date(schoolYear.endSemester2).toISOString.slice(0,10).replace('T', ' '),
             description: schoolYear.description
         }
     ])
@@ -32,10 +33,10 @@ exports.updateSchoolYear = async (id, data) => {
         .where('schoolYearId', id)
         .update({
             schoolYear: data.schoolYear,
-            beginSemester1: data.beginSemester1,
-            endSemester1: data.endSemester1,
-            beginSemester2: data.beginSemester2,
-            endSemester2: data.endSemester2,
+            beginSemester1: new Date(schoolYear.beginSemester1).toISOString.slice(0,10).replace('T', ' '),
+            endSemester1: new Date(schoolYear.endSemester1).toISOString.slice(0,10).replace('T', ' '),
+            beginSemester2: new Date(schoolYear.beginSemester2).toISOString.slice(0,10).replace('T', ' '),
+            endSemester2: new Date(schoolYear.endSemester2).toISOString.slice(0,10).replace('T', ' '),
             description: data.description
         })
 }
