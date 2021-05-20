@@ -8,13 +8,13 @@ schoolYearRouter.use(authMiddleware.isAuth)
 
 schoolYearRouter.get('/', schoolYearController.getSchoolYear)
 schoolYearRouter.get('/list', schoolYearController.getSchoolYearList)
-schoolYearRouter.get('/:id', schoolYearController.getSchoolYearById)
+schoolYearRouter.get('/id/:id', schoolYearController.getSchoolYearById)
 
 // schoolYearRouter.use(adminMiddleware.isAdmin)
 
 schoolYearRouter.post('/', schoolYearController.createSchoolYear)
-schoolYearRouter.put('/:id', schoolYearController.updateSchoolYear)
-schoolYearRouter.delete('/:id', schoolYearController.deleteSchoolYear)
+schoolYearRouter.put('/id/:id', schoolYearController.updateSchoolYear)
+schoolYearRouter.delete('/id/:id', schoolYearController.deleteSchoolYear)
 schoolYearRouter.use(notFound)
 
 module.exports = schoolYearRouter
