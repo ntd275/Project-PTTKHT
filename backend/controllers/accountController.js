@@ -48,6 +48,31 @@ async function getAccount(req, res) {
     }
 }
 
+async function getAccountByUsername(req, res) {
+    try {
+        let account = Account.getAccountByUsername(req.params.username)
+        
+        if (!account) {
+            return res.status(404).json({
+                success: false,
+                message: "Account not found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: account
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: err
+        })
+    }
+}
+
 async function addAccount(req, res) {
     try {
         let account = Account.createAccount(req.body)
@@ -183,6 +208,7 @@ async function changePassword(req, res) {
 module.exports = {
     getAccountList: getAccountList,
     getAccount: getAccount,
+    getAccountByUsername: getAccountByUsername,
     addAccount: addAccount,
     editAccount: editAccount,
     deleteAccount: deleteAccount,
