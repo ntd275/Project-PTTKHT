@@ -26,6 +26,7 @@ async function getSchoolYear(req, res) {
     try {
         let schoolYear = await SchoolYear.getSchoolYear()
 
+        console.log(schoolYear);
         return res.status(200).json({
             success: true,
             result: schoolYear
