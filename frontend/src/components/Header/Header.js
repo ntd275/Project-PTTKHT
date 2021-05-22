@@ -6,6 +6,7 @@ import { BsGrid3X3Gap, BsFillLockFill, BsSearch } from 'react-icons/bs'
 import { FiMenu } from 'react-icons/fi'
 import { BiLineChart } from 'react-icons/bi'
 import '../../css/Header.css'
+import AppContext from '../../context/AppContext'
 
 class Header extends React.Component {
     constructor(props) {
@@ -14,6 +15,17 @@ class Header extends React.Component {
             iconSize: 20
         }
     }
+
+    logout = async () => {
+        try {
+            //await api.logout()
+            localStorage.removeItem('accessToken')
+            this.context.setUser(null)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     render() {
         return (
             <header>
@@ -173,7 +185,7 @@ class Header extends React.Component {
                                         <div className="position-relative">
                                             <FaUserCircle size={this.state.iconSize} className="position-relative title-icon" />
                                             <div className="title-text d-inline-block">
-                                                Tài khoản
+                                                Tài khoản {this.context.user && this.context.user.accountName}
                                             </div>
                                         </div>
                                     </div>
@@ -188,9 +200,9 @@ class Header extends React.Component {
                                     Đổi mật khẩu
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
+                                <div className="dropdown-item" onClick={this.logout}>
                                     Đăng xuất
-                                </Link>
+                                </div>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
@@ -199,5 +211,7 @@ class Header extends React.Component {
         )
     }
 }
+
+Header.contextType = AppContext
 
 export default Header

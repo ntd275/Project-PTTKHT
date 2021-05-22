@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import Api from "../../api/api";
+import AppContext from '../../context/AppContext'
+import jwt from 'jwt-decode'
 
 class Login extends Component {
     constructor(props) {
@@ -9,6 +11,7 @@ class Login extends Component {
             formData: {},
         };
     }
+
     changeHandler = (e) => {
         let name = e.target.name;
         let value = e.target.value;
@@ -20,10 +23,32 @@ class Login extends Component {
         let data = this.state.formData;
         e.preventDefault();
         console.log(data);
-        let res = await Api.login(data.username, data.password)
-        console.log(res)
 
+        try {
+            //let res = await Api.login(data.username, data.password)
+            //fake res
+            let res = {
+                data: {
+                    success: true,
+                    accessToken: "123",
+                }
+            }
+            localStorage.setItem("accessToken", res.data.accessToken)
+            //let user = jwt.decode(res.data.accessToken)
+            //fake user
+            let user = {
+                accountName: "Duc",
+                role: 1,
+            }
+            //to
+            this.context.setUser(user)
+            //redirect
+            this.props.history.push('/')
+        } catch (err) {
+            console.log(err)
+        }
     }
+
     render() {
         return (
             <div className="container">
@@ -60,4 +85,9 @@ class Login extends Component {
     }
 }
 
-export default Login;
+Login.contextType = AppContext
+Login.defaultProps = {
+    message: 'Hello',
+
+};
+export default withRouter(Login);
