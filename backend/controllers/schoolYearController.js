@@ -21,7 +21,7 @@ async function getSchoolYearList(req, res) {
     }
 }
 
-//Get the latest school year
+//Get the current school year
 async function getSchoolYear(req, res) {
     try {
         let schoolYear = await SchoolYear.getSchoolYear()
