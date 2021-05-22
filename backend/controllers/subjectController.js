@@ -16,7 +16,7 @@ async function getSubjectList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -25,7 +25,7 @@ async function getSubjectList(req, res) {
 // = getSubjectList(teacher)
 async function getTeachingSubjectList(req, res) {
     try {
-        let teachingSubject = await Subject.getTeachingSubjectList(req.params.id)
+        let teachingSubject = await Subject.getTeachingSubjectList(req.query.key)
 
         return res.status(200).json({
             success: true,
@@ -35,7 +35,7 @@ async function getTeachingSubjectList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
     
@@ -54,7 +54,7 @@ async function getSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -72,7 +72,7 @@ async function createSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -103,7 +103,7 @@ async function updateSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -129,7 +129,7 @@ async function deleteSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }

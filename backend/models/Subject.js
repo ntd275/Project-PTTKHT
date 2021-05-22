@@ -1,6 +1,6 @@
 const knex = require('./database')
 
-exports.getSubjectList = async (perpage, page) => {
+exports.getSubjectList = async (page, perpage) => {
     return await knex.select().table('Subject').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
