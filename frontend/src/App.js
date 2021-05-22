@@ -20,6 +20,7 @@ import ScoreLock from './components/ScoreLock/ScoreLock';
 import HomeroomTeacherAssignment from './components/HomeroomTeacherAssignment/HomeroomTeacherAssignment';
 import TeachingAssignment from './components/TeachingAssignment/TeachingAssignment';
 import SpecialistAssignment from './components/SpecialistAssignment/SpecialistAssignment';
+import StudentAssignment from './components/StudentAssignment/StudentAssignment';
 
 class App extends React.Component {
   constructor(props) {
@@ -74,6 +75,10 @@ class App extends React.Component {
               {/* Phân công giáo viên vào tổ chuyên môn */}
               <Route path="/SpecialistAssignment">
                 <SpecialistAssignment />
+              </Route>
+              {/* Quản lý học sinh trong lớp */}
+              <Route path="/StudentAssignment">
+                <StudentAssignment />
               </Route>
               <Route path="/statistic/rank">
                 <RankStatistic />
