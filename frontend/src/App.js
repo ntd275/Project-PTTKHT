@@ -17,6 +17,9 @@ import TeachingClassScore from './components/TeachingClassScore/TeachingClassSco
 import ConductAssessment from './components/ConductAssessment/ConductAssessment';
 import StudentAttendance from './components/StudentAttendance/StudentAttendance';
 import ScoreLock from './components/ScoreLock/ScoreLock';
+import HomeroomTeacherAssignment from './components/HomeroomTeacherAssignment/HomeroomTeacherAssignment';
+import TeachingAssignment from './components/TeachingAssignment/TeachingAssignment';
+import SpecialistAssignment from './components/SpecialistAssignment/SpecialistAssignment';
 
 class App extends React.Component {
   constructor(props) {
@@ -59,6 +62,18 @@ class App extends React.Component {
               {/* GVCN điểm danh */}
               <Route path="/StudentAttendance">
                 <StudentAttendance />
+              </Route>
+              {/* Phân công GVCN */}
+              <Route path="/HomeroomTeacherAssignment">
+                <HomeroomTeacherAssignment />
+              </Route>
+              {/* Phân công giảng dạy */}
+              <Route path="/TeachingAssignment">
+                <TeachingAssignment />
+              </Route>
+              {/* Phân công giáo viên vào tổ chuyên môn */}
+              <Route path="/SpecialistAssignment">
+                <SpecialistAssignment />
               </Route>
               <Route path="/statistic/rank">
                 <RankStatistic />
