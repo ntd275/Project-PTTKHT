@@ -4,6 +4,7 @@ import Api from "../../api/api";
 import { FiEdit } from 'react-icons/fi';
 import { BiSearch, BiRefresh } from 'react-icons/bi';
 import { IoIosAdd } from 'react-icons/io';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 import { Modal } from 'react-bootstrap';
 import '../../css/TeachingAssignment.css';
 
@@ -11,7 +12,8 @@ class TeachingAssignment extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showModal: false,
+            showAddModal: false,
+            showDeleteModal: false,
             schoolYearList: ["2020-2021", "2019-2020", "2018-2019", "2017-2018"],
             schoolYear: 0,
             classList: ["9A", "9B", "9C", "9D"],
@@ -28,9 +30,14 @@ class TeachingAssignment extends Component {
             iconSize: '20px'
         };
     }
-    modalHandler = () => {
+    addModalHandler = () => {
         this.setState({
-            showModal: !this.state.showModal
+            showAddModal: !this.state.showAddModal
+        });
+    }
+    deleteModalHandler = () => {
+        this.setState({
+            showDeleteModal: !this.state.showDeleteModal
         });
     }
     changeHandler = (e) => {
@@ -54,7 +61,7 @@ class TeachingAssignment extends Component {
                     <div className="col-12">
                         <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
                             {/* Button trigger modal */}
-                            <button type="button" className="btn btn-primary btn-sm" onClick={() => this.modalHandler()}>
+                            <button type="button" className="btn btn-primary btn-sm" onClick={() => this.addModalHandler()}>
                                 <IoIosAdd size={this.state.iconSize} color="" />Thêm phân công
                             </button>
                             <label className="mr-1 ml-4">Số lượng bản ghi mỗi trang:</label>
@@ -63,8 +70,8 @@ class TeachingAssignment extends Component {
                                 <BiRefresh size={this.state.iconSize} />Tải lại trang
                             </button>
                             {/* <!-- Modal --> */}
-                            <Modal show={this.state.showModal}>
-                                <Modal.Header>Phân công GVCN</Modal.Header>
+                            <Modal show={this.state.showAddModal}>
+                                <Modal.Header>Phân công giảng dạy</Modal.Header>
                                 <Modal.Body>
                                     <div className="form-group">
                                         <label className="mr-1">Năm học:</label>
@@ -98,10 +105,10 @@ class TeachingAssignment extends Component {
                                     </div>
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <button type="button" className="btn btn-primary btn-sm" onClick={() => this.modalHandler()}>
+                                    <button type="button" className="btn btn-primary btn-sm" onClick={() => this.addModalHandler()}>
                                         Lưu
                                     </button>
-                                    <button type="button" className="btn btn-primary btn-sm" onClick={() => this.modalHandler()}>
+                                    <button type="button" className="btn btn-primary btn-sm" onClick={() => this.addModalHandler()}>
                                         Đóng
                                     </button>
                                 </Modal.Footer>
@@ -163,6 +170,25 @@ class TeachingAssignment extends Component {
                                 </tr>
                             </tbody>
                         </table>
+                        {/* Button trigger modal */}
+                        <button type="button" className="btn btn-primary btn-sm ml-4" onClick={() => this.deleteModalHandler()}>
+                            <RiDeleteBin6Line size={this.state.iconSize} /> Xóa
+                        </button>
+                        {/* <!-- Modal --> */}
+                        <Modal show={this.state.showDeleteModal}>
+                            <Modal.Header>Xóa phân công</Modal.Header>
+                            <Modal.Body>
+                                Bạn có chắc chắn muốn xóa?
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <button type="button" className="btn btn-primary btn-sm btn-danger" onClick={() => this.deleteModalHandler()}>
+                                    Xóa
+                                </button>
+                                <button type="button" className="btn btn-primary btn-sm" onClick={() => this.deleteModalHandler()}>
+                                    Đóng
+                                </button>
+                            </Modal.Footer>
+                        </Modal>
                         <nav aria-label="Page navigation example">
                             <ul className="pagination">
                                 <li className="page-item">
