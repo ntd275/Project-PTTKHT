@@ -6,8 +6,16 @@ exports.getSchoolYearList = async (page, perpage) => {
 
 //Get current school year is that has biggest schoolYearId (added latest)
 exports.getSchoolYear = async () => {
-    let subQuery = await knex('SchoolYear').max('beginSemester1 as maxDate').first()
-    return await knex('SchoolYear').where('beginSemester1', subQuery.maxDate).first()
+    // let subQuery = await knex('SchoolYear').max('beginSemester1 as maxDate').first()
+    // return await knex('SchoolYear').where('beginSemester1', subQuery.maxDate).first()
+    let thisDate = await new Date().toISOString().slice(0,10).replace('T','')
+    return await knex('SchoolYear').where(function() {
+        this.where('beginSemester1','<=', thisDate)
+            .andWhere('endSemester1','>=', thisDate)
+    }).orWhere(function(){
+        this.where('beginSemester2','<=', thisDate)
+            .andWhere('endSemester2','>=', thisDate)
+    })
 }
 
 exports.getSchoolYearById = async (schoolYearId) => {

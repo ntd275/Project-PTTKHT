@@ -4,15 +4,15 @@ exports.getSpecialistTeamList = async (page, perpage) => {
     return await knex.select().table('SpecialistTeam').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
-exports.getSpecialistTeam = async (specialistTeamId) => {
-    return await knex('SpecialistTeam').where('specialistTeamId', specialistTeamId).first()
+exports.getSpecialistTeam = async (id) => {
+    return await knex('SpecialistTeam').where('specialistTeamId', id).first()
 }
 
-exports.createSpecialistTeam = async (sTeam) => {
+exports.createSpecialistTeam = async (data) => {
     return await knex('SpecialistTeam').insert([
         {
-            specialistName: sTeam.specialistName,
-            description: sTeam.description
+            specialistName: data.specialistName,
+            description: data.description
         }
     ])
 }

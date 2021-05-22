@@ -1,7 +1,7 @@
 const knex = require('./database')
 const HomeroomTeacherAssignment = require('./HomeroomTeacherAssignment')
 
-exports.getClassList = async (perpage, page) => {
+exports.getClassList = async (page, perpage) => {
     return await knex.select().table('Class').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
@@ -15,13 +15,13 @@ exports.getHomeroomClass = async(teacherId) => {
     return await knex('Class').where('classId', subQuery)
 }
 
-exports.createClass = async (myClass) => {
+exports.createClass = async (data) => {
     return await knex('Class').insert([
         {
-            schoolYearId = myClass.schoolYearId,
-            classCode = myClass.classCode,
-            className = myClass.className,
-            description = myClass.description
+            schoolYearId : data.schoolYearId,
+            classCode : data.classCode,
+            className : data.className,
+            description : data.description
         }
     ])
 }
@@ -30,10 +30,10 @@ exports.updateClass = async (id, data) => {
     return await knex('Class')
         .where('classId', id)
         .update({
-            schoolYearId = data.schoolYearId,
-            classCode = data.classCode,
-            className = data.className,
-            description = data.description
+            schoolYearId : data.schoolYearId,
+            classCode : data.classCode,
+            className : data.className,
+            description : data.description
         })
 }
 
