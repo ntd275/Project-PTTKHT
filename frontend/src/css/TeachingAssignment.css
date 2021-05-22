@@ -1,0 +1,12 @@
+.input-class {
+    width: 50px;
+}
+.input-number {
+    width: 50px;
+}
+.input-subject {
+    width: 200px;
+}
+.checkbox-assignment {
+    transform: scale(1.4);
+}
