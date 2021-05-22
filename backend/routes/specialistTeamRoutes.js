@@ -15,4 +15,6 @@ sTeamRouter.post('/', sTeamController.createSpecialistTeam)
 sTeamRouter.put('/id/:id', sTeamController.updateSpecialistTeam)
 sTeamRouter.delete('/id/:id', sTeamController.deleteSpecialistTeam)
 
+sTeamRouter.use(notFound)
+
 module.exports = sTeamRouter
