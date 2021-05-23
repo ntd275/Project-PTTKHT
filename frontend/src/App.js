@@ -21,6 +21,7 @@ import HomeroomTeacherAssignment from './components/HomeroomTeacherAssignment/Ho
 import TeachingAssignment from './components/TeachingAssignment/TeachingAssignment';
 import SpecialistAssignment from './components/SpecialistAssignment/SpecialistAssignment';
 import StudentAssignment from './components/StudentAssignment/StudentAssignment';
+import TransferClass from './components/TransferClass/TransferClass';
 
 class App extends React.Component {
   constructor(props) {
@@ -77,6 +78,10 @@ class App extends React.Component {
                 <SpecialistAssignment />
               </Route>
               {/* Quản lý học sinh trong lớp */}
+              <Route path="/TransferClass">
+                <TransferClass />
+              </Route>
+              {/* Kết chuyển lớp */}
               <Route path="/StudentAssignment">
                 <StudentAssignment />
               </Route>
