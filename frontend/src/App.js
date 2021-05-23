@@ -8,7 +8,9 @@ import './css/App.css';
 
 import Home from './components/Home/Home';
 import Login from './components/Login/login';
+import AccountInfo from './components/AccountInfo/AccountInfo';
 import ForgetPassword from './components/ForgetPassword/forgetPassword';
+import ChangePassword from './components/ChangePassword/ChangePassword';
 import StudentScore from './components/StudentScore/StudentScore';
 import StudentPLL from './components/StudentPLL/StudentPLL';
 import RankStatistic from './components/Statistic/RankStatistic';
@@ -44,8 +46,14 @@ class App extends React.Component {
               <Route path="/login">
                 <Login />
               </Route>
+              <Route path="/AccountInfo">
+                <AccountInfo />
+              </Route>
               <Route path="/forgetpassword">
                 <ForgetPassword />
+              </Route>
+              <Route path="/ChangePassword">
+                <ChangePassword />
               </Route>
               <Route path="/student/score">
                 <StudentScore />
