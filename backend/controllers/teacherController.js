@@ -61,16 +61,27 @@ async function updateTeacher(req, res) {
         //Get info of current school year that need to be updated
         teacher = await Teacher.getTeacher(req.params.id)
         //Get update info from request
-        // teacher.schoolYearId = req.body.schoolYearId || teacher.schoolYearId
-        // teacher.classCode = req.body.classCode || teacher.classCode
-        // teacher.className = req.body.className || teacher.className
-        // teacher.description = req.body.description || teacher.description
+        teacher.teacherCode = req.body.teacherCode || teacher.teacherCode
+        teacher.teacherName = req.body.teacherName || teacher.teacherName
+        teacher.dateOfBirth = req.body.dateOfBirth || teacher.dateOfBirth
+        teacher.gender = req.body.gender || teacher.gender
+        teacher.pId = req.body.pId || teacher.pId
+        teacher.image = req.body.image || teacher.image
+        teacher.address = req.body.address || teacher.address
+        teacher.permanentResidence = req.body.permanentResidence || teacher.permanentResidence
+        teacher.email = req.body.email || teacher.email
+        teacher.phoneNumber = req.body.phoneNumber || teacher.phoneNumber
+        teacher.accountName = req.body.accountName || teacher.accountName
+        teacher.dateOfParty = req.body.dateOfParty || teacher.dateOfParty
+        teacher.dateOfUnion = req.body.dateOfUnion || teacher.dateOfUnion
+        teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
+        teacher.major = req.body.major || teacher.major
 
         let count = await Teacher.updateTeacher(req.params.id, teacher)
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "School year not found"
+                message: "Teacher not found"
             })
         }
 

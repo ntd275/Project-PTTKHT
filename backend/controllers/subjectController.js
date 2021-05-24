@@ -79,7 +79,7 @@ async function createSubject(req, res) {
 
 async function updateSubject(req, res) {
     try {
-        //Get info of current school year that need to be updated
+        //Get info of current subject that need to be updated
         subject = await Subject.getSubject(req.params.id)
         //Get update info from request
         subject.subjectCode = req.body.subjectCode || subject.subjectCode
@@ -90,7 +90,7 @@ async function updateSubject(req, res) {
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "School year not found"
+                message: "Subject not found"
             })
         }
 
