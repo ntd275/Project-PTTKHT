@@ -5,6 +5,8 @@ const schoolYearRouter = require('./schoolYearRoutes')
 const specialistTeamRouter = require('./specialistTeamRoutes')
 const classRouter = require('./classRoutes')
 const subjectRouter = require('./subjectRoutes')
+const teacherRouter = require('./teacherRoutes')
+const studentRouter = require('./studentRoutes')
 
 module.exports = function (app) {
   app.use('/auth', authRouter)
@@ -13,5 +15,7 @@ module.exports = function (app) {
   app.use('/specialist-team', specialistTeamRouter)
   app.use('/class', classRouter)
   app.use('/subject', subjectRouter)
+  app.use('/teacher', teacherRouter)
+  app.use('/student', studentRouter)
   app.use(notFound)
 }
