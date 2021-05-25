@@ -6,13 +6,13 @@ const config = require('../config/config')
 //Trả về trạng thái khoá điểm sLock.lock
 //lock = 0: unlock và giáo viên có thể sửa điểm
 //lock = 1: lock và giáo viên không thể sửa điểm
-async function checkLockScore(req,res) {
+async function checkLockScore(req, res) {
     try {
         //Get schoolYear & term
         let sYear = SchoolYear.getSchoolYear()
-        let thisDate = await new Date().toISOString().slice(0,10).replace('T','')
+        let thisDate = await new Date().toISOString().slice(0, 10).replace('T', '')
         let term = -1
-        
+
         if (thisDate >= sYear.beginSemester1 && thisDate <= sYear.endSemester1) {
             term = 1
         } else if (thisDate >= sYear.beginSemester2 && thisDate <= sYear.endSemester2) {
@@ -46,7 +46,7 @@ async function getSubjectScore(req, res) {
     try {
         let subjectScores = Score.getSubjectScore(req.query.studentId, req.query.subjectId, req.query.schoolYearId)
 
-        if (subjectScores == null) {
+        if (subjectScores == null || subjectScores == []) {
             return res.status(400).json({
                 success: false,
                 message: `Cannot find student's subject score`
@@ -69,10 +69,57 @@ async function getSubjectScore(req, res) {
 
 //Get all score of a student
 async function getStudentScore(req, res) {
+    try {
+        let studentScores = Score.getStudentScore(req.query.studentId, req.query.schoolYearId)
 
+        if (studentScores == null || studentScores == []) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find student's score`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            scores: studentScores
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
 }
 
 async function editScore(req, res) {
+    try {
+        let score = Score.getScoreById(req.params.id)
+
+        score.studentId = req.body.studentId || score.studentId
+        score.teacherId = req.body.teacherId || score.teacherId
+        score.subjectId = req.body.subjectId || score.subjectId
+        score.schoolYearId = req.body.schoolYearId || score.schoolYearId
+        score.kind = req.body.kind || score.kind
+        score.score = req.body.score || score.score
+        score.term = req.body.term || score.term
+
+        let count = Score.editScore(score)
+        if (count == 0) {
+            return req.status(400).json({
+                success: false,
+                message: "Score not found"
+            })
+        }
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
 
 }
 
