@@ -8,20 +8,22 @@ exports.getScoreById = async (scoreId) => {
     return await knex('Score').where('scoreId', scoreId).first()
 }
 
-//Return an array contains all score of a student by subject
-//in a school year
-exports.getSubjectScore = async (studentId, subjectId, schoolYearId) => {
+//Return an array contains all score of a student by subject in a term of a school year
+exports.getSubjectScore = async (studentId, subjectId, schoolYearId, term) => {
     return await knex('Score').where({
         studentId: studentId,
         subjectId: subjectId,
-        schoolYearId: schoolYearId
+        schoolYearId: schoolYearId,
+        term: term
     })
 }
 
-exports.getStudentScore = async(studentId, schoolYearId) => {
+//Return an array contains all score of a student in a term of a school year
+exports.getStudentScore = async(studentId, schoolYearId, term) => {
     return await knex('Score').where({
         studentId: studentId,
-        schoolYearId: schoolYearId
+        schoolYearId: schoolYearId,
+        term: term
     })
 }
 

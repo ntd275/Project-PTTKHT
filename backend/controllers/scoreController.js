@@ -8,30 +8,14 @@ const config = require('../config/config')
 //lock = 1: lock và giáo viên không thể sửa điểm
 async function checkLockScore(req, res) {
     try {
-        //Get schoolYear & term
-        let sYear = SchoolYear.getSchoolYear()
-        let thisDate = await new Date().toISOString().slice(0, 10).replace('T', '')
-        let term = -1
-
-        if (thisDate >= sYear.beginSemester1 && thisDate <= sYear.endSemester1) {
-            term = 1
-        } else if (thisDate >= sYear.beginSemester2 && thisDate <= sYear.endSemester2) {
-            term = 2
-        }
-
-        if (term == -1) {
-            return res.status(400).json({
-                success: false,
-                message: "Cannot find term that conform date"
-            })
-        }
-
-        let sLock = ScoreLock.getScoreLock(sYear.schoolYearId, term)
+        
+        let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId, req.query.term)
 
         return res.status(200).json({
             success: true,
             result: sLock.lock
         })
+
     } catch (error) {
         console.log(error)
         return res.status(500).json({
@@ -44,7 +28,7 @@ async function checkLockScore(req, res) {
 //Get score of a student by subject
 async function getSubjectScore(req, res) {
     try {
-        let subjectScores = Score.getSubjectScore(req.query.studentId, req.query.subjectId, req.query.schoolYearId)
+        let subjectScores = await Score.getSubjectScore(req.query.studentId, req.query.subjectId, req.query.schoolYearId, req.query.term)
 
         if (subjectScores == null || subjectScores == []) {
             return res.status(400).json({
@@ -70,7 +54,7 @@ async function getSubjectScore(req, res) {
 //Get all score of a student
 async function getStudentScore(req, res) {
     try {
-        let studentScores = Score.getStudentScore(req.query.studentId, req.query.schoolYearId)
+        let studentScores = await Score.getStudentScore(req.query.studentId, req.query.schoolYearId, req.query.term)
 
         if (studentScores == null || studentScores == []) {
             return res.status(400).json({
@@ -95,7 +79,15 @@ async function getStudentScore(req, res) {
 
 async function editScore(req, res) {
     try {
-        let score = Score.getScoreById(req.params.id)
+        let score = await Score.getScoreById(req.params.id)
+
+        if (!score) {
+            scoreCreate = await Score.createScore(req.body)
+            return res.status(200).json({
+                success: true,
+                result: scoreCreate
+            })
+        }
 
         score.studentId = req.body.studentId || score.studentId
         score.teacherId = req.body.teacherId || score.teacherId
@@ -107,12 +99,17 @@ async function editScore(req, res) {
 
         let count = Score.editScore(score)
         if (count == 0) {
-            return req.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: "Score not found"
             })
         }
 
+        return res.status(200).json({
+            success: true,
+            result: count
+        })
+        
     } catch (error) {
         console.log(error)
         return res.status(500).json({
