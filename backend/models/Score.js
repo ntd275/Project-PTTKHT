@@ -19,7 +19,7 @@ exports.getSubjectScore = async (studentId, subjectId, schoolYearId, term) => {
 }
 
 //Return an array contains all score of a student in a term of a school year
-exports.getStudentScore = async(studentId, schoolYearId, term) => {
+exports.getStudentScore = async (studentId, schoolYearId, term) => {
     return await knex('Score').where({
         studentId: studentId,
         schoolYearId: schoolYearId,
@@ -27,7 +27,21 @@ exports.getStudentScore = async(studentId, schoolYearId, term) => {
     })
 }
 
-exports.editScore = async(data) => {
+exports.createScore = async (data) => {
+    return await knex('Score').insert([
+        {
+            studentId: data.studentId,
+            teacherId: data.teacherId,
+            subjectId: data.subjectId,
+            schoolYearId: data.schoolYearId,
+            kind: data.kind,
+            score: data.score,
+            term: data.term
+        }
+    ])
+}
+
+exports.editScore = async (data) => {
     return await knex('Score').where('scoreId', data.scoreId)
         .update({
             studentId: data.studentId,
