@@ -20,13 +20,31 @@ async function getScoreLockList(req, res) {
     }
 }
 
-async function getScoreLock(req, res) {
+async function getScoreLockById(req, res) {
     try {
-        let scoreLock = await ScoreLock.getScoreLock(req.params.id)
+        let scoreLock = await ScoreLock.getScoreLockById(req.params.id)
 
         return res.status(200).json({
             success: true,
             result: scoreLock
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
+async function getScoreLock(req, res) {
+    try {
+        let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId)
+
+        return res.status(200).json({
+            success: true,
+            result: sLock
         })
 
     } catch (error) {
@@ -132,8 +150,9 @@ async function unlock(req, res) {
 
 module.exports = {
     getScoreLockList: getScoreLockList,
-    getScoreLock: getScoreLock,
+    getScoreLockById: getScoreLockById,
     createScoreLock: createScoreLock,
+    getScoreLock: getScoreLock,
     // updateScoreLock: updateScoreLock,
     deleteScoreLock: deleteScoreLock,
     lock: lock,

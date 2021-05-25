@@ -4,8 +4,15 @@ exports.getScoreLockList = async (page, perpage) => {
     return await knex.select().table('ScoreLock').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
-exports.getScoreLock = async (id) => {
+exports.getScoreLockById = async (id) => {
     return await knex('ScoreLock').where('scoreLockId', id).first()
+}
+
+exports.getScoreLock = async (schoolYearId, term) => {
+    return await knex('ScoreLock').where({
+        schoolYearId: schoolYearId,
+        term: term
+    }).first()
 }
 
 exports.lock = async (schoolYearId, term) => {
@@ -13,8 +20,7 @@ exports.lock = async (schoolYearId, term) => {
         .where({
             schoolYearId: schoolYearId,
             term: term
-        })
-        .update('lock', 1)
+        }).update('lock', 1)
 }
 
 exports.unlock = async (schoolYearId, term) => {
