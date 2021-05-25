@@ -8,8 +8,8 @@ const notFound = require('./404')
 scoreRouter.use(authMiddleware.isAuth)
 
 scoreRouter.get('/check-lock', scoreController.checkLockScore)
-scoreRouter.get('/student/subject-score', scoreController.getSubjectScore)
-scoreRouter.get('/student/score', scoreController.getStudentScore)
+scoreRouter.get('/student/subject-scores', scoreController.getSubjectScore)
+scoreRouter.get('/student/scores', scoreController.getStudentScore)
 
 scoreRouter.use(teacherMiddleware.isTeacher)
 
