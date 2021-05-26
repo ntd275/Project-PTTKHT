@@ -19,6 +19,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
+import api from '../../api/api'
 class SchoolYear extends React.Component {
   constructor(props) {
     super(props); //since we are extending class Table so we have to use super in order to override Component class constructor
@@ -100,7 +101,8 @@ class SchoolYear extends React.Component {
       finishFirstSemester: new Date(),
       startSecondSemester: new Date(),
       finishSecondSemester: new Date(),
-
+      perpage: 10,
+      loading: true,
     };
     this.close = this.close.bind(this);
     this.open = this.open.bind(this);
@@ -109,6 +111,16 @@ class SchoolYear extends React.Component {
     this.handleStartSecondSemesterChange = this.handleStartSecondSemesterChange.bind(this);
     this.handleFinishSecondSemesterChange = this.handleFinishSecondSemesterChange.bind(this);
   }
+
+  async componentDidMount() {
+    try {
+      let res = await api.getSchoolYearList(1, this.state.perpage)
+      console.log(res)
+    } catch (err) {
+      console.log(err.response)
+    }
+  }
+
   close() {
     this.setState({ showModal: false });
   }
@@ -203,12 +215,12 @@ class SchoolYear extends React.Component {
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
                 <div className="form-group">
-                    <DatePicker
-                      selected={this.state.startFirstSemester}
-                      onChange={this.handleStartFirstSemesterChange}
-                      name="startFirstSemester"
-                      dateFormat="MM/dd/yyyy"
-                    />
+                  <DatePicker
+                    selected={this.state.startFirstSemester}
+                    onChange={this.handleStartFirstSemesterChange}
+                    name="startFirstSemester"
+                    dateFormat="MM/dd/yyyy"
+                  />
                 </div>
               </Form.Group>
 
@@ -218,12 +230,12 @@ class SchoolYear extends React.Component {
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
                 <div className="form-group">
-                    <DatePicker
-                      selected={this.state.finishFirstSemester}
-                      onChange={this.handleFinishFirstSemesterChange}
-                      name="finishFirstSemester"
-                      dateFormat="MM/dd/yyyy"
-                    />
+                  <DatePicker
+                    selected={this.state.finishFirstSemester}
+                    onChange={this.handleFinishFirstSemesterChange}
+                    name="finishFirstSemester"
+                    dateFormat="MM/dd/yyyy"
+                  />
                 </div>
               </Form.Group>
 
@@ -233,12 +245,12 @@ class SchoolYear extends React.Component {
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
                 <div className="form-group">
-                    <DatePicker
-                      selected={this.state.startSecondSemester}
-                      onChange={this.handleStartSecondSemesterChange}
-                      name="startSecondSemester"
-                      dateFormat="MM/dd/yyyy"
-                    />
+                  <DatePicker
+                    selected={this.state.startSecondSemester}
+                    onChange={this.handleStartSecondSemesterChange}
+                    name="startSecondSemester"
+                    dateFormat="MM/dd/yyyy"
+                  />
                 </div>
               </Form.Group>
 
@@ -248,18 +260,18 @@ class SchoolYear extends React.Component {
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
                 <div className="form-group">
-                    <DatePicker
-                      selected={this.state.finishSecondSemester}
-                      onChange={this.handleFinishSecondSemesterChange}
-                      name="finishSecondSemester"
-                      dateFormat="MM/dd/yyyy"
-                    />
+                  <DatePicker
+                    selected={this.state.finishSecondSemester}
+                    onChange={this.handleFinishSecondSemesterChange}
+                    name="finishSecondSemester"
+                    dateFormat="MM/dd/yyyy"
+                  />
                 </div>
               </Form.Group>
 
               <Form.Group controlId="description">
                 <Form.Label>
-                 Mô tả
+                  Mô tả
                   <FaRegCalendarAlt style={{ marginLeft: 10 }} />
                 </Form.Label>
                 <Form.Control type="text" placeholder="Mô tả" />

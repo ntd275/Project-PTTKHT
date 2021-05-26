@@ -20,6 +20,7 @@ import ScoreLock from './components/ScoreLock/ScoreLock';
 import HomeroomTeacherAssignment from './components/HomeroomTeacherAssignment/HomeroomTeacherAssignment';
 import TeachingAssignment from './components/TeachingAssignment/TeachingAssignment';
 import SpecialistAssignment from './components/SpecialistAssignment/SpecialistAssignment';
+import SchoolYear from './components/SchoolYear/schoolYear';
 
 class App extends React.Component {
   constructor(props) {
@@ -112,6 +113,9 @@ class App extends React.Component {
               {/* QTV khóa/mở nhập điểm */}
               <Route path="/scorelock">
                 <ScoreLock />
+              </Route>
+              <Route path="/admin/schoolyear">
+                <SchoolYear />
               </Route>
             </Switch>
           </div>
