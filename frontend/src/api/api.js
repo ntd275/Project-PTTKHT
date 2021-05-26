@@ -19,8 +19,8 @@ user.interceptors.response.use(function (response) {
     return response;
 }, async function (error) {
     const originalRequest = error.config;
-    //console.log(error)
-    if (!originalRequest.retry || error.status !== 401) {
+    //console.log(error.response)
+    if (!originalRequest.retry && error.response && error.response.status === 401) {
         try {
             originalRequest.retry = true;
             let res = await Api.refreshToken()
@@ -46,6 +46,14 @@ const Api = {
     },
     getSchoolYearList: (page, perpage) => {
         return user.get(`/school-year/list?page=${page},perpage=${perpage}`)
+    },
+    getAccountInfo: (id) => {
+        return user.get(`/account/id/${id}`)
+    },
+    checkPassword: (id, password) => {
+        return user.post(`/account/check-password/${id}`, {
+            password: password,
+        })
     }
 }
 

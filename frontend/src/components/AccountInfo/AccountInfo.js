@@ -1,19 +1,39 @@
 import React, { Component } from "react";
 import '../../css/AccountInfo.css';
+import Api from '../../api/api'
+import AppContext from '../../context/AppContext'
 
 class AccountInfo extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+        }
+    }
+
+    async componentDidMount() {
+        this.setState({ loading: true });
+        try {
+            //console.log(this.context)
+            let res = await Api.getAccountInfo(this.context.user.role)
+            console.log(res)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     render() {
         return (
             <div className="container">
                 <div className="row mt-3" >
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        
+
                     </div>
                     <div className="panel-account-info col-9">
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Tên đăng nhập:</div>    
+                                <div className="label-account-info mr-2">Tên đăng nhập:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">ntd275</div>
@@ -21,7 +41,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Họ tên:</div>    
+                                <div className="label-account-info mr-2">Họ tên:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">Nguyễn Thế Đức</div>
@@ -29,7 +49,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Mã học sinh:</div>    
+                                <div className="label-account-info mr-2">Mã học sinh:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">HS01</div>
@@ -37,7 +57,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Ngày sinh:</div>    
+                                <div className="label-account-info mr-2">Ngày sinh:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">27/05/1999</div>
@@ -45,7 +65,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Giới tính:</div>    
+                                <div className="label-account-info mr-2">Giới tính:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">Nam</div>
@@ -53,7 +73,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Số CMND:</div>    
+                                <div className="label-account-info mr-2">Số CMND:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">1423456789</div>
@@ -61,7 +81,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Hộ khẩu thường trú:</div>    
+                                <div className="label-account-info mr-2">Hộ khẩu thường trú:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">Minh Hải, Văn Lâm, Hưng Yên</div>
@@ -69,7 +89,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Nơi ở hiện nay:</div>    
+                                <div className="label-account-info mr-2">Nơi ở hiện nay:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">Minh Hải, Văn Lâm, Hưng Yên</div>
@@ -77,7 +97,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Ngày vào Đoàn:</div>    
+                                <div className="label-account-info mr-2">Ngày vào Đoàn:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">26/03/2013</div>
@@ -85,7 +105,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Ngày vào Đảng:</div>    
+                                <div className="label-account-info mr-2">Ngày vào Đảng:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2"></div>
@@ -93,7 +113,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Điện thoại:</div>    
+                                <div className="label-account-info mr-2">Điện thoại:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">0987654321</div>
@@ -101,7 +121,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Email:</div>    
+                                <div className="label-account-info mr-2">Email:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">ntd275@gmail.com</div>
@@ -109,7 +129,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Họ tên bố:</div>    
+                                <div className="label-account-info mr-2">Họ tên bố:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">Nguyễn Thế X</div>
@@ -117,7 +137,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Điện thoại bố:</div>    
+                                <div className="label-account-info mr-2">Điện thoại bố:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">0387654321</div>
@@ -125,7 +145,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Email bố:</div>    
+                                <div className="label-account-info mr-2">Email bố:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2"></div>
@@ -133,7 +153,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Họ tên mẹ:</div>    
+                                <div className="label-account-info mr-2">Họ tên mẹ:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">Nguyễn Thị Y</div>
@@ -141,7 +161,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Điện thoại mẹ:</div>    
+                                <div className="label-account-info mr-2">Điện thoại mẹ:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2">0123456789</div>
@@ -149,7 +169,7 @@ class AccountInfo extends Component {
                         </div>
                         <div className="row">
                             <div className="col-3">
-                                <div className="label-account-info mr-2">Email mẹ:</div>    
+                                <div className="label-account-info mr-2">Email mẹ:</div>
                             </div>
                             <div className="col-6">
                                 <div className="label-account-info mr-2"></div>
@@ -161,5 +181,7 @@ class AccountInfo extends Component {
         );
     }
 }
+
+AccountInfo.contextType = AppContext
 
 export default AccountInfo;

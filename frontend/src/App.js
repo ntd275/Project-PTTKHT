@@ -56,7 +56,7 @@ class App extends React.Component {
       } catch (err) {
         console.log(err)
         this.setUser(null)
-        localStorage.removeItem('accessToken')
+        //localStorage.removeItem('accessToken')
       }
     }
     this.setState({ loading: false })
@@ -86,14 +86,12 @@ class App extends React.Component {
               <Route path="/login">
                 <Login />
               </Route>
-              <PrivateRouter exact path="/" component={<Home />} role={[2, 1]} />
-              <PrivateRouter path="/account-info" component={<AccountInfo />} role={[2, 1]} />
               <Route path="/forgetpassword">
                 <ForgetPassword />
               </Route>
-              <Route path="/ChangePassword">
-                <ChangePassword />
-              </Route>
+              <PrivateRouter exact path="/" component={<Home />} role={[2, 1]} />
+              <PrivateRouter path="/account-info" component={<AccountInfo />} role={[2, 1]} />
+              <PrivateRouter path="/change-password" component={<ChangePassword />} role={[2, 1]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>

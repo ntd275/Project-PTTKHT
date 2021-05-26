@@ -8,6 +8,7 @@ accountRouter.use(authMiddleware.isAuth)
 
 accountRouter.get('/id/:id', accountController.getAccount)
 accountRouter.get('/username/:username', accountController.getAccountByUsername)
+accountRouter.post('/check-password/:id', accountController.checkPassword)
 accountRouter.put('/change-password/:id', accountController.changePassword)
 
 // accountRouter.use(adminMiddleware.isAdmin)

@@ -162,21 +162,24 @@ exports.login = async function (req, res) {
 exports.refreshToken = async (req, res) => {
     // User gửi mã refresh token kèm theo trong body
     let refreshTokenFromClient = req.cookies.refreshToken;
+    //console.log(refreshTokenFromClient)
     // debug("tokenList: ", tokenList);
 
     // Nếu như tồn tại refreshToken truyền lên và nó cũng nằm trong tokenList của chúng ta
     if (refreshTokenFromClient && (tokenList[refreshTokenFromClient])) {
         try {
             // Verify kiểm tra tính hợp lệ của cái refreshToken và lấy dữ liệu giải mã decoded 
-            let decoded = await jwtHelper.verifyToken(refreshTokenFromClient, refreshTokenSecret);
-            let user = decoded.data;
-            let accessToken = await jwtHelper.generateToken(user, accessTokenSecret, accessTokenLife);
+            let decoded = await jwtHelper.verifyToken(refreshTokenFromClient, config.refreshTokenSecret);
+            let user = decoded;
+            //console.log(user)
+            let accessToken = await jwtHelper.generateToken(user, config.accessTokenSecret, config.accessTokenLife);
             // gửi token mới về cho người dùng
             return res.status(200).json({
                 success: true,
                 accessToken
             });
         } catch (error) {
+            console.log(error)
             delete tokenList[refreshTokenFromClient];
             res.status(403).json({
                 success: false,
