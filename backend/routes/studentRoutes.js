@@ -6,8 +6,8 @@ const notFound = require('./404')
 
 studentRouter.use(authMiddleware.isAuth)
 
-studentRouter.get('/list', studentController.getTeacherList)
-studentRouter.get('/id/:id', studentController.getTeacher)
+studentRouter.get('/list', studentController.getStudentList)
+studentRouter.get('/id/:id', studentController.getStudent)
 
 // studentRouter.use(adminMiddleware)
 

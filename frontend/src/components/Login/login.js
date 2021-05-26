@@ -3,12 +3,15 @@ import { Link, withRouter } from "react-router-dom";
 import Api from "../../api/api";
 import AppContext from '../../context/AppContext'
 import jwt from 'jwt-decode'
+import Loading from '../Loading/Loading'
+import { store } from 'react-notifications-component';
 
 class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             formData: {},
+            loading: false,
         };
     }
 
@@ -19,39 +22,76 @@ class Login extends Component {
         formData[name] = value;
         this.setState({ 'formData': formData });
     }
+
     submitHandler = async (e) => {
         let data = this.state.formData;
         e.preventDefault();
-        console.log(data);
+        //console.log(data);
 
         try {
-            //let res = await Api.login(data.username, data.password)
-            //fake res
-            let res = {
-                data: {
-                    success: true,
-                    accessToken: "123",
-                }
-            }
+            this.setState({ loading: true });
+            let res = await Api.login(data.username, data.password)
+            //console.log(res.data.accessToken)
             localStorage.setItem("accessToken", res.data.accessToken)
-            //let user = jwt.decode(res.data.accessToken)
-            //fake user
-            let user = {
-                accountName: "Duc",
-                role: 1,
-            }
-            //to
+            let user = jwt(res.data.accessToken)
+            //console.log(user)
             this.context.setUser(user)
+            //Notification
+            store.addNotification({
+                title: "Đăng nhập thành công",
+                message: `Xin chào ${user.accountName}`,
+                type: "success",
+                container: "top-center",
+                dismiss: {
+                    duration: 3000,
+                    //showIcon: true,
+                },
+                animationIn: ["animate__slideInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
             //redirect
-            this.props.history.push('/')
+            //console.log(this.props.location)
+            let from = this.props.location.state && this.props.location.state.from
+            this.setState({ loading: false })
+            this.props.history.push(from || '/')
         } catch (err) {
             console.log(err)
+            this.setState({ loading: false })
+            if (err.response && err.response.status === 401) {
+                store.addNotification({
+                    title: "Đăng nhập thất bại",
+                    message: "Tài khoản hoặc mật khẩu không chính xác",
+                    type: "warning",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__slideInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
+            store.addNotification({
+                title: "Hệ thống có lỗi",
+                message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+                type: "danger",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+
         }
     }
 
     render() {
         return (
             <div className="container">
+                <Loading show={this.state.loading} />
                 <div className="row" style={{ marginTop: "40px" }}>
                     <div className="col-12 text-center">
                         <h1>Hệ thống sổ liên lạc điện tử</h1>
@@ -66,6 +106,7 @@ class Login extends Component {
                                 <input type="text" className="form-control" id="username"
                                     name="username"
                                     onChange={e => this.changeHandler(e)}
+                                    required
                                 />
                             </div>
                             <div className="form-group">
@@ -73,6 +114,7 @@ class Login extends Component {
                                 <input type="password" className="form-control" id="pwd"
                                     name="password"
                                     onChange={e => this.changeHandler(e)}
+                                    required
                                 />
                             </div>
                             <button type="submit" className="btn btn-primary" style={{ marginRight: "10px" }}>Đăng nhập</button>
@@ -86,8 +128,5 @@ class Login extends Component {
 }
 
 Login.contextType = AppContext
-Login.defaultProps = {
-    message: 'Hello',
 
-};
 export default withRouter(Login);

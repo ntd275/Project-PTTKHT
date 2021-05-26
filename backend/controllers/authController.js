@@ -29,11 +29,11 @@ exports.forgetPassword = async (req, res) => {
                     returning: true,
                     plain: true
                 })
-                .then(function () {
-                    return res.json({
-                        status: 1,
+                    .then(function () {
+                        return res.json({
+                            status: 1,
+                        });
                     });
-                });
             });
         } catch (error) {
             return res.status(400).json({
@@ -76,7 +76,7 @@ exports.sendOtp = async (req, res) => {
                 message: "user does not exist"
             });
         } else {
-            transporter.verify(function(error, success) {
+            transporter.verify(function (error, success) {
                 if (error) {
                     return res.status(500).send({
                         status: 0,
@@ -86,11 +86,11 @@ exports.sendOtp = async (req, res) => {
                     let otp = Math.floor(100000 + Math.random() * 900000);
                     let mail = {
                         from: config.emailUser,
-                        to: user.email, 
+                        to: user.email,
                         subject: 'Xác thực tài khoản Room4U',
                         text: 'Mã xác thực của bạn là ' + otp + '. Mã này có hiệu lực trong vòng 3 phút',
                     };
-                    transporter.sendMail(mail, async function(error, info) {
+                    transporter.sendMail(mail, async function (error, info) {
                         if (error) {
                             return res.status(500).send({
                                 status: 0,
@@ -121,7 +121,7 @@ exports.sendOtp = async (req, res) => {
 exports.login = async function (req, res) {
     try {
         let user = await Account.getAccountByUsername(req.body.username)
-
+        //console.log(user)
         if (!user) {
             res.status(401).json({
                 success: false,

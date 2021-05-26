@@ -42,7 +42,7 @@ const Api = {
         return guest.post('/auth/refresh-token')
     },
     checkAuth: () => {
-        return user.post('/auth/check-auth')
+        return user.get('/auth/check-auth')
     },
     getSchoolYearList: (page, perpage) => {
         return user.get(`/school-year/list?page=${page},perpage=${perpage}`)

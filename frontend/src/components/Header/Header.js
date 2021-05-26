@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, NavDropdown } from "react-bootstrap"
+import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap"
 import { Link } from 'react-router-dom'
 import { FaHome, FaUserCircle } from 'react-icons/fa'
 import { BsGrid3X3Gap, BsFillLockFill, BsSearch } from 'react-icons/bs'
@@ -178,32 +178,34 @@ class Header extends React.Component {
                             </NavDropdown>
                         </Nav>
                         <Nav>
-                            <NavDropdown
-                                alignRight
-                                title={
-                                    <div className="d-inline-block">
-                                        <div className="position-relative">
-                                            <FaUserCircle size={this.state.iconSize} className="position-relative title-icon" />
-                                            <div className="title-text d-inline-block">
-                                                Tài khoản {this.context.user && this.context.user.accountName}
+                            {this.context.user &&
+                                <NavDropdown
+                                    alignRight
+                                    title={
+                                        <div className="d-inline-block">
+                                            <div className="position-relative">
+                                                <FaUserCircle size={this.state.iconSize} className="position-relative title-icon" />
+                                                <div className="title-text d-inline-block">
+                                                    {this.context.user && this.context.user.accountName}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                }
-                                id="basic-nav-dropdown"
-                            >
-                                <Link to="/" className="dropdown-item">
-                                    Xem thông tin tài khoản
+                                    }
+                                    id="basic-nav-dropdown"
+                                >
+                                    <Link to="/" className="dropdown-item">
+                                        Xem thông tin tài khoản
                                 </Link>
-                                <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
-                                    Đổi mật khẩu
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Đổi mật khẩu
                                 </Link>
-                                <NavDropdown.Divider />
-                                <div className="dropdown-item" onClick={this.logout}>
-                                    Đăng xuất
+                                    <NavDropdown.Divider />
+                                    <div className="dropdown-item" onClick={this.logout}>
+                                        Đăng xuất
                                 </div>
-                            </NavDropdown>
+                                </NavDropdown>
+                            }
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
