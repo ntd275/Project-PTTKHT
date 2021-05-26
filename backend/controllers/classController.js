@@ -80,7 +80,6 @@ async function createClass(req, res) {
 
 async function updateClass(req, res) {
     try {
-        //Get info of current school year that need to be updated
         myClass = await Class.getClass(req.params.id)
         //Get update info from request
         myClass.schoolYearId = req.body.schoolYearId || myClass.schoolYearId
@@ -92,7 +91,7 @@ async function updateClass(req, res) {
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "School year not found"
+                message: "Class not found"
             })
         }
 

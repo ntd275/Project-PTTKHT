@@ -8,7 +8,9 @@ import './css/App.css';
 
 import Home from './components/Home/Home';
 import Login from './components/Login/login';
+import AccountInfo from './components/AccountInfo/AccountInfo';
 import ForgetPassword from './components/ForgetPassword/forgetPassword';
+import ChangePassword from './components/ChangePassword/ChangePassword';
 import StudentScore from './components/StudentScore/StudentScore';
 import StudentPLL from './components/StudentPLL/StudentPLL';
 import RankStatistic from './components/Statistic/RankStatistic';
@@ -21,6 +23,8 @@ import HomeroomTeacherAssignment from './components/HomeroomTeacherAssignment/Ho
 import TeachingAssignment from './components/TeachingAssignment/TeachingAssignment';
 import SpecialistAssignment from './components/SpecialistAssignment/SpecialistAssignment';
 import SchoolYear from './components/SchoolYear/schoolYear';
+import StudentAssignment from './components/StudentAssignment/StudentAssignment';
+import TransferClass from './components/TransferClass/TransferClass';
 
 class App extends React.Component {
   constructor(props) {
@@ -71,8 +75,14 @@ class App extends React.Component {
               <Route path="/login">
                 <Login />
               </Route>
+              <Route path="/AccountInfo">
+                <AccountInfo />
+              </Route>
               <Route path="/forgetpassword">
                 <ForgetPassword />
+              </Route>
+              <Route path="/ChangePassword">
+                <ChangePassword />
               </Route>
               <Route path="/student/score">
                 <StudentScore />
@@ -103,6 +113,14 @@ class App extends React.Component {
               {/* Phân công giáo viên vào tổ chuyên môn */}
               <Route path="/SpecialistAssignment">
                 <SpecialistAssignment />
+              </Route>
+              {/* Quản lý học sinh trong lớp */}
+              <Route path="/TransferClass">
+                <TransferClass />
+              </Route>
+              {/* Kết chuyển lớp */}
+              <Route path="/StudentAssignment">
+                <StudentAssignment />
               </Route>
               <Route path="/statistic/rank">
                 <RankStatistic />

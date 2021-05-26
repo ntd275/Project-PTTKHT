@@ -16,7 +16,7 @@ async function getSubjectList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -25,7 +25,7 @@ async function getSubjectList(req, res) {
 // = getSubjectList(teacher)
 async function getTeachingSubjectList(req, res) {
     try {
-        let teachingSubject = await Subject.getTeachingSubjectList(req.params.id)
+        let teachingSubject = await Subject.getTeachingSubjectList(req.query.key)
 
         return res.status(200).json({
             success: true,
@@ -35,7 +35,7 @@ async function getTeachingSubjectList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
     
@@ -54,7 +54,7 @@ async function getSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -72,14 +72,14 @@ async function createSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
 
 async function updateSubject(req, res) {
     try {
-        //Get info of current school year that need to be updated
+        //Get info of current subject that need to be updated
         subject = await Subject.getSubject(req.params.id)
         //Get update info from request
         subject.subjectCode = req.body.subjectCode || subject.subjectCode
@@ -90,7 +90,7 @@ async function updateSubject(req, res) {
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "School year not found"
+                message: "Subject not found"
             })
         }
 
@@ -103,7 +103,7 @@ async function updateSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -129,7 +129,7 @@ async function deleteSubject(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
