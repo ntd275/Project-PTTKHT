@@ -1,4 +1,6 @@
 const Account = require('../models/Accounts')
+const Student = require('../models/Student')
+const Teacher = require('../models/Teacher')
 const config = require('../config/config')
 const jwtHelper = require('../helpers/jwtToken')
 const bcrypt = require('bcrypt')
@@ -7,43 +9,60 @@ const { isAuth } = require('../middlewares/authentication')
 
 let tokenList = {}
 
-exports.forgetPassword = async (req, res) => {
-    // frontend nhận được otp, thấy người dùng nhập đúng otp thì gửi otpToken và newPassword lên
+exports.checkOtp = async (req, res) => {
     const otpToken = req.body.otpToken
     if (otpToken) {
         try {
             // decode data của user đã mã hóa vào otpToken
             const { data } = await jwtHelper.verifyToken(config.otpToken, config.otpTokenSecret);
-            bcrypt.hash(req.body.newPassword, config.saltRounds, function (err, hash) {
-                if (err) {
-                    return res.status(500).send({
-                        status: 0,
-                        message:
-                            err.message || "Some errors occur while changing password"
-                    });
-                }
-                db.accounts.update({
-                    password: hash,
-                }, {
-                    where: { username: data.username },
-                    returning: true,
-                    plain: true
-                })
-                    .then(function () {
-                        return res.json({
-                            status: 1,
-                        });
-                    });
-            });
+            if (data) {
+                return res.json({
+                    success: true,
+                });
+            }
         } catch (error) {
+            // otp hết hạn
             return res.status(400).json({
-                status: 0,
+                success: false,
+                message: error.message || "Invalid OTP",
+            });
+        }
+    } else {
+        return res.status(400).send({
+            success: false,
+            message: 'No otp token provided',
+        });
+    }
+}
+
+exports.forgetPassword = async (req, res) => {
+    const otpToken = req.body.otpToken
+    if (otpToken) {
+        try {
+            // decode data của user đã mã hóa vào otpToken
+            const { data } = await jwtHelper.verifyToken(config.otpToken, config.otpTokenSecret);
+            let count = await Account.updatePassword(data.accountId, req.body.newPassword)
+            if (count == 0) {
+                return res.status(418).json({
+                    success: false,
+                    message: "Cannot change password"
+                })
+            }
+
+            return res.status(200).json({
+                success: true,
+                result: "password changed"
+            })
+        } catch (error) {
+            // otp hết hạn
+            return res.status(400).json({
+                success: false,
                 message: error.message || 'Some errors occur while changing password',
             });
         }
     } else {
         return res.status(400).send({
-            status: 0,
+            success: false,
             message: 'No otp token provided',
         });
     }
@@ -60,48 +79,48 @@ exports.sendOtp = async (req, res) => {
     };
     let transporter = nodemailer.createTransport(emailOption);
     try {
-        // người dùng nhập username hoặc email vào 1 ô, 
-        // frontend gửi lên 2 trường username và email có nội dung giống nhau
-        const user = await db.accounts.findOne({
-            where: {
-                [Op.or]: [
-                    { username: req.body.username },
-                    { email: req.body.email }
-                ]
-            }
-        });
-        if (user == null) {
+        let accountName = req.body.username;
+        const account = await Account.getAccountByUsername(accountName);
+        if (account == null) {
             return res.status(400).send({
-                status: 0,
-                message: "user does not exist"
+                success: false,
+                message: "username does not exist"
             });
         } else {
             transporter.verify(function (error, success) {
                 if (error) {
                     return res.status(500).send({
-                        status: 0,
+                        success: false,
                         message: error.message || "Some errors occur while sending email"
                     });
                 } else {
+                    let email;
+                    if (account.role == 0) {
+                        let student = await Student.getStudentByCode(account.userCode)
+                        email = student.email
+                    } else {
+                        let teacher = await Teacher.getTeachertByCode(account.userCode)
+                        email = teacher.email
+                    }
                     let otp = Math.floor(100000 + Math.random() * 900000);
                     let mail = {
                         from: config.emailUser,
-                        to: user.email,
-                        subject: 'Xác thực tài khoản Room4U',
+                        to: email,
+                        subject: 'Xác thực tài khoản Hệ thống Sổ liên lạc điện tử Trường THCS ABC',
                         text: 'Mã xác thực của bạn là ' + otp + '. Mã này có hiệu lực trong vòng 3 phút',
                     };
                     transporter.sendMail(mail, async function (error, info) {
                         if (error) {
                             return res.status(500).send({
-                                status: 0,
+                                success: false,
                                 message: error.message || "Some errors occur while sending email"
                             });
                         } else {
-                            user.password = undefined;
-                            let userData = user;
+                            account.password = undefined;
+                            let userData = account;
                             let otpToken = await jwtHelper.generateToken(userData, config.otpTokenSecret, config.otpTokenLife);
                             return res.json({
-                                status: 1,
+                                success: true,
                                 otp: otp,
                                 otpToken: otpToken
                             });
@@ -112,7 +131,7 @@ exports.sendOtp = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).send({
-            status: 0,
+            success: false,
             message: error.message || "Some errors occur while sending email"
         });
     }
