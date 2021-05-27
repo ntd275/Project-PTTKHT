@@ -15,7 +15,7 @@ async function getStudentList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -33,7 +33,25 @@ async function getStudent(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
+        })
+    }
+}
+
+async function getStudentByCode(req, res) {
+    try {
+        let student = await Student.getStudentByCode(req.params.code)
+
+        return res.status(200).json({
+            success: true,
+            result: student
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
         })
     }
 }
@@ -51,7 +69,7 @@ async function createStudent(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -98,7 +116,7 @@ async function updateStudent(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -124,7 +142,7 @@ async function deleteStudent(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -132,6 +150,7 @@ async function deleteStudent(req, res) {
 module.exports = {
     getStudentList: getStudentList,
     getStudent: getStudent,
+    getStudentByCode: getStudentByCode,
     createStudent: createStudent,
     updateStudent: updateStudent,
     deleteStudent: deleteStudent

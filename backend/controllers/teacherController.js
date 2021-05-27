@@ -15,7 +15,7 @@ async function getTeacherList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -33,7 +33,25 @@ async function getTeacher(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
+        })
+    }
+}
+
+async function getTeacherByCode(req, res) {
+    try {
+        let teacher = await Teacher.getTeacherByCode(req.params.code)
+
+        return res.status(200).json({
+            success: true,
+            result: teacher
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
         })
     }
 }
@@ -51,7 +69,7 @@ async function createTeacher(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -94,7 +112,7 @@ async function updateTeacher(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -120,7 +138,7 @@ async function deleteTeacher(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -128,6 +146,7 @@ async function deleteTeacher(req, res) {
 module.exports = {
     getTeacherList: getTeacherList,
     getTeacher: getTeacher,
+    getTeacherByCode: getTeacherByCode,
     createTeacher: createTeacher,
     updateTeacher: updateTeacher,
     deleteTeacher: deleteTeacher

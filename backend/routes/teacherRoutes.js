@@ -8,6 +8,7 @@ teacherRouter.use(authMiddleware.isAuth)
 
 teacherRouter.get('/list', teacherController.getTeacherList)
 teacherRouter.get('/id/:id', teacherController.getTeacher)
+teacherRouter.get('/code/:code', teacherController.getTeacherByCode)
 
 // teacherRouter.use(adminMiddleware)
 

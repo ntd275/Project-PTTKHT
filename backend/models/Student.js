@@ -8,6 +8,10 @@ exports.getStudent = async (studentId) => {
     return await knex('Student').where('studentId', studentId).first()
 }
 
+exports.getStudentByCode = async (studentCode) => {
+    return await knex('Student').where('studentCode', studentCode).first()
+}
+
 exports.createStudent = async (data) => {
     let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0,10).replace('T', ' ')
     let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0,10).replace('T', ' ')
