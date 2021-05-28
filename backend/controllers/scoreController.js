@@ -1,6 +1,5 @@
 const Score = require('../models/Score')
 const ScoreLock = require('../models/ScoreLock')
-const SchoolYear = require('../models/SchoolYear')
 const config = require('../config/config')
 
 //Trả về trạng thái khoá điểm sLock.lock
@@ -56,7 +55,7 @@ async function getStudentScore(req, res) {
     try {
         let studentScores = await Score.getStudentScore(req.query.studentId, req.query.schoolYearId, req.query.term)
 
-        if (studentScores == null || studentScores == []) {
+        if (studentScores === null || studentScores === []) {
             return res.status(400).json({
                 success: false,
                 message: `Cannot find student's score`
@@ -77,27 +76,34 @@ async function getStudentScore(req, res) {
     }
 }
 
+//Insert score if not exists
+//If exists, update on the score which matched
 async function editScore(req, res) {
     try {
-        let score = await Score.getScoreById(req.params.id)
+        let score = req.body
+        
+        //Check request body
+        for(let key in score) {
+            if (score[key] === null || score[key] === "") {
+                return res.status(400).json({
+                    success: false,
+                    message: "One of field is null"
+                })
+            }
+        }
 
-        if (!score) {
-            scoreCreate = await Score.createScore(req.body)
+        //If not exists
+        if (score.scoreId === null || score.scoreId === NaN) {
+            let result = await Score.createScore(req.body)
+
             return res.status(200).json({
                 success: true,
-                result: scoreCreate
+                result: result
             })
         }
 
-        score.studentId = req.body.studentId || score.studentId
-        score.teacherId = req.body.teacherId || score.teacherId
-        score.subjectId = req.body.subjectId || score.subjectId
-        score.schoolYearId = req.body.schoolYearId || score.schoolYearId
-        score.kind = req.body.kind || score.kind
-        score.score = req.body.score || score.score
-        score.term = req.body.term || score.term
+        let count = await Score.editScore(score)
 
-        let count = Score.editScore(score)
         if (count == 0) {
             return res.status(400).json({
                 success: false,
