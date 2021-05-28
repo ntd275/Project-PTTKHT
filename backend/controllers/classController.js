@@ -7,6 +7,13 @@ async function getClassList(req, res) {
         let perpage = req.query.perpage || config.perPageItem
         let myClassList = await Class.getClassList(page, perpage)
 
+        if (myClassList.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No class found"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: myClassList
@@ -24,6 +31,13 @@ async function getClassList(req, res) {
 async function getClass(req, res) {
     try {
         let myClass = await Class.getClass(req.params.id)
+
+        if (myClass === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find class with id = ${req.params.id}`
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -49,7 +63,7 @@ async function getHomeroomClass(req, res) {
         if (homeroomClasses === undefined) {
             return res.status(400).json({
                 success: false,
-                message: "Found no homeroom class"
+                message: `Cannot find homeroom class with teacherId = ${req.query.key}`
             })
         }
 
@@ -71,6 +85,13 @@ async function createClass(req, res) {
     try {
         let myClass = await Class.createClass(req.body)
 
+        if (myClass.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot create class"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: myClass
@@ -88,6 +109,14 @@ async function createClass(req, res) {
 async function updateClass(req, res) {
     try {
         myClass = await Class.getClass(req.params.id)
+
+        if (myClass === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find class with id = ${req.params.id}`
+            })
+        }
+
         //Get update info from request
         myClass.schoolYearId = req.body.schoolYearId || myClass.schoolYearId
         myClass.classCode = req.body.classCode || myClass.classCode
@@ -121,7 +150,7 @@ async function deleteClass(req, res) {
         //Return number of affected rows
         let count = await Class.deleteClass(req.params.id)
 
-        if (!count) {
+        if (count == 0) {
             return res.status(404).json({
                 success: false,
                 message: "Class not found"
