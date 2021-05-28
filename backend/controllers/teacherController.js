@@ -7,6 +7,13 @@ async function getTeacherList(req, res) {
         let perpage = req.query.perpage || config.perPageItem
         let myTeacherList = await Teacher.getTeacherList(page, perpage)
 
+        if (myTeacherList.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No teacher found"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: myTeacherList
@@ -23,6 +30,13 @@ async function getTeacherList(req, res) {
 async function getTeacher(req, res) {
     try {
         let teacher = await Teacher.getTeacher(req.params.id)
+
+        if (teacher === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find teacher with id = ${req.params.id}`
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -42,6 +56,13 @@ async function getTeacherByCode(req, res) {
     try {
         let teacher = await Teacher.getTeacherByCode(req.params.code)
 
+        if (teacher === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find teacher with code = ${req.params.code}`
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: teacher
@@ -59,6 +80,13 @@ async function getTeacherByCode(req, res) {
 async function createTeacher(req, res) {
     try {
         let teacher = await Teacher.createTeacher(req.body)
+
+        if (teacher.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot create teacher"
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -78,6 +106,13 @@ async function updateTeacher(req, res) {
     try {
         //Get info of current school year that need to be updated
         teacher = await Teacher.getTeacher(req.params.id)
+        //Check exists
+        if (teacher === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find teacher with id = ${req.params.id}`
+            })
+        }
         //Get update info from request
         teacher.teacherCode = req.body.teacherCode || teacher.teacherCode
         teacher.teacherName = req.body.teacherName || teacher.teacherName
@@ -94,12 +129,13 @@ async function updateTeacher(req, res) {
         teacher.dateOfUnion = req.body.dateOfUnion || teacher.dateOfUnion
         teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
         teacher.major = req.body.major || teacher.major
-
+        //Update
         let count = await Teacher.updateTeacher(req.params.id, teacher)
-        if (count == 0) {
+        
+        if (count == 0) { //Cannot update
             return res.status(404).json({
                 success: false,
-                message: "Teacher not found"
+                message: `Cannot update teacher with id = ${req.params.id}`
             })
         }
 
@@ -122,10 +158,10 @@ async function deleteTeacher(req, res) {
         //Return number of affected rows
         let count = await Teacher.deleteTeacher(req.params.id)
 
-        if (!count) {
+        if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "Teacher not found"
+                message: `Cannot delete teacher with id = ${req.params.id}`
             })
         }
 

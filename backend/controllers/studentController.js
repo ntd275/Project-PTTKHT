@@ -7,6 +7,13 @@ async function getStudentList(req, res) {
         let perpage = req.query.perpage || config.perPageItem
         let studentList = await Student.getStudentList(page, perpage)
 
+        if (studentList.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No student found"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: studentList
@@ -23,6 +30,13 @@ async function getStudentList(req, res) {
 async function getStudent(req, res) {
     try {
         let student = await Student.getStudent(req.params.id)
+
+        if (student === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find student with id = ${req.params.id}`
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -42,6 +56,13 @@ async function getStudentByCode(req, res) {
     try {
         let student = await Student.getStudentByCode(req.params.code)
 
+        if (student === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find student with code = ${req.params.code}`
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: student
@@ -59,6 +80,13 @@ async function getStudentByCode(req, res) {
 async function createStudent(req, res) {
     try {
         let student = await Student.createStudent(req.body)
+
+        if (student.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Cannot create student"
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -78,6 +106,13 @@ async function updateStudent(req, res) {
     try {
         //Get info of current school year that need to be updated
         student = await Student.getStudent(req.params.id)
+        //Check exists
+        if (student === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find student with id = ${req.params.id}`
+            })
+        }
         //Get update info from request
         student.studentCode = req.body.studentCode || student.studentCode
         student.studentName = req.body.studentName || student.studentName
@@ -103,7 +138,7 @@ async function updateStudent(req, res) {
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "Student not found"
+                message: `Cannot update student with id = ${req.params.id}`
             })
         }
 
@@ -126,10 +161,10 @@ async function deleteStudent(req, res) {
         //Return number of affected rows
         let count = await Student.deleteStudent(req.params.id)
 
-        if (!count) {
+        if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "Student not found"
+                message: `Cannot update student with id = ${req.params.id}`
             })
         }
 
