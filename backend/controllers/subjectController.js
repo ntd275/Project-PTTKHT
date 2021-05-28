@@ -27,6 +27,13 @@ async function getTeachingSubjectList(req, res) {
     try {
         let teachingSubject = await Subject.getTeachingSubjectList(req.query.key) //teacherId
 
+        if (teachingSubject.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Found no teaching subject"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: teachingSubject

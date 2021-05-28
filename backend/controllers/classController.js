@@ -15,7 +15,7 @@ async function getClassList(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -34,7 +34,7 @@ async function getClass(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -44,7 +44,14 @@ async function getClass(req, res) {
 async function getHomeroomClass(req, res) {
     try {
         //req.query.key == teacherId
-        let homeroomClasses = Class.getHomeroomClass(req.query.key)
+        let homeroomClasses = await Class.getHomeroomClass(req.query.key)
+
+        if (homeroomClasses === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "Found no homeroom class"
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -55,7 +62,7 @@ async function getHomeroomClass(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -73,7 +80,7 @@ async function createClass(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -104,7 +111,7 @@ async function updateClass(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
@@ -130,7 +137,7 @@ async function deleteClass(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
