@@ -25,7 +25,7 @@ async function getSubjectList(req, res) {
 // = getSubjectList(teacher)
 async function getTeachingSubjectList(req, res) {
     try {
-        let teachingSubject = await Subject.getTeachingSubjectList(req.query.key)
+        let teachingSubject = await Subject.getTeachingSubjectList(req.query.key) //teacherId
 
         return res.status(200).json({
             success: true,
