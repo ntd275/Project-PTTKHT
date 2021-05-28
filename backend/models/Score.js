@@ -4,8 +4,15 @@ exports.getScoreList = async () => {
     return await knex.select().table('Score')
 }
 
-exports.getScoreById = async (scoreId) => {
-    return await knex('Score').where('scoreId', scoreId).first()
+exports.findScore = async (data) => {
+    return await knex('Score').where({
+        studentId: data.studentId,
+        teacherId: data.teacherId,
+        subjectId: data.subjectId,
+        schoolYearId: data.schoolYearId,
+        kind: data.kind,
+        term: data.term
+    }).first()
 }
 
 //Return an array contains all score of a student by subject in a term of a school year
@@ -50,7 +57,6 @@ exports.editScore = async (data) => {
             schoolYearId: data.schoolYearId,
             kind: data.kind,
             score: data.score,
-            term: data.term
         })
 }
 
