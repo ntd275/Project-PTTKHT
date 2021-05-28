@@ -44,11 +44,11 @@ async function getClass(req, res) {
 async function getHomeroomClass(req, res) {
     try {
         //req.query.key == teacherId
-        let homeroom = Class.getHomeroomClass(req.query.key)
+        let homeroomClasses = Class.getHomeroomClass(req.query.key)
 
         return res.status(200).json({
             success: true,
-            result: homeroom
+            result: homeroomClasses
         })
 
     } catch (error) {

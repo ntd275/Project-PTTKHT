@@ -11,8 +11,13 @@ exports.getClass = async (classId) => {
 
 //Get homeroom class list of a teacher
 exports.getHomeroomClass = async(teacherId) => {
-    let subQuery = await knex('HomeroomTeacherAssignment').where('teacherId',teacherId).select('classId')
-    return await knex('Class').where('classId', subQuery)
+    // let subQuery = await knex('HomeroomTeacherAssignment').where('teacherId',teacherId).select('classId')
+    // return await knex('Class').where('classId', subQuery)
+    return await knex('Class')
+        .join('HomeroomTeacherAssignment', 'Class.classId', 'HomeroomTeacherAssignment.classId')
+        .select('Class.classId', 'Class.schoolYearId', 'Class.className', 'Class.classCode', 'Class.description')
+        .where('HomeroomTeacherAssignment.teacherId', teacherId)
+        .first() // 1 giáo viên chỉ chủ nhiệm 1 lớp
 }
 
 exports.createClass = async (data) => {
