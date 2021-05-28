@@ -127,7 +127,7 @@ async function updateSubject(req, res) {
         if (count == 0) {
             return res.status(400).json({
                 success: false,
-                message: "Cannot update subject"
+                message: `Cannot update subject with id = ${req.params.id}`
             })
         }
 
@@ -151,9 +151,9 @@ async function deleteSubject(req, res) {
         let count = await Subject.deleteSubject(req.params.id)
 
         if (count == 0) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
-                message: "Subject not found"
+                message: `Cannot delete subject with id = ${req.params.id}`
             })
         }
 

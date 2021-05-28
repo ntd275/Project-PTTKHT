@@ -127,7 +127,7 @@ async function updateClass(req, res) {
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "Class not found"
+                message: `Cannot update class with id = ${req.params.id}`
             })
         }
 
@@ -153,7 +153,7 @@ async function deleteClass(req, res) {
         if (count == 0) {
             return res.status(404).json({
                 success: false,
-                message: "Class not found"
+                message: `Cannot delete class with id = ${req.params.id}`
             })
         }
 
