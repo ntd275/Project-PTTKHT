@@ -5,7 +5,7 @@ import Loading from '../Loading/Loading'
 import Api from "../../api/api";
 import AppContext from '../../context/AppContext'
 import { store } from 'react-notifications-component';
-
+import { withRouter } from 'react-router-dom'
 class ChangePassword extends Component {
     constructor(props) {
         super(props);
@@ -76,7 +76,7 @@ class ChangePassword extends Component {
         if (password1 !== password2) {
             store.addNotification({
                 title: "Lỗi",
-                message: "Mật khẩu nhập lại không đúng",
+                message: "Mật khẩu nhập lại không giống",
                 type: "warning",
                 container: "top-center",
                 dismiss: {
@@ -93,6 +93,38 @@ class ChangePassword extends Component {
             password2: password2,
             loading: true,
         });
+        try {
+            await Api.changePassword(this.context.user.accountId, this.state.oldPassword, password1)
+            store.addNotification({
+                title: "Thành công",
+                message: `Đổi mật khẩu thành công`,
+                type: "success",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    //showIcon: true,
+                },
+                animationIn: ["animate__slideInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+            this.setState({ loading: false })
+            this.props.history.push('/')
+
+        } catch (err) {
+            console.log(err)
+            store.addNotification({
+                title: "Hệ thống có lỗi",
+                message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+                type: "danger",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+        }
     }
     render() {
         let { isDisplayOldPasswordInput,
@@ -109,4 +141,4 @@ class ChangePassword extends Component {
 
 ChangePassword.contextType = AppContext
 
-export default ChangePassword;
+export default withRouter(ChangePassword);

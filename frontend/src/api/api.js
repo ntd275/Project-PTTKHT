@@ -54,6 +54,12 @@ const Api = {
         return user.post(`/account/check-password/${id}`, {
             password: password,
         })
+    },
+    changePassword: (id, oldPassword, newPassword) => {
+        return user.put(`/account/change-password/${id}`, {
+            old_password: oldPassword,
+            new_password: newPassword
+        })
     }
 }
 
