@@ -81,16 +81,6 @@ async function getStudentScore(req, res) {
 async function editScore(req, res) {
     try {
         let score = req.body
-        
-        //Check request body
-        for(let key in score) {
-            if (score[key] === null || score[key] === "") {
-                return res.status(400).json({
-                    success: false,
-                    message: "One of field is null"
-                })
-            }
-        }
 
         //If not exists
         if (score.scoreId === null || score.scoreId === NaN) {
