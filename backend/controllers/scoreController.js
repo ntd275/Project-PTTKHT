@@ -10,9 +10,16 @@ async function checkLockScore(req, res) {
         
         let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId, req.query.term)
 
+        if (sLock === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find score lock`
+            })
+        }
+
         return res.status(200).json({
             success: true,
-            result: sLock.lock
+            result: sLock
         })
 
     } catch (error) {
@@ -29,10 +36,10 @@ async function getSubjectScore(req, res) {
     try {
         let subjectScores = await Score.getSubjectScore(req.query.studentId, req.query.subjectId, req.query.schoolYearId, req.query.term)
 
-        if (subjectScores == null || subjectScores == []) {
+        if (subjectScores.length == 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find student's subject score`
+                message: `Cannot find subject score of student`
             })
         }
 
@@ -55,10 +62,10 @@ async function getStudentScore(req, res) {
     try {
         let studentScores = await Score.getStudentScore(req.query.studentId, req.query.schoolYearId, req.query.term)
 
-        if (studentScores === null || studentScores === []) {
+        if (studentScores.length == 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find student's score`
+                message: `Cannot find student score`
             })
         }
 
@@ -83,7 +90,7 @@ async function editScore(req, res) {
         let score = req.body
 
         //If not exists
-        if (score.scoreId === null || score.scoreId === NaN) {
+        if (score.scoreId === undefined || score.scoreId === NaN) {
             let result = await Score.createScore(req.body)
 
             return res.status(200).json({
@@ -97,7 +104,7 @@ async function editScore(req, res) {
         if (count == 0) {
             return res.status(400).json({
                 success: false,
-                message: "Score not found"
+                message: `Cannot update score with id = ${score.scoreId}`
             })
         }
 
