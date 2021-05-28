@@ -7,6 +7,7 @@ const classRouter = require('./classRoutes')
 const subjectRouter = require('./subjectRoutes')
 const teacherRouter = require('./teacherRoutes')
 const teachingAssignmentRouter = require('./teachingAssignmentRoutes')
+const specialistAssignmentRouter = require('./specialistAssignmentRoutes')
 const studentRouter = require('./studentRoutes')
 const scoreLockRouter = require('./scoreLockRoutes')
 const scoreRouter = require('./scoreRoutes')
@@ -25,6 +26,7 @@ module.exports = function (app) {
   app.use('/score-lock', scoreLockRouter)
   app.use('/conduct', conductRouter)
   app.use('/teaching-assignment', teachingAssignmentRouter)
+  app.use('/specialist-assignment', specialistAssignmentRouter)
 
   app.use(notFound)
 }
