@@ -124,7 +124,6 @@ async function updateStudent(req, res) {
         student.permanentResidence = req.body.permanentResidence || student.permanentResidence
         student.email = req.body.email || student.email
         student.phoneNumber = req.body.phoneNumber || student.phoneNumber
-        student.accountName = req.body.accountName || student.accountName
         student.dateOfParty = req.body.dateOfParty || student.dateOfParty
         student.dateOfUnion = req.body.dateOfUnion || student.dateOfUnion
         student.fatherName = req.body.fatherName || student.fatherName

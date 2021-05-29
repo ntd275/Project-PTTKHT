@@ -32,9 +32,9 @@ import Api from './api/api';
 import jwt from "jwt-decode";
 import ReactNotification from 'react-notifications-component'
 import Page404 from './components/Page404/Page404';
-import Class from './components/Class/Class'
-import Subject from './components/Subject/Subject'
-import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
+import Class from './components/Class/class'
+import Subject from './components/Subject/subject'
+import SpecialistTeam from './components/SpecialistTeam/specialistTeam'
 class App extends React.Component {
   constructor(props) {
     super(props)

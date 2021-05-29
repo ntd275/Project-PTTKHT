@@ -124,7 +124,6 @@ async function updateTeacher(req, res) {
         teacher.permanentResidence = req.body.permanentResidence || teacher.permanentResidence
         teacher.email = req.body.email || teacher.email
         teacher.phoneNumber = req.body.phoneNumber || teacher.phoneNumber
-        teacher.accountName = req.body.accountName || teacher.accountName
         teacher.dateOfParty = req.body.dateOfParty || teacher.dateOfParty
         teacher.dateOfUnion = req.body.dateOfUnion || teacher.dateOfUnion
         teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
