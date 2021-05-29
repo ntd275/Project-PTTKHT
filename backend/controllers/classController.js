@@ -53,8 +53,13 @@ async function getClass(req, res) {
     }
 }
 
+/*
 //Lấy danh sách lớp học ứng với teacherId của giáo viên chủ nhiệm
 //= getClass(teacher)
+Returns:
+    class: các fields trong class
+    students: danh sách học sinh thuộc homeroomClass đó
+*/
 async function getHomeroomClass(req, res) {
     try {
         //req.query.key == teacherId
