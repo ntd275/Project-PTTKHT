@@ -13,14 +13,15 @@ exports.getTeacherByCode = async (teacherCode) => {
 }
 
 exports.createTeacher = async (data) => {
-    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0,10).replace('T', ' ')
-    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0,10).replace('T', ' ')
+    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
 
     return await knex('Teacher').insert([
         {
             teacherCode: data.teacherCode,
             teacherName: data.teacherName,
-            dateOfBirth: data.dateOfBirth,
+            dateOfBirth: dateOfBirth,
             gender: data.gender,
             pId: data.pId,
             image: data.image,
@@ -37,15 +38,16 @@ exports.createTeacher = async (data) => {
 }
 
 exports.updateTeacher = async (id, data) => {
-    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0,10).replace('T', ' ')
-    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0,10).replace('T', ' ')
-    
+    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
+
     return await knex('Teacher')
         .where('teacherId', id)
         .update({
             teacherCode: data.teacherCode,
             teacherName: data.teacherName,
-            dateOfBirth: data.dateOfBirth,
+            dateOfBirth: dateOfBirth,
             gender: data.gender,
             pId: data.pId,
             image: data.image,

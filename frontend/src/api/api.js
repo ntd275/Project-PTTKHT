@@ -201,6 +201,48 @@ const Api = {
     deleteStudent: (id) => {
         return user.delete(`/student/id/${id}`)
     },
+    getTeacherList: (page, perpage) => {
+        return user.get(`/teacher/list?page=${page}&perpage=${perpage}`)
+    },
+    addTeacher: (data) => {
+        return user.post(`/teacher/`, {
+            teacherCode: data.teacherCode,
+            teacherName: data.teacherName,
+            address: data.address,
+            permanentResidence: data.permanentResidence,
+            gender: data.gender,
+            pId: data.pId,
+            image: data.image,
+            dateOfBirth: data.dateOfBirth,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            dateOfParty: data.dateOfParty,
+            dateOfUnion: data.dateOfUnion,
+            civilServantNumber: data.civilServantNumber,
+            major: data.major
+        })
+    },
+    editTeacher: (data) => {
+        return user.put(`/teacher/id/${data.teacherId}`, {
+            teacherCode: data.teacherCode,
+            teacherName: data.teacherName,
+            address: data.address,
+            permanentResidence: data.permanentResidence,
+            gender: data.gender,
+            pId: data.pId,
+            image: data.image,
+            dateOfBirth: data.dateOfBirth,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            dateOfParty: data.dateOfParty,
+            dateOfUnion: data.dateOfUnion,
+            civilServantNumber: data.civilServantNumber,
+            major: data.major
+        })
+    },
+    deleteTeacher: (id) => {
+        return user.delete(`/teacher/id/${id}`)
+    },
 
 }
 

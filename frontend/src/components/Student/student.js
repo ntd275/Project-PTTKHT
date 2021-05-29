@@ -747,7 +747,7 @@ class Dialog extends React.Component {
                         <Form.Label>Nơi ở hiện nay</Form.Label>
                         <Form.Control
                           type="text"
-                          placeholder="Nhập họ tên học sinh"
+                          placeholder="Nhập nơi ở hiện nay"
                           name="address"
                           value={this.props.data.address}
                           onChange={this.changeHandler}

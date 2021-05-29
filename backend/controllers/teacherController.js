@@ -3,8 +3,8 @@ const config = require('../config/config')
 
 async function getTeacherList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let myTeacherList = await Teacher.getTeacherList(page, perpage)
 
         if (myTeacherList.length == 0) {
@@ -130,7 +130,7 @@ async function updateTeacher(req, res) {
         teacher.major = req.body.major || teacher.major
         //Update
         let count = await Teacher.updateTeacher(req.params.id, teacher)
-        
+
         if (count == 0) { //Cannot update
             return res.status(404).json({
                 success: false,

@@ -36,6 +36,7 @@ import Class from './components/Class/Class'
 import Subject from './components/Subject/Subject'
 import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
 import Student from './components/Student/Student'
+import Teacher from './components/Teacher/Teacher'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -101,6 +102,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/subject" component={<Subject />} role={[2]} />
               <PrivateRouter exact path="/specialist-team" component={<SpecialistTeam />} role={[2]} />
               <PrivateRouter exact path="/student" component={<Student />} role={[2]} />
+              <PrivateRouter exact path="/teacher" component={<Teacher />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
