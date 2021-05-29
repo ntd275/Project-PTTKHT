@@ -1,6 +1,5 @@
 const Score = require('../models/Score')
 const ScoreLock = require('../models/ScoreLock')
-const SchoolYear = require('../models/SchoolYear')
 const config = require('../config/config')
 
 //Trả về trạng thái khoá điểm sLock.lock
@@ -11,9 +10,16 @@ async function checkLockScore(req, res) {
         
         let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId, req.query.term)
 
+        if (sLock === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find score lock`
+            })
+        }
+
         return res.status(200).json({
             success: true,
-            result: sLock.lock
+            result: sLock
         })
 
     } catch (error) {
@@ -30,10 +36,10 @@ async function getSubjectScore(req, res) {
     try {
         let subjectScores = await Score.getSubjectScore(req.query.studentId, req.query.subjectId, req.query.schoolYearId, req.query.term)
 
-        if (subjectScores == null || subjectScores == []) {
+        if (subjectScores.length == 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find student's subject score`
+                message: `Cannot find subject score of student`
             })
         }
 
@@ -56,10 +62,10 @@ async function getStudentScore(req, res) {
     try {
         let studentScores = await Score.getStudentScore(req.query.studentId, req.query.schoolYearId, req.query.term)
 
-        if (studentScores == null || studentScores == []) {
+        if (studentScores.length == 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find student's score`
+                message: `Cannot find student score`
             })
         }
 
@@ -77,31 +83,28 @@ async function getStudentScore(req, res) {
     }
 }
 
+//Insert score if not exists
+//If exists, update on the score which matched
 async function editScore(req, res) {
     try {
-        let score = await Score.getScoreById(req.params.id)
+        let score = req.body
 
-        if (!score) {
-            scoreCreate = await Score.createScore(req.body)
+        //If not exists
+        if (score.scoreId === undefined || score.scoreId === NaN) {
+            let result = await Score.createScore(req.body)
+
             return res.status(200).json({
                 success: true,
-                result: scoreCreate
+                result: result
             })
         }
 
-        score.studentId = req.body.studentId || score.studentId
-        score.teacherId = req.body.teacherId || score.teacherId
-        score.subjectId = req.body.subjectId || score.subjectId
-        score.schoolYearId = req.body.schoolYearId || score.schoolYearId
-        score.kind = req.body.kind || score.kind
-        score.score = req.body.score || score.score
-        score.term = req.body.term || score.term
+        let count = await Score.editScore(score)
 
-        let count = Score.editScore(score)
         if (count == 0) {
             return res.status(400).json({
                 success: false,
-                message: "Score not found"
+                message: `Cannot update score with id = ${score.scoreId}`
             })
         }
 

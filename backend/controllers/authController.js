@@ -6,7 +6,7 @@ const jwtHelper = require('../helpers/jwtToken')
 const bcrypt = require('bcrypt')
 const { json } = require('express')
 const { isAuth } = require('../middlewares/authentication')
-const nodemailer = require('nodemailer')
+let nodemailer = require("nodemailer");
 
 let tokenList = {}
 
@@ -90,21 +90,25 @@ exports.sendOtp = async (req, res) => {
                 message: "username does not exist"
             });
         } else {
+<<<<<<< HEAD
             transporter.verify(async function (error, success) {
+=======
+            transporter.verify( async function (error, success) {
+>>>>>>> bbb104316cccf6ee184ac00b5207184789b293fc
                 if (error) {
                     return res.status(500).send({
                         success: false,
                         message: error.message || "Some errors occur while sending email"
                     });
                 } else {
-                    let email;
-                    if (account.role == 0) {
-                        let student = await Student.getStudentByCode(account.userCode)
-                        email = student.email
-                    } else {
-                        let teacher = await Teacher.getTeachertByCode(account.userCode)
-                        email = teacher.email
-                    }
+                    let email = "ntd275@gmail.com";
+                    // if (account.role == 0) {
+                    //     let student = await Student.getStudentByCode(account.userCode)
+                    //     email = student.email
+                    // } else {
+                    //     let teacher = await Teacher.getTeachertByCode(account.userCode)
+                    //     email = teacher.email
+                    // }
                     let otp = Math.floor(100000 + Math.random() * 900000);
                     console.log("Email ", email)
                     console.log("OTP ", otp)
@@ -145,7 +149,7 @@ exports.sendOtp = async (req, res) => {
 exports.login = async function (req, res) {
     try {
         let user = await Account.getAccountByUsername(req.body.username)
-        //console.log(user)
+        // console.log(user)
         if (!user) {
             res.status(401).json({
                 success: false,

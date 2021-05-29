@@ -8,6 +8,13 @@ async function getSubjectList(req, res) {
         let perpage = req.query.perpage || config.perPageItem
         let subjectList = await Subject.getSubjectList(page, perpage)
 
+        if (subjectList.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Found no subject"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: subjectList
@@ -25,7 +32,14 @@ async function getSubjectList(req, res) {
 // = getSubjectList(teacher)
 async function getTeachingSubjectList(req, res) {
     try {
-        let teachingSubject = await Subject.getTeachingSubjectList(req.query.key)
+        let teachingSubject = await Subject.getTeachingSubjectList(req.query.key) //teacherId
+
+        if (teachingSubject.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "Found no teaching subject"
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -45,6 +59,13 @@ async function getSubject(req, res) {
     try {
         let subject = await Subject.getSubject(req.params.id)
 
+        if (subject === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find subject with id = ${req.params.id}`
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: subject
@@ -61,11 +82,18 @@ async function getSubject(req, res) {
 
 async function createSubject(req, res) {
     try {
-        let subject = await Subject.createSubject(req.body)
+        let count = await Subject.createSubject(req.body) // Return rows affected
+
+        if (count.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot create subject`
+            })
+        }
 
         return res.status(200).json({
             success: true,
-            result: subject
+            result: count
         })
 
     } catch (error) {
@@ -81,16 +109,25 @@ async function updateSubject(req, res) {
     try {
         //Get info of current subject that need to be updated
         subject = await Subject.getSubject(req.params.id)
+
+        if (subject === undefined) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find subject with id = ${req.params.id}`
+            })
+        }
+
         //Get update info from request
         subject.subjectCode = req.body.subjectCode || subject.subjectCode
         subject.subjectName = req.body.subjectName || subject.subjectName
         subject.description = req.body.description || subject.description
 
         let count = await Subject.updateSubject(req.params.id, subject)
+
         if (count == 0) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
-                message: "Subject not found"
+                message: `Cannot update subject with id = ${req.params.id}`
             })
         }
 
@@ -113,10 +150,10 @@ async function deleteSubject(req, res) {
         //Return number of affected rows
         let count = await Subject.deleteSubject(req.params.id)
 
-        if (!count) {
-            return res.status(404).json({
+        if (count == 0) {
+            return res.status(400).json({
                 success: false,
-                message: "Subject not found"
+                message: `Cannot delete subject with id = ${req.params.id}`
             })
         }
 

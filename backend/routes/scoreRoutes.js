@@ -11,7 +11,7 @@ scoreRouter.get('/check-lock', scoreController.checkLockScore)
 scoreRouter.get('/student/subject-scores', scoreController.getSubjectScore)
 scoreRouter.get('/student/scores', scoreController.getStudentScore)
 
-scoreRouter.use(teacherMiddleware.isTeacher)
+// scoreRouter.use(teacherMiddleware.isTeacher)
 
 scoreRouter.put('/', scoreController.editScore)
 scoreRouter.use(notFound)
