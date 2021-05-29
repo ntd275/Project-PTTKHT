@@ -13,7 +13,7 @@ exports.getTeacherByCode = async (teacherCode) => {
 }
 
 exports.getTeacherByName = async(teacherName) => {
-    return await knex('Teacher').where('teacherName', 'like', teacherName)
+    return await knex('Teacher').where('teacherName', 'like', `%${teacherName}`)
 }
 
 exports.createTeacher = async (data) => {

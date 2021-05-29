@@ -18,7 +18,7 @@ exports.getTeachingSubjectList = async(teacherId) => {
 }
 
 exports.getSubjectByName = async (subjectName) => {
-    return await knex('Subject').where('subjectName', 'like', subjectName)
+    return await knex('Subject').where('subjectName', 'like', `%${subjectName}%`)
 }
 
 exports.createSubject = async (subject) => {

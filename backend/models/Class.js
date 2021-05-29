@@ -21,7 +21,7 @@ exports.getHomeroomClass = async(teacherId) => {
 }
 
 exports.getClassByName = async(className) => {
-    return await knex('Class').where('className', 'like', className)
+    return await knex('Class').where('className', 'like', `%${className}`)
 }
 
 exports.createClass = async (data) => {
