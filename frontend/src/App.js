@@ -33,6 +33,8 @@ import jwt from "jwt-decode";
 import ReactNotification from 'react-notifications-component'
 import Page404 from './components/Page404/Page404';
 import Class from './components/Class/Class'
+import Subject from './components/Subject/Subject'
+import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -95,6 +97,8 @@ class App extends React.Component {
               <PrivateRouter path="/change-password" component={<ChangePassword />} role={[2, 1, 0]} />
               <PrivateRouter path="/school-year" component={<SchoolYear />} role={[2]} />
               <PrivateRouter path="/class" component={<Class />} role={[2]} />
+              <PrivateRouter path="/subject" component={<Subject />} role={[2]} />
+              <PrivateRouter path="/specialist-team" component={<SpecialistTeam />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>

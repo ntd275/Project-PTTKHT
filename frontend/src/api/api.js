@@ -110,7 +110,46 @@ const Api = {
     },
     deleteClass: (id) => {
         return user.delete(`/class/id/${id}`)
-    }
+    },
+    getSubjectList: (page, perpage) => {
+        return user.get(`/subject/list?page=${page}&perpage=${perpage}`)
+    },
+    addSubject: (data) => {
+        return user.post(`/subject/`, {
+            subjectName: data.subjectName,
+            subjectCode: data.subjectCode,
+            description: data.description,
+        })
+    },
+    editSubject: (data) => {
+        return user.put(`/subject/id/${data.subjectId}`, {
+            subjectName: data.subjectName,
+            subjectCode: data.subjectCode,
+            description: data.description,
+        })
+    },
+    deleteSubject: (id) => {
+        return user.delete(`/subject/id/${id}`)
+    },
+    getSpecialistTeamList: (page, perpage) => {
+        return user.get(`/specialist-team/list?page=${page}&perpage=${perpage}`)
+    },
+    addSpecialistTeam: (data) => {
+        return user.post(`/specialist-team/`, {
+            specialistName: data.specialistName,
+            description: data.description
+        })
+    },
+    editSpecialistTeam: (data) => {
+        return user.put(`/specialist-team/id/${data.specialistTeamId}`, {
+            specialistName: data.specialistName,
+            description: data.description
+        })
+    },
+    deleteSpecialistTeam: (id) => {
+        return user.delete(`/specialist-team/id/${id}`)
+    },
+
 }
 
 export default Api

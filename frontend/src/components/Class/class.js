@@ -2,6 +2,7 @@ import {
   BsArrowLeftShort,
   BsArrowRepeat,
   BsTrash,
+  BsSearch,
 } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
@@ -253,6 +254,15 @@ class Class extends React.Component {
               </select>
             </div>
           </div>
+          <div className="d-flex ml-auto">
+            <div className="input-group">
+              <input type="text" className="form-control" placeholder="Tìm kiếm" />
+              <div className="input-group-append">
+                <button className="btn btn-primary" type="button"><BsSearch /></button>
+              </div>
+            </div>
+          </div>
+
         </div>
         <br></br>
         <div style={{ minHeight: "430px" }}>

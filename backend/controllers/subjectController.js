@@ -4,8 +4,8 @@ const config = require('../config/config')
 //Lấy danh sách tất cả môn học
 async function getSubjectList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let subjectList = await Subject.getSubjectList(page, perpage)
 
         if (subjectList.length == 0) {
@@ -52,7 +52,7 @@ async function getTeachingSubjectList(req, res) {
             message: error
         })
     }
-    
+
 }
 
 async function getSubject(req, res) {
