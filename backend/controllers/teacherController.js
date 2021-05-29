@@ -79,7 +79,7 @@ async function getTeacherByCode(req, res) {
 
 /**
  * 
- * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @param {*} req req.params.name: Tên giáo viên được encoded hoặc không
  * @returns list of teachers
  */
 async function getTeacherByName(req, res) {

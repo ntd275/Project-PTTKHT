@@ -84,8 +84,8 @@ async function getStudentByCode(req, res) {
  */
  async function getStudentByName(req, res) {
     try {
-        let teacherName = decodeURI(req.params.name)
-        let students = await Student.getStudentByName(teacherName)
+        let studentName = decodeURI(req.params.name)
+        let students = await Student.getStudentByName(studentName)
 
         if (students.length == 0) {
             return res.status(400).json({

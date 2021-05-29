@@ -88,8 +88,8 @@ async function getSubject(req, res) {
  */
  async function getSubjectByName(req, res) {
     try {
-        let teacherName = decodeURI(req.params.name)
-        let subjects = await Subject.getSubjectByName(teacherName)
+        let subjectName = decodeURI(req.params.name)
+        let subjects = await Subject.getSubjectByName(subjectName)
 
         if (subjects.length == 0) {
             return res.status(400).json({

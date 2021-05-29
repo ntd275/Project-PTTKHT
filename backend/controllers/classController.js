@@ -93,8 +93,8 @@ async function getHomeroomClass(req, res) {
  */
  async function getClassByName(req, res) {
     try {
-        let teacherName = decodeURI(req.params.name)
-        let classes = await Class.getClassByName(teacherName)
+        let className = decodeURI(req.params.name)
+        let classes = await Class.getClassByName(className)
 
         if (classes.length == 0) {
             return res.status(400).json({
