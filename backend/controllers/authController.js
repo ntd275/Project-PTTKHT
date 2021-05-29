@@ -6,6 +6,7 @@ const jwtHelper = require('../helpers/jwtToken')
 const bcrypt = require('bcrypt')
 const { json } = require('express')
 const { isAuth } = require('../middlewares/authentication')
+const nodemailer = require('nodemailer')
 
 let tokenList = {}
 
@@ -70,6 +71,7 @@ exports.forgetPassword = async (req, res) => {
 
 exports.sendOtp = async (req, res) => {
     // option của tài khoản gửi email cho người dùng
+    console.log(req.body)
     const emailOption = {
         service: config.emailService,
         auth: {
@@ -78,6 +80,7 @@ exports.sendOtp = async (req, res) => {
         }
     };
     let transporter = nodemailer.createTransport(emailOption);
+    //console.log(transporter)
     try {
         let accountName = req.body.username;
         const account = await Account.getAccountByUsername(accountName);
@@ -103,6 +106,8 @@ exports.sendOtp = async (req, res) => {
                         email = teacher.email
                     }
                     let otp = Math.floor(100000 + Math.random() * 900000);
+                    console.log("Email ", email)
+                    console.log("OTP ", otp)
                     let mail = {
                         from: config.emailUser,
                         to: email,

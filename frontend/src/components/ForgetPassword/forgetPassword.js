@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import UsernameInput from './usernameInput';
 import OtpInput from './otpInput';
 import PasswordInput from './passwordInput';
+import Api from "../../api/api";
 
 class ForgetPassword extends Component {
     constructor(props) {
@@ -16,11 +17,16 @@ class ForgetPassword extends Component {
             password2: ''
         };
     }
-    setUsername = (username) => {
-        console.log(username);
+    setUsername = async (username) => {
+        //console.log(username);
         this.setState({
             username: username
         });
+        try {
+            let res = await Api.sendOTP(username)
+        } catch (err) {
+            console.log(err)
+        }
     }
     setOtp = (otp) => {
         console.log(otp);

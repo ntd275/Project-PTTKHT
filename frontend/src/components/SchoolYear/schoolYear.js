@@ -2,10 +2,6 @@ import {
   BsArrowLeftShort,
   BsArrowRepeat,
   BsTrash,
-  BsChevronRight,
-  BsChevronLeft,
-  BsChevronDoubleRight,
-  BsChevronDoubleLeft,
 } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
@@ -15,302 +11,600 @@ import React from "react";
 import "../../css/SchoolYear.css";
 import { Button } from "react-bootstrap";
 import { Table } from "react-bootstrap";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import DatePicker from "react-datepicker";
-import "bootstrap/dist/css/bootstrap.min.css";
 import "react-datepicker/dist/react-datepicker.css";
-import api from '../../api/api'
+import Api from '../../api/api'
+import Pagination from '../Pagination/Pagination'
+import { store } from 'react-notifications-component';
+import Loading from '../Loading/Loading'
 class SchoolYear extends React.Component {
   constructor(props) {
-    super(props); //since we are extending class Table so we have to use super in order to override Component class constructor
+    super(props);
     this.state = {
       //state is by default an object
-      years: [
-        {
-          stt: 1,
-          schoolYear: "2020-2021",
-          description: "Năm đầu tiên dùng sổ liên lạc điện tử",
-          toDelete: <BsTrash />,
-          toAdd: <FaPencilAlt />,
-        },
-        {
-          stt: 2,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 3,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 4,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 5,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 6,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 7,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 8,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 9,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-        {
-          stt: 10,
-          schoolYear: "",
-          description: "",
-          toDelete: "",
-          toAdd: "",
-        },
-      ],
-      startFirstSemester: new Date(),
-      finishFirstSemester: new Date(),
-      startSecondSemester: new Date(),
-      finishSecondSemester: new Date(),
+      schoolYearList: [],
       perpage: 10,
       loading: true,
+      pagination: {
+        currentPage: 1,
+        lastPage: 1,
+      },
+      modalData: {
+        schoolYearId: 0,
+        startFirstSemester: new Date(),
+        finishFirstSemester: new Date(),
+        startSecondSemester: new Date(),
+        finishSecondSemester: new Date(),
+        schoolYear: "",
+        description: "",
+      },
+      showModal: false,
+      modalKind: "",
+      modalLoading: true,
+      modalEdited: false,
     };
-    this.close = this.close.bind(this);
-    this.open = this.open.bind(this);
-    this.handleStartFirstSemesterChange = this.handleStartFirstSemesterChange.bind(this);
-    this.handleFinishFirstSemesterChange = this.handleFinishFirstSemesterChange.bind(this);
-    this.handleStartSecondSemesterChange = this.handleStartSecondSemesterChange.bind(this);
-    this.handleFinishSecondSemesterChange = this.handleFinishSecondSemesterChange.bind(this);
   }
 
   async componentDidMount() {
+    this.setState({ loading: true })
+    await this.refresh(1, this.state.perpage)
+  }
+
+  refresh = async (page, perpage) => {
+    this.setState({ loading: true })
     try {
-      let res = await api.getSchoolYearList(1, this.state.perpage)
-      console.log(res)
+      let res = await Api.getSchoolYearList(page || this.state.pagination.currentPage, perpage || this.state.perpage)
+      this.setState({ loading: false, schoolYearList: res.data.result.data, pagination: res.data.result.pagination })
+      //console.log(res)
     } catch (err) {
-      console.log(err.response)
+      console.log(err)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Hệ thống có lỗi",
+        message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+        type: "danger",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          showIcon: true,
+        },
+        animationIn: ["animate__backInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
     }
   }
 
-  close() {
-    this.setState({ showModal: false });
+  changePerPage = async (e) => {
+    this.setState({ perpage: e.target.value })
+    await this.refresh(this.state.pagination.currentPage, e.target.value)
+  }
+  changePage = async (page) => {
+    await this.refresh(page, this.state.perpage)
   }
 
-  open() {
-    this.setState({ showModal: true });
-  }
-  handleStartFirstSemesterChange(date) {
-    this.setState({
-      startFirstSemester: date,
-    });
-  }
-  handleFinishFirstSemesterChange(date) {
-    this.setState({
-      finishFirstSemester: date,
-    });
-  }
-  handleStartSecondSemesterChange(date) {
-    this.setState({
-      startSecondSemester: date,
-    });
-  }
-  handleFinishSecondSemesterChange(date) {
-    this.setState({
-      finishSecondSemester: date,
-    });
+  renderTableHeader() {
+    return (
+      <tr>
+        <th>STT</th>
+        <th>Năm học</th>
+        <th>Mô tả</th>
+        <th className="text-center"><BsTrash /></th>
+        <th className="text-center"><FaPencilAlt /></th>
+      </tr>
+    )
   }
 
   renderTableData() {
-    return this.state.years.map((student, index) => {
-      const { stt, schoolYear, description, toDelete, toAdd } = student;
+    let sttBase = this.state.perpage * (this.state.pagination.currentPage - 1) + 1
+    return this.state.schoolYearList.map((year, index) => {
+      const { schoolYearId, schoolYear, description } = year;
       return (
-        <tr key={stt}>
-          <td>{stt}</td>
+        <tr key={index}>
+          <td>{sttBase + index}</td>
           <td>{schoolYear}</td>
           <td>{description}</td>
-          <td>{toDelete}</td>
-          <td>{toAdd}</td>
+          <td className="text-center"><BsTrash onClick={() => this.deleteSchoolYear(index)} /></td>
+          <td className="text-center"><FaPencilAlt onClick={() => this.editSchoolYear(index)} /></td>
         </tr>
       );
     });
   }
-  renderTableHeader() {
-    let header = Object.keys(this.state.years[0]);
-    return header.map((key, index) => {
-      if (key === "toDelete") return <th key={index}>{<BsTrash />}</th>;
-      if (key === "stt") return <th key={index}>STT</th>;
-      if (key === "description") return <th key={index}>Mô tả</th>;
-      if (key === "toAdd") return <th key={index}>{<FaPencilAlt />}</th>;
-      if (key === "schoolYear") return <th key={index}>Năm Học</th>;
-      return <th key={index}>{key}</th>;
-    });
+
+  addSchoolYear = () => {
+    this.setState({
+      showModal: true,
+      modalKind: "add",
+      modalLoading: false,
+      modalEdited: false,
+      modalData: {
+        startFirstSemester: new Date(),
+        finishFirstSemester: new Date(),
+        startSecondSemester: new Date(),
+        finishSecondSemester: new Date(),
+        schoolYear: "",
+        description: "",
+        schoolYearId: 0,
+      }
+    })
+  }
+
+  editSchoolYear = async (index) => {
+    let schoolYear = this.state.schoolYearList[index]
+    this.setState({
+      showModal: true,
+      modalKind: "edit",
+      modalLoading: false,
+      modalEdited: false,
+      modalData: {
+        schoolYearId: schoolYear.schoolYearId,
+        startFirstSemester: new Date(schoolYear.beginSemester1),
+        finishFirstSemester: new Date(schoolYear.endSemester1),
+        startSecondSemester: new Date(schoolYear.beginSemester2),
+        finishSecondSemester: new Date(schoolYear.endSemester2),
+        schoolYear: schoolYear.schoolYear,
+        description: schoolYear.description,
+      }
+    })
+  }
+
+  deleteSchoolYear = (index) => {
+    let schoolYear = this.state.schoolYearList[index]
+    this.setState({
+      showDelete: true,
+      modalData: {
+        schoolYearId: schoolYear.schoolYearId,
+        startFirstSemester: new Date(schoolYear.beginSemester1),
+        finishFirstSemester: new Date(schoolYear.endSemester1),
+        startSecondSemester: new Date(schoolYear.beginSemester2),
+        finishSecondSemester: new Date(schoolYear.endSemester2),
+        schoolYear: schoolYear.schoolYear,
+        description: schoolYear.description,
+      }
+    })
+  }
+
+  closeDelete = () => {
+    this.setState({ showDelete: false });
+  }
+
+  closeModal = () => {
+    this.setState({ showModal: false });
   }
 
   render() {
-    const { years } = this.state;
-    let buttons = Object.keys(years);
-    let values = buttons.map((key) => years[key].stt);
-    const array = [
-      <BsChevronDoubleLeft />,
-      <BsChevronLeft />,
-      ...values,
-      <BsChevronRight />,
-      <BsChevronDoubleRight />,
-    ];
-    this.getButtons = () => {
-      return array.map((number, index) => {
-        return (
-          <Button variant="light" key={index}>
-            {number}
-          </Button>
-        );
-      });
-    };
-
+    if (this.state.loading) {
+      return (
+        <div className="container-fluid d-flex justify-content-center">
+          <div className="d-flex justify-content-center text-primary mt-auto mb-auto">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        </div >
+      )
+    }
     return (
-      <div className="SchoolYear">
-        <Modal show={this.state.showModal} onHide={this.close} centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Thêm năm học</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId="schoolYear">
-                <Form.Label>Năm học</Form.Label>
-                <Form.Control type="text" placeholder="Năm học " />
-              </Form.Group>
-
-              <Form.Group controlId="startFirstSemester">
-                <Form.Label>
-                  Bắt đầu kì 1
-                  <FaRegCalendarAlt style={{ marginLeft: 10 }} />
-                </Form.Label>
-                <div className="form-group">
-                  <DatePicker
-                    selected={this.state.startFirstSemester}
-                    onChange={this.handleStartFirstSemesterChange}
-                    name="startFirstSemester"
-                    dateFormat="MM/dd/yyyy"
-                  />
+      <div className="container">
+        <Dialog
+          show={this.state.showModal}
+          kind={this.state.modalKind}
+          close={this.closeModal}
+          data={this.state.modalData}
+          loading={this.state.modalLoading}
+          setData={(data) => this.setState({ modalData: data, modalEdited: true })}
+          edited={this.state.modalEdited}
+          refresh={this.refresh}
+        />
+        <ConfirmDelete
+          show={this.state.showDelete}
+          close={this.closeDelete}
+          data={this.state.modalData}
+          refresh={this.refresh}
+        />
+        <div className="row">
+          <div className="col align-self-center d-flex">
+            <div className="align-self-center">
+              <BsArrowLeftShort size={50} />
+            </div>
+            <div className="h3 align-self-center mb-0">
+              Quản lý danh mục năm học
+          </div>
+          </div>
+        </div>
+        <br />
+        <div className="d-flex">
+          <div>
+            <button type="button" className="btn btn-light" onClick={this.refresh}>
+              <div className="d-flex">
+                <div>
+                  Tải lại trang
                 </div>
-              </Form.Group>
-
-              <Form.Group controlId="finishFirstSemester">
-                <Form.Label>
-                  Kết thúc kì 1
-                  <FaRegCalendarAlt style={{ marginLeft: 10 }} />
-                </Form.Label>
-                <div className="form-group">
-                  <DatePicker
-                    selected={this.state.finishFirstSemester}
-                    onChange={this.handleFinishFirstSemesterChange}
-                    name="finishFirstSemester"
-                    dateFormat="MM/dd/yyyy"
-                  />
+                <div className="ml-2">
+                  <BsArrowRepeat />
                 </div>
-              </Form.Group>
+              </div>
+            </button>
+          </div>
 
-              <Form.Group controlId="startSecondSemester">
-                <Form.Label>
-                  Bắt đầu kì 2
-                  <FaRegCalendarAlt style={{ marginLeft: 10 }} />
-                </Form.Label>
-                <div className="form-group">
-                  <DatePicker
-                    selected={this.state.startSecondSemester}
-                    onChange={this.handleStartSecondSemesterChange}
-                    name="startSecondSemester"
-                    dateFormat="MM/dd/yyyy"
-                  />
+          <div className="ml-3">
+            <button type="button" className="btn btn-light" onClick={this.addSchoolYear}>
+              <div className="d-flex">
+                <div>
+                  Thêm năm học
                 </div>
-              </Form.Group>
-
-              <Form.Group controlId="finishSecondSemester">
-                <Form.Label>
-                  Kết thúc kì 2
-                  <FaRegCalendarAlt style={{ marginLeft: 10 }} />
-                </Form.Label>
-                <div className="form-group">
-                  <DatePicker
-                    selected={this.state.finishSecondSemester}
-                    onChange={this.handleFinishSecondSemesterChange}
-                    name="finishSecondSemester"
-                    dateFormat="MM/dd/yyyy"
-                  />
+                <div className="ml-2">
+                  <GoPlus />
                 </div>
-              </Form.Group>
-
-              <Form.Group controlId="description">
-                <Form.Label>
-                  Mô tả
-                  <FaRegCalendarAlt style={{ marginLeft: 10 }} />
-                </Form.Label>
-                <Form.Control type="text" placeholder="Mô tả" />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.close}>Thêm</Button>
-          </Modal.Footer>
-        </Modal>
-        <div>
-          <Button className="back" variant="dark">
-            <BsArrowLeftShort size={50} />
-          </Button>
-          <text> Quản lý danh mục năm học</text>
+              </div>
+            </button>
+          </div>
+          <div className="d-flex ml-4">
+            <div className="align-self-center" >
+              Số lượng bản ghi mỗi trang:
+            </div>
+            <div className="align-self-center" >
+              <select className="form-control ml-3" value={this.state.perpage} onChange={this.changePerPage} style={{ width: "80px" }}>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
         </div>
         <br></br>
-        <div className="btn-toolbar">
-          <Button className="button" variant="light">
-            Tải lại trang
-            <BsArrowRepeat className="reload-icon" size={20} />
-          </Button>
-          <Button onClick={this.open} className="button" variant="light">
-            Thêm năm học
-            <GoPlus className="reload-icon" size={20} />
-          </Button>
-          <p className="text" style={{ marginRight: 10 }}>
-            <text style={{ marginRight: 10 }}>Số lượng bản ghi mỗi trang</text>
-            <input name="numrecord" size={1}></input>
-          </p>
+        <div style={{ minHeight: "430px" }}>
+          <Table striped bordered hover >
+            <thead className="table-header">
+              {this.renderTableHeader()}
+            </thead>
+            <tbody>{this.renderTableData()}</tbody>
+          </Table>
         </div>
-        <br></br>
-        <Table striped bordered hover>
-          <thead>{this.renderTableHeader()}</thead>
-          <tbody>{this.renderTableData()}</tbody>
-        </Table>
-        <div className="page-button">{this.getButtons()}</div>
-      </div>
+        <Pagination pagination={this.state.pagination} changePage={this.changePage} />
+      </div >
     );
   }
 }
+
+class ConfirmDelete extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+    }
+  }
+
+  delete = async () => {
+    this.setState({ loading: true })
+    try {
+      await Api.deleteSchoolYear(this.props.data.schoolYearId)
+      //console.log(res)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Thành công",
+        message: `Xóa năm học thành công`,
+        type: "success",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      this.props.close()
+      this.props.refresh()
+    } catch (err) {
+      console.log(err)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Hệ thống có lỗi",
+        message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+        type: "danger",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          showIcon: true,
+        },
+        animationIn: ["animate__backInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+    }
+
+  }
+
+  render() {
+    return (
+      <div>
+        <Modal show={this.props.show} backdrop="static" keyboard={false} >
+          <Modal.Header>
+            <Modal.Title>Xác nhận xóa</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="container">
+              {"Bạn chắc chắn muốn xóa năm học " + this.props.data.schoolYear + " ?"}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.props.close}>Hủy</Button>
+            <Button variant="danger" onClick={this.delete}>Xóa</Button>
+          </Modal.Footer>
+        </Modal>
+        <Loading show={this.state.loading} />
+      </div>
+
+    )
+  }
+}
+
+class Dialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showConfirm: false,
+      message: "Bạn có chắc chắn muốn thoát không ?",
+      loading: false,
+    }
+  }
+
+  getTitle = () => {
+    if (this.props.kind === "add") {
+      return "Thêm năm học"
+    }
+    if (this.props.kind === "edit") {
+      return "Sửa năm học"
+    }
+    return "Thông tin năm học"
+  }
+
+  getButton = () => {
+    if (this.props.kind === "add") {
+      return <Button onClick={this.addSchoolYear}>Thêm</Button>
+    }
+    if (this.props.kind === "edit") {
+      return <Button onClick={this.editSchoolYear}>Sửa</Button>
+    }
+    return null
+  }
+
+  addSchoolYear = async () => {
+    this.setState({ loading: true })
+    try {
+      await Api.addSchoolYear(this.props.data)
+      //console.log(res)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Thành công",
+        message: `Thêm năm học thành công`,
+        type: "success",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      this.closeAll()
+      this.props.refresh()
+    } catch (err) {
+      console.log(err)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Hệ thống có lỗi",
+        message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+        type: "danger",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          showIcon: true,
+        },
+        animationIn: ["animate__backInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+    }
+  }
+
+  editSchoolYear = async () => {
+    this.setState({ loading: true })
+    try {
+      await Api.editSchoolYear(this.props.data)
+      //console.log(res)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Thành công",
+        message: `Sửa năm học thành công`,
+        type: "success",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      this.closeAll()
+      this.props.refresh()
+    } catch (err) {
+      console.log(err)
+      this.setState({ loading: false })
+      store.addNotification({
+        title: "Hệ thống có lỗi",
+        message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+        type: "danger",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          showIcon: true,
+        },
+        animationIn: ["animate__backInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+    }
+  }
+
+  close = () => {
+    if (this.props.edited) {
+      this.setState({
+        showConfirm: true
+      })
+    } else {
+      this.props.close()
+    }
+  }
+
+  closeAll = () => {
+    this.setState({ showConfirm: false })
+    this.props.close()
+  }
+
+  changeHandler = (e) => {
+    // console.log(e)
+    let name = e.target.name
+    let value = e.target.value
+    let data = this.props.data
+    data[name] = value
+    this.props.setData(data)
+  }
+
+  closeConfirm = () => {
+    this.setState({
+      showConfirm: false
+    })
+  }
+
+  render() {
+
+    return (
+      <div>
+        <Modal size="lg" show={this.props.show} onHide={this.close} centered backdrop="static" keyboard={false}>
+          <Modal.Header closeButton>
+            <Modal.Title>{this.getTitle()}</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.props.loading && <div className="container-fluid d-flex justify-content-center" style={{ height: "300px" }}>
+              <div className="d-flex justify-content-center text-primary mt-auto mb-auto">
+                <div className="spinner-border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div >}
+
+            {!this.props.loading &&
+              <div className="container-fluid">
+                <Form>
+                  <Form.Group>
+                    <Form.Label>Năm học</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Nhập năm học"
+                      name="schoolYear"
+                      value={this.props.data.schoolYear}
+                      onChange={this.changeHandler}
+                    />
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>
+                      Thời gian bắt đầu kỳ 1
+              </Form.Label>
+                    <div className="w-100">
+                      <DatePicker
+                        selected={this.props.data.startFirstSemester}
+                        onChange={value => this.changeHandler({ target: { name: "startFirstSemester", value: value } })}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control w-100"
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>
+                      Thời gian kết thúc kỳ 1
+              </Form.Label>
+                    <div className="w-100">
+                      <DatePicker
+                        selected={this.props.data.finishFirstSemester}
+                        onChange={value => this.changeHandler({ target: { name: "finishFirstSemester", value: value } })}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control w-100"
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>
+                      Thời gian bắt đầu kỳ 2
+              </Form.Label>
+                    <div className="w-100">
+                      <DatePicker
+                        selected={this.props.data.startSecondSemester}
+                        onChange={value => this.changeHandler({ target: { name: "startSecondSemester", value: value } })}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control w-100"
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>
+                      Thời gian kết thúc kỳ 2
+              </Form.Label>
+                    <div className="w-100">
+                      <DatePicker
+                        selected={this.props.data.finishSecondSemester}
+                        onChange={value => this.changeHandler({ target: { name: "finishSecondSemester", value: value } })}
+                        dateFormat="dd/MM/yyyy"
+                        className="form-control w-100"
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group>
+                    <Form.Label>
+                      Mô tả
+              </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Nhập mô tả"
+                      value={this.props.data.description}
+                      name="description"
+                      onChange={this.changeHandler}
+                    />
+                  </Form.Group>
+                </Form>
+              </div>
+            }
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.close}>Hủy</Button>
+            {this.getButton()}
+          </Modal.Footer>
+        </Modal>
+
+        <Modal show={this.state.showConfirm} backdrop="static" keyboard={false} >
+          <Modal.Header>
+            <Modal.Title>Xác nhận</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="container">
+              {this.state.message}
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.closeConfirm}>Hủy</Button>
+            <Button variant="danger" onClick={this.closeAll}>Đóng</Button>
+          </Modal.Footer>
+        </Modal>
+        <Loading show={this.state.loading} />
+      </div>
+    )
+  }
+}
+
+
 export default SchoolYear;

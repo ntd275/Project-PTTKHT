@@ -4,8 +4,8 @@ const { json } = require('express')
 
 async function getSchoolYearList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let schoolYearList = await SchoolYear.getSchoolYearList(page, perpage)
 
         return res.status(200).json({

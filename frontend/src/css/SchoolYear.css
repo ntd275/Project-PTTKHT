@@ -1,53 +1,7 @@
-.SchoolYear {
-    height: 100%;
+.table-header {
+    background-color: #7db1ff;
+}
+
+.react-datepicker-wrapper {
     width: 100%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: 10px;
-    font-size: 30px;
-    margin-top: 20px;
-    margin-left: 50px;
-    margin-right: 100px;
-   
-}
-
-.SchoolYear .back {
-    margin-top: 30px;
-    margin-right: 10px;
-    margin-left: 10px;
-    margin-bottom: 30px;
-    
-}
-.SchoolYear .reload-icon {
-    margin-left: 10px;
-
-}
-.SchoolYear .btn-toolbar .button {
-    border-color: black;
-    box-shadow: 0 4px 2px -2px gray;
-    font-size: x-small;
-    text-align: center;
-    margin-left: 30px;
-}
-
-
-.SchoolYear .btn-toolbar .text{
-    font-size: x-small;
-    margin-left: 30px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.SchoolYear .table {
-    text-align: center;
-    font-size: x-small;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin-left: 30px;
-}
-.SchoolYear .test {
-    font-size: x-small;
-    margin-left: 30px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-.SchoolYear .form-group input{
-    width: 100px;
 }

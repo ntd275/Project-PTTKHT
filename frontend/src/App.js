@@ -89,9 +89,10 @@ class App extends React.Component {
               <Route path="/forgetpassword">
                 <ForgetPassword />
               </Route>
-              <PrivateRouter exact path="/" component={<Home />} role={[2, 1]} />
-              <PrivateRouter path="/account-info" component={<AccountInfo />} role={[2, 1]} />
-              <PrivateRouter path="/change-password" component={<ChangePassword />} role={[2, 1]} />
+              <PrivateRouter exact path="/" component={<Home />} role={[2, 1, 0]} />
+              <PrivateRouter path="/account-info" component={<AccountInfo />} role={[2, 1, 0]} />
+              <PrivateRouter path="/change-password" component={<ChangePassword />} role={[2, 1, 0]} />
+              <PrivateRouter path="/school-year" component={<SchoolYear />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
@@ -139,9 +140,6 @@ class App extends React.Component {
               {/* QTV khóa/mở nhập điểm */}
               <Route path="/scorelock">
                 <ScoreLock />
-              </Route>
-              <Route path="/admin/schoolyear">
-                <SchoolYear />
               </Route>
               <Route path="/">
                 <Page404 />
