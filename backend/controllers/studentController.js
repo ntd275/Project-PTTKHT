@@ -90,7 +90,7 @@ async function getStudentByCode(req, res) {
         if (students.length == 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find student with code = ${req.params.name}`
+                message: `Cannot find student with name = ${req.params.name}`
             })
         }
 
