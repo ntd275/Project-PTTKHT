@@ -64,6 +64,21 @@ class SchoolYear extends React.Component {
     } catch (err) {
       console.log(err)
       this.setState({ loading: false })
+      if (err.response && err.response.status === 400) {
+        store.addNotification({
+          title: "Thông báo",
+          message: "Danh sách rỗng",
+          type: "info",
+          container: "top-center",
+          dismiss: {
+            duration: 5000,
+            showIcon: true,
+          },
+          animationIn: ["animate__backInDown", "animate__animated"],
+          animationOut: ["animate__fadeOutUp", "animate__animated"],
+        })
+        return
+      }
       store.addNotification({
         title: "Hệ thống có lỗi",
         message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",

@@ -149,6 +149,58 @@ const Api = {
     deleteSpecialistTeam: (id) => {
         return user.delete(`/specialist-team/id/${id}`)
     },
+    getStudentList: (page, perpage) => {
+        return user.get(`/student/list?page=${page}&perpage=${perpage}`)
+    },
+    addStudent: (data) => {
+        return user.post(`/student/`, {
+            studentCode: data.studentCode,
+            studentName: data.studentName,
+            address: data.address,
+            permanentResidence: data.permanentResidence,
+            gender: data.gender,
+            pId: data.pId,
+            image: data.image,
+            dateOfBirth: data.dateOfBirth,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            dateOfParty: data.dateOfParty,
+            dateOfUnion: data.dateOfUnion,
+            accountName: data.accountName,
+            fatherName: data.fatherName,
+            fatherPhone: data.fatherPhone,
+            fatherMail: data.fatherMail,
+            motherName: data.motherName,
+            motherPhone: data.motherPhone,
+            motherMail: data.motherMail
+        })
+    },
+    editStudent: (data) => {
+        return user.put(`/student/id/${data.studentId}`, {
+            studentCode: data.studentCode,
+            studentName: data.studentName,
+            address: data.address,
+            permanentResidence: data.permanentResidence,
+            gender: data.gender,
+            pId: data.pId,
+            image: data.image,
+            dateOfBirth: data.dateOfBirth,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            dateOfParty: data.dateOfParty,
+            dateOfUnion: data.dateOfUnion,
+            accountName: data.accountName,
+            fatherName: data.fatherName,
+            fatherPhone: data.fatherPhone,
+            fatherMail: data.fatherMail,
+            motherName: data.motherName,
+            motherPhone: data.motherPhone,
+            motherMail: data.motherMail
+        })
+    },
+    deleteStudent: (id) => {
+        return user.delete(`/student/id/${id}`)
+    },
 
 }
 

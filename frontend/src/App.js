@@ -35,6 +35,7 @@ import Page404 from './components/Page404/Page404';
 import Class from './components/Class/Class'
 import Subject from './components/Subject/Subject'
 import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
+import Student from './components/Student/Student'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -93,12 +94,13 @@ class App extends React.Component {
                 <ForgetPassword />
               </Route>
               <PrivateRouter exact path="/" component={<Home />} role={[2, 1, 0]} />
-              <PrivateRouter path="/account-info" component={<AccountInfo />} role={[2, 1, 0]} />
-              <PrivateRouter path="/change-password" component={<ChangePassword />} role={[2, 1, 0]} />
-              <PrivateRouter path="/school-year" component={<SchoolYear />} role={[2]} />
-              <PrivateRouter path="/class" component={<Class />} role={[2]} />
-              <PrivateRouter path="/subject" component={<Subject />} role={[2]} />
-              <PrivateRouter path="/specialist-team" component={<SpecialistTeam />} role={[2]} />
+              <PrivateRouter exact path="/account-info" component={<AccountInfo />} role={[2, 1, 0]} />
+              <PrivateRouter exact path="/change-password" component={<ChangePassword />} role={[2, 1, 0]} />
+              <PrivateRouter exact path="/school-year" component={<SchoolYear />} role={[2]} />
+              <PrivateRouter exact path="/class" component={<Class />} role={[2]} />
+              <PrivateRouter exact path="/subject" component={<Subject />} role={[2]} />
+              <PrivateRouter exact path="/specialist-team" component={<SpecialistTeam />} role={[2]} />
+              <PrivateRouter exact path="/student" component={<Student />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>

@@ -3,8 +3,8 @@ const config = require('../config/config')
 
 async function getStudentList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let studentList = await Student.getStudentList(page, perpage)
 
         if (studentList.length == 0) {

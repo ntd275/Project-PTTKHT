@@ -1,7 +1,7 @@
 const knex = require('./database')
 
-exports.getStudentList = async () => {
-    return await knex.select().table('Student')
+exports.getStudentList = async (page, perpage) => {
+    return await knex.select().table('Student').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getStudent = async (studentId) => {
@@ -13,8 +13,9 @@ exports.getStudentByCode = async (studentCode) => {
 }
 
 exports.createStudent = async (data) => {
-    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0,10).replace('T', ' ')
-    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0,10).replace('T', ' ')
+    let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
 
     return await knex('Student').insert([
         {
@@ -25,7 +26,7 @@ exports.createStudent = async (data) => {
             gender: data.gender,
             pId: data.pId,
             image: data.image,
-            dateOfBirth: data.dateOfBirth,
+            dateOfBirth: dateOfBirth,
             email: data.email,
             phoneNumber: data.phoneNumber,
             dateOfParty: dateOfParty,
@@ -42,9 +43,10 @@ exports.createStudent = async (data) => {
 }
 
 exports.updateStudent = async (id, data) => {
-    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0,10).replace('T', ' ')
-    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0,10).replace('T', ' ')
-    
+    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
+
     return await knex('Student')
         .where('studentId', id)
         .update({
@@ -55,7 +57,7 @@ exports.updateStudent = async (id, data) => {
             gender: data.gender,
             pId: data.pId,
             image: data.image,
-            dateOfBirth: data.dateOfBirth,
+            dateOfBirth: dateOfBirth,
             email: data.email,
             phoneNumber: data.phoneNumber,
             dateOfParty: dateOfParty,
