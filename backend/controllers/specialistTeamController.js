@@ -44,6 +44,14 @@ async function getSpecialistTeam(req, res) {
  async function getSpecialistTeamByName(req, res) {
     try {
         let sTeamName = decodeURI(req.params.name)
+
+        //Preprocess name
+        let words = sTeamName.split(' ')
+        sTeamName = "%"
+        for (i in words) {
+            sTeamName = sTeamName + words[i] + "%"
+        }
+
         let sTeams = await SpecialistTeam.getSpecialistTeamByName(sTeamName)
 
         if (sTeams.length == 0) {
