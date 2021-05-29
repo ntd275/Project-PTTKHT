@@ -88,6 +88,28 @@ const Api = {
     },
     deleteSchoolYear: (id) => {
         return user.delete(`/school-year/id/${id}`)
+    },
+    getClassList: (page, perpage) => {
+        return user.get(`/class/list?page=${page}&perpage=${perpage}`)
+    },
+    addClass: (data) => {
+        return user.post(`/class/`, {
+            className: data.className,
+            classCode: data.classCode,
+            description: data.description,
+            schoolYearId: 4,
+        })
+    },
+    editClass: (data) => {
+        return user.put(`/class/id/${data.classId}`, {
+            className: data.className,
+            classCode: data.classCode,
+            description: data.description,
+            schoolYearId: 4,
+        })
+    },
+    deleteClass: (id) => {
+        return user.delete(`/class/id/${id}`)
     }
 }
 

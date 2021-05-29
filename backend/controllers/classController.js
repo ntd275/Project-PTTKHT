@@ -3,8 +3,8 @@ const config = require('../config/config')
 
 async function getClassList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let myClassList = await Class.getClassList(page, perpage)
 
         if (myClassList.length == 0) {

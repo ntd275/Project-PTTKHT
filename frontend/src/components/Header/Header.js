@@ -53,7 +53,7 @@ class Header extends React.Component {
                                     Quản lý danh mục năm học
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/class" className="dropdown-item">
                                     Quản lý danh mục lớp học
                                 </Link>
                                 <NavDropdown.Divider />

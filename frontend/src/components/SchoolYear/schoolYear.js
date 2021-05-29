@@ -17,6 +17,7 @@ import Api from '../../api/api'
 import Pagination from '../Pagination/Pagination'
 import { store } from 'react-notifications-component';
 import Loading from '../Loading/Loading'
+import { withRouter } from 'react-router-dom'
 class SchoolYear extends React.Component {
   constructor(props) {
     super(props);
@@ -48,6 +49,10 @@ class SchoolYear extends React.Component {
   async componentDidMount() {
     this.setState({ loading: true })
     await this.refresh(1, this.state.perpage)
+  }
+
+  back = () => {
+    this.props.history.goBack()
   }
 
   refresh = async (page, perpage) => {
@@ -97,11 +102,11 @@ class SchoolYear extends React.Component {
   renderTableData() {
     let sttBase = this.state.perpage * (this.state.pagination.currentPage - 1) + 1
     return this.state.schoolYearList.map((year, index) => {
-      const { schoolYearId, schoolYear, description } = year;
+      const { schoolYear, description } = year;
       return (
         <tr key={index}>
           <td>{sttBase + index}</td>
-          <td>{schoolYear}</td>
+          <td><span className="text-primary" style={{ cursor: "pointer" }} onClick={() => this.showInfo(index)}>{schoolYear}</span></td>
           <td>{description}</td>
           <td className="text-center"><BsTrash onClick={() => this.deleteSchoolYear(index)} /></td>
           <td className="text-center"><FaPencilAlt onClick={() => this.editSchoolYear(index)} /></td>
@@ -163,6 +168,25 @@ class SchoolYear extends React.Component {
     })
   }
 
+  showInfo = (index) => {
+    let schoolYear = this.state.schoolYearList[index]
+    this.setState({
+      showModal: true,
+      modalKind: "info",
+      modalLoading: false,
+      modalEdited: false,
+      modalData: {
+        schoolYearId: schoolYear.schoolYearId,
+        startFirstSemester: new Date(schoolYear.beginSemester1),
+        finishFirstSemester: new Date(schoolYear.endSemester1),
+        startSecondSemester: new Date(schoolYear.beginSemester2),
+        finishSecondSemester: new Date(schoolYear.endSemester2),
+        schoolYear: schoolYear.schoolYear,
+        description: schoolYear.description,
+      }
+    })
+  }
+
   closeDelete = () => {
     this.setState({ showDelete: false });
   }
@@ -204,7 +228,7 @@ class SchoolYear extends React.Component {
         <div className="row">
           <div className="col align-self-center d-flex">
             <div className="align-self-center">
-              <BsArrowLeftShort size={50} />
+              <BsArrowLeftShort size={50} onClick={this.back} />
             </div>
             <div className="h3 align-self-center mb-0">
               Quản lý danh mục năm học
@@ -326,7 +350,7 @@ class ConfirmDelete extends React.Component {
           </Modal.Header>
           <Modal.Body>
             <div className="container">
-              {"Bạn chắc chắn muốn xóa năm học " + this.props.data.schoolYear + " ?"}
+              {"Bạn chắc chắn muốn xóa năm học "}  <b>{this.props.data.schoolYear}</b>  {" ?"}
             </div>
           </Modal.Body>
           <Modal.Footer>
@@ -505,6 +529,7 @@ class Dialog extends React.Component {
                       name="schoolYear"
                       value={this.props.data.schoolYear}
                       onChange={this.changeHandler}
+                      readOnly={this.props.kind === "info"}
                     />
                   </Form.Group>
 
@@ -518,6 +543,7 @@ class Dialog extends React.Component {
                         onChange={value => this.changeHandler({ target: { name: "startFirstSemester", value: value } })}
                         dateFormat="dd/MM/yyyy"
                         className="form-control w-100"
+                        readOnly={this.props.kind === "info"}
                       />
                     </div>
                   </Form.Group>
@@ -532,6 +558,7 @@ class Dialog extends React.Component {
                         onChange={value => this.changeHandler({ target: { name: "finishFirstSemester", value: value } })}
                         dateFormat="dd/MM/yyyy"
                         className="form-control w-100"
+                        readOnly={this.props.kind === "info"}
                       />
                     </div>
                   </Form.Group>
@@ -546,6 +573,7 @@ class Dialog extends React.Component {
                         onChange={value => this.changeHandler({ target: { name: "startSecondSemester", value: value } })}
                         dateFormat="dd/MM/yyyy"
                         className="form-control w-100"
+                        readOnly={this.props.kind === "info"}
                       />
                     </div>
                   </Form.Group>
@@ -560,6 +588,7 @@ class Dialog extends React.Component {
                         onChange={value => this.changeHandler({ target: { name: "finishSecondSemester", value: value } })}
                         dateFormat="dd/MM/yyyy"
                         className="form-control w-100"
+                        readOnly={this.props.kind === "info"}
                       />
                     </div>
                   </Form.Group>
@@ -574,6 +603,7 @@ class Dialog extends React.Component {
                       value={this.props.data.description}
                       name="description"
                       onChange={this.changeHandler}
+                      readOnly={this.props.kind === "info"}
                     />
                   </Form.Group>
                 </Form>
@@ -607,4 +637,4 @@ class Dialog extends React.Component {
 }
 
 
-export default SchoolYear;
+export default withRouter(SchoolYear);
