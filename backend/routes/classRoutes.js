@@ -9,6 +9,7 @@ classRouter.use(authMiddleware.isAuth)
 classRouter.get('/list', classController.getClassList)
 classRouter.get('/id/:id', classController.getClass)
 classRouter.get('/homeroom', classController.getHomeroomClass)
+classRouter.get('/name/:name', classController.getClassByName)
 
 // classRouter.use(adminMiddleware)
 

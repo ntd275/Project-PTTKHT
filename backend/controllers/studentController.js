@@ -77,6 +77,37 @@ async function getStudentByCode(req, res) {
     }
 }
 
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of students
+ */
+ async function getStudentByName(req, res) {
+    try {
+        let teacherName = decodeURI(req.params.name)
+        let students = await Student.getStudentByName(teacherName)
+
+        if (students.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find student with code = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: students
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createStudent(req, res) {
     try {
         let student = await Student.createStudent(req.body)
@@ -185,6 +216,7 @@ module.exports = {
     getStudentList: getStudentList,
     getStudent: getStudent,
     getStudentByCode: getStudentByCode,
+    getStudentByName: getStudentByName,
     createStudent: createStudent,
     updateStudent: updateStudent,
     deleteStudent: deleteStudent

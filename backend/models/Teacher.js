@@ -12,6 +12,10 @@ exports.getTeacherByCode = async (teacherCode) => {
     return await knex('Teacher').where('teacherCode', teacherCode).first()
 }
 
+exports.getTeacherByName = async(teacherName) => {
+    return await knex('Teacher').where('teacherName', 'like', teacherName)
+}
+
 exports.createTeacher = async (data) => {
     let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
     let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')

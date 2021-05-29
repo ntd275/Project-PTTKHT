@@ -9,6 +9,7 @@ studentRouter.use(authMiddleware.isAuth)
 studentRouter.get('/list', studentController.getStudentList)
 studentRouter.get('/id/:id', studentController.getStudent)
 studentRouter.get('/code/:code', studentController.getStudentByCode)
+studentRouter.get('/name/:name', studentController.getStudentByName)
 
 // studentRouter.use(adminMiddleware)
 

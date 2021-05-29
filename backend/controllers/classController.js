@@ -86,6 +86,37 @@ async function getHomeroomClass(req, res) {
     }
 }
 
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of classes
+ */
+ async function getClassByName(req, res) {
+    try {
+        let teacherName = decodeURI(req.params.name)
+        let classes = await Class.getClassByName(teacherName)
+
+        if (classes.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find class with name = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: classes
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createClass(req, res) {
     try {
         let myClass = await Class.createClass(req.body)
@@ -180,6 +211,7 @@ module.exports = {
     getClassList: getClassList,
     getClass: getClass,
     getHomeroomClass: getHomeroomClass,
+    getClassByName: getClassByName,
     createClass: createClass,
     updateClass: updateClass,
     deleteClass: deleteClass

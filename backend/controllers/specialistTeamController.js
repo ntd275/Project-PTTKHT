@@ -36,6 +36,37 @@ async function getSpecialistTeam(req, res) {
     }
 }
 
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of specialist teams
+ */
+ async function getSpecialistTeamByName(req, res) {
+    try {
+        let sTeamName = decodeURI(req.params.name)
+        let sTeams = await SpecialistTeam.getSpecialistTeamByName(sTeamName)
+
+        if (sTeams.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find team with name = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: sTeams
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createSpecialistTeam(req, res) {
     try {
         let sTeam = await SpecialistTeam.createSpecialistTeam(req.body)
@@ -99,6 +130,7 @@ async function updateSpecialistTeam(req, res) {
 module.exports = {
     getSpecialistTeamList: getSpecialistTeamList,
     getSpecialistTeam: getSpecialistTeam,
+    getSpecialistTeamByName: getSpecialistTeamByName,
     createSpecialistTeam: createSpecialistTeam,
     deleteSpecialistTeam: deleteSpecialistTeam,
     updateSpecialistTeam: updateSpecialistTeam

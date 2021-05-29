@@ -20,6 +20,10 @@ exports.getHomeroomClass = async(teacherId) => {
         .first() // 1 giáo viên chỉ chủ nhiệm 1 lớp
 }
 
+exports.getClassByName = async(className) => {
+    return await knex('Class').where('className', 'like', className)
+}
+
 exports.createClass = async (data) => {
     return await knex('Class').insert([
         {

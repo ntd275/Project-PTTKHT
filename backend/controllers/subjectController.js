@@ -80,6 +80,38 @@ async function getSubject(req, res) {
     }
 }
 
+
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of subjects
+ */
+ async function getSubjectByName(req, res) {
+    try {
+        let teacherName = decodeURI(req.params.name)
+        let subjects = await Subject.getSubjectByName(teacherName)
+
+        if (subjects.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find subject with name = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: subjects
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createSubject(req, res) {
     try {
         let count = await Subject.createSubject(req.body) // Return rows affected
@@ -175,6 +207,7 @@ module.exports = {
     getSubjectList: getSubjectList,
     getTeachingSubjectList: getTeachingSubjectList,
     getSubject: getSubject,
+    getSubjectByName: getSubjectByName,
     createSubject: createSubject,
     updateSubject: updateSubject,
     deleteSubject: deleteSubject

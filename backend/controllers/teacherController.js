@@ -77,6 +77,37 @@ async function getTeacherByCode(req, res) {
     }
 }
 
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of teachers
+ */
+async function getTeacherByName(req, res) {
+    try {
+        let teacherName = decodeURI(req.params.name)
+        let teachers = await Teacher.getTeacherByName(teacherName)
+
+        if (teachers.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find teacher with name = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: teachers
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createTeacher(req, res) {
     try {
         let teacher = await Teacher.createTeacher(req.body)
@@ -182,6 +213,7 @@ module.exports = {
     getTeacherList: getTeacherList,
     getTeacher: getTeacher,
     getTeacherByCode: getTeacherByCode,
+    getTeacherByName: getTeacherByName,
     createTeacher: createTeacher,
     updateTeacher: updateTeacher,
     deleteTeacher: deleteTeacher
