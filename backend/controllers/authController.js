@@ -90,11 +90,7 @@ exports.sendOtp = async (req, res) => {
                 message: "username does not exist"
             });
         } else {
-<<<<<<< HEAD
             transporter.verify(async function (error, success) {
-=======
-            transporter.verify( async function (error, success) {
->>>>>>> bbb104316cccf6ee184ac00b5207184789b293fc
                 if (error) {
                     return res.status(500).send({
                         success: false,
