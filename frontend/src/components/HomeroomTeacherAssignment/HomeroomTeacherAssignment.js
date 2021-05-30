@@ -183,8 +183,8 @@ class HomeroomTeacherAssignment extends Component {
                 <tr key={index}>
                     <td>{sttBase + index}</td>
                     <td>{className}</td>
-                    <td>{teacherName ? teacherName : "Chưa phân công"}</td>
                     <td>{teacherCode}</td>
+                    <td>{teacherName ? teacherName : "Chưa phân công"}</td>
                     <td>{schoolYear}</td>
                     <td className="text-center">
                         <button type="button" className="btn btn-primary btn-sm" onClick={() => this.editHomeroomTeacherAssignment(index)}>
