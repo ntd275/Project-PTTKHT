@@ -147,22 +147,22 @@ async function updateTeacher(req, res) {
                 message: `Cannot find teacher with id = ${req.params.id}`
             })
         }
-        //Get update info from request
-        teacher.teacherCode = req.body.teacherCode || teacher.teacherCode
-        teacher.teacherName = req.body.teacherName || teacher.teacherName
-        teacher.dateOfBirth = req.body.dateOfBirth || teacher.dateOfBirth
-        teacher.gender = req.body.gender || teacher.gender
-        teacher.pId = req.body.pId || teacher.pId
-        teacher.image = req.body.image || teacher.image
-        teacher.address = req.body.address || teacher.address
-        teacher.permanentResidence = req.body.permanentResidence || teacher.permanentResidence
-        teacher.email = req.body.email || teacher.email
-        teacher.phoneNumber = req.body.phoneNumber || teacher.phoneNumber
-        teacher.dateOfParty = req.body.dateOfParty || teacher.dateOfParty
-        teacher.dateOfUnion = req.body.dateOfUnion || teacher.dateOfUnion
-        teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
-        teacher.major = req.body.major || teacher.major
-        //Update
+        // //Get update info from request
+        // teacher.teacherCode = req.body.teacherCode || teacher.teacherCode
+        // teacher.teacherName = req.body.teacherName || teacher.teacherName
+        // teacher.dateOfBirth = req.body.dateOfBirth || teacher.dateOfBirth
+        // teacher.gender = req.body.gender || teacher.gender
+        // teacher.pId = req.body.pId || teacher.pId
+        // teacher.image = req.body.image || teacher.image
+        // teacher.address = req.body.address || teacher.address
+        // teacher.permanentResidence = req.body.permanentResidence || teacher.permanentResidence
+        // teacher.email = req.body.email || teacher.email
+        // teacher.phoneNumber = req.body.phoneNumber || teacher.phoneNumber
+        // teacher.dateOfParty = req.body.dateOfParty || teacher.dateOfParty
+        // teacher.dateOfUnion = req.body.dateOfUnion || teacher.dateOfUnion
+        // teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
+        // teacher.major = req.body.major || teacher.major
+        
         let count = await Teacher.updateTeacher(req.params.id, teacher)
 
         if (count == 0) { //Cannot update
