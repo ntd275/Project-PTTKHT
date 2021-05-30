@@ -17,8 +17,8 @@ exports.getTeachingSubjectList = async(teacherId) => {
         .where('TeachingAssignment.teacherId', teacherId)
 }
 
-exports.getSubjectByName = async (subjectName) => {
-    return await knex('Subject').where('subjectName', 'like', `%${subjectName}%`)
+exports.getSubjectByName = async (subjectName, page, perpage) => {
+    return await knex('Subject').where('subjectName', 'like', `%${subjectName}%`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createSubject = async (subject) => {

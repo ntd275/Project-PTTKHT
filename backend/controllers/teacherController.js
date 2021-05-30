@@ -85,7 +85,10 @@ async function getTeacherByCode(req, res) {
 async function getTeacherByName(req, res) {
     try {
         let teacherName = decodeURI(req.params.name)
-        let teachers = await Teacher.getTeacherByName(teacherName)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+
+        let teachers = await Teacher.getTeacherByName(teacherName, page, perpage)
 
         if (teachers.length == 0) {
             return res.status(400).json({

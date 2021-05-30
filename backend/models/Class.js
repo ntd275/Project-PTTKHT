@@ -20,8 +20,8 @@ exports.getHomeroomClass = async(teacherId) => {
         .first() // 1 giáo viên chỉ chủ nhiệm 1 lớp
 }
 
-exports.getClassByName = async(className) => {
-    return await knex('Class').where('className', 'like', `%${className}`)
+exports.getClassByName = async(className, page, perpage) => {
+    return await knex('Class').where('className', 'like', `%${className}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createClass = async (data) => {

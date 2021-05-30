@@ -44,6 +44,8 @@ async function getSpecialistTeam(req, res) {
  async function getSpecialistTeamByName(req, res) {
     try {
         let sTeamName = decodeURI(req.params.name)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
 
         //Preprocess name
         let words = sTeamName.split(' ')
@@ -52,7 +54,7 @@ async function getSpecialistTeam(req, res) {
             sTeamName = sTeamName + words[i] + "%"
         }
 
-        let sTeams = await SpecialistTeam.getSpecialistTeamByName(sTeamName)
+        let sTeams = await SpecialistTeam.getSpecialistTeamByName(sTeamName, page, perpage)
 
         if (sTeams.length == 0) {
             return res.status(400).json({

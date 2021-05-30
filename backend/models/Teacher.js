@@ -12,8 +12,8 @@ exports.getTeacherByCode = async (teacherCode) => {
     return await knex('Teacher').where('teacherCode', teacherCode).first()
 }
 
-exports.getTeacherByName = async(teacherName) => {
-    return await knex('Teacher').where('teacherName', 'like', `%${teacherName}`)
+exports.getTeacherByName = async(teacherName, page, perpage) => {
+    return await knex('Teacher').where('teacherName', 'like', `%${teacherName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createTeacher = async (data) => {

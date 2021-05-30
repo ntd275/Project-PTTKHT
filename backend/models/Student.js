@@ -12,8 +12,8 @@ exports.getStudentByCode = async (studentCode) => {
     return await knex('Student').where('studentCode', studentCode).first()
 }
 
-exports.getStudentByName = async (studentName) => {
-    return await knex('Student').where('studentName', 'like', `%${studentName}`)
+exports.getStudentByName = async (studentName, page, perpage) => {
+    return await knex('Student').where('studentName', 'like', `%${studentName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createStudent = async (data) => {

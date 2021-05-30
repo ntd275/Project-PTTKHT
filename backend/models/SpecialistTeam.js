@@ -8,8 +8,8 @@ exports.getSpecialistTeam = async (id) => {
     return await knex('SpecialistTeam').where('specialistTeamId', id).first()
 }
 
-exports.getSpecialistTeamByName = async(sTeamName) => {
-    return await knex('SpecialistTeam').where('specialistName', 'like', sTeamName)
+exports.getSpecialistTeamByName = async(sTeamName, page, perpage) => {
+    return await knex('SpecialistTeam').where('specialistName', 'like', sTeamName).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createSpecialistTeam = async (data) => {

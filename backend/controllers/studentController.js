@@ -85,7 +85,10 @@ async function getStudentByCode(req, res) {
  async function getStudentByName(req, res) {
     try {
         let studentName = decodeURI(req.params.name)
-        let students = await Student.getStudentByName(studentName)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+
+        let students = await Student.getStudentByName(studentName, page, perpage)
 
         if (students.length == 0) {
             return res.status(400).json({

@@ -94,7 +94,10 @@ async function getHomeroomClass(req, res) {
  async function getClassByName(req, res) {
     try {
         let className = decodeURI(req.params.name)
-        let classes = await Class.getClassByName(className)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+
+        let classes = await Class.getClassByName(className, page, perpage)
 
         if (classes.length == 0) {
             return res.status(400).json({

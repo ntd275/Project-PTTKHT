@@ -88,8 +88,10 @@ async function getSubject(req, res) {
  */
  async function getSubjectByName(req, res) {
     try {
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let subjectName = decodeURI(req.params.name)
-        let subjects = await Subject.getSubjectByName(subjectName)
+        let subjects = await Subject.getSubjectByName(subjectName, page, perpage)
 
         if (subjects.length == 0) {
             return res.status(400).json({
