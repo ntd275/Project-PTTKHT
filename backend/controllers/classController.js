@@ -157,7 +157,6 @@ async function updateClass(req, res) {
         }
 
         //Get update info from request
-        myClass.schoolYearId = req.body.schoolYearId || myClass.schoolYearId
         myClass.classCode = req.body.classCode || myClass.classCode
         myClass.className = req.body.className || myClass.className
         myClass.description = req.body.description || myClass.description
