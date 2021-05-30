@@ -53,8 +53,13 @@ async function getClass(req, res) {
     }
 }
 
+/*
 //Lấy danh sách lớp học ứng với teacherId của giáo viên chủ nhiệm
 //= getClass(teacher)
+Returns:
+    class: các fields trong class
+    students: danh sách học sinh thuộc homeroomClass đó
+*/
 async function getHomeroomClass(req, res) {
     try {
         //req.query.key == teacherId
@@ -70,6 +75,40 @@ async function getHomeroomClass(req, res) {
         return res.status(200).json({
             success: true,
             result: homeroomClasses
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of classes
+ */
+ async function getClassByName(req, res) {
+    try {
+        let className = decodeURI(req.params.name)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+
+        let classes = await Class.getClassByName(className, page, perpage)
+
+        if (classes.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find class with name = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: classes
         })
 
     } catch (error) {
@@ -118,7 +157,6 @@ async function updateClass(req, res) {
         }
 
         //Get update info from request
-        myClass.schoolYearId = req.body.schoolYearId || myClass.schoolYearId
         myClass.classCode = req.body.classCode || myClass.classCode
         myClass.className = req.body.className || myClass.className
         myClass.description = req.body.description || myClass.description
@@ -175,6 +213,7 @@ module.exports = {
     getClassList: getClassList,
     getClass: getClass,
     getHomeroomClass: getHomeroomClass,
+    getClassByName: getClassByName,
     createClass: createClass,
     updateClass: updateClass,
     deleteClass: deleteClass

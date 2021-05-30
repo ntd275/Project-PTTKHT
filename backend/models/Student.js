@@ -12,6 +12,10 @@ exports.getStudentByCode = async (studentCode) => {
     return await knex('Student').where('studentCode', studentCode).first()
 }
 
+exports.getStudentByName = async (studentName, page, perpage) => {
+    return await knex('Student').where('studentName', 'like', `%${studentName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
 exports.createStudent = async (data) => {
     let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
     let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
@@ -42,9 +46,20 @@ exports.createStudent = async (data) => {
 }
 
 exports.updateStudent = async (id, data) => {
-    let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
-    let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
-    let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
+    let dateOfBirth = null;
+    if (data.dateOfBirth != null || data.dateOfBirth.length != 0) {
+        dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
+    }
+
+    let dateOfParty = null;
+    if (data.dateOfParty != null || data.dateOfParty.length != 0) {
+        dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
+    }
+
+    let dateOfUnion = null;
+    if (data.dateOfUnion != null || data.dateOfUnion.length != 0) {
+        dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
+    }
 
     return await knex('Student')
         .where('studentId', id)

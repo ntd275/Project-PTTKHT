@@ -15,15 +15,18 @@ exports.getHomeroomClass = async(teacherId) => {
     // return await knex('Class').where('classId', subQuery)
     return await knex('Class')
         .join('HomeroomTeacherAssignment', 'Class.classId', 'HomeroomTeacherAssignment.classId')
-        .select('Class.classId', 'Class.schoolYearId', 'Class.className', 'Class.classCode', 'Class.description')
+        .select('Class.classId', 'Class.className', 'Class.classCode', 'Class.description')
         .where('HomeroomTeacherAssignment.teacherId', teacherId)
         .first() // 1 giáo viên chỉ chủ nhiệm 1 lớp
+}
+
+exports.getClassByName = async(className, page, perpage) => {
+    return await knex('Class').where('className', 'like', `%${className}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createClass = async (data) => {
     return await knex('Class').insert([
         {
-            schoolYearId : data.schoolYearId,
             classCode : data.classCode,
             className : data.className,
             description : data.description
@@ -35,7 +38,6 @@ exports.updateClass = async (id, data) => {
     return await knex('Class')
         .where('classId', id)
         .update({
-            schoolYearId : data.schoolYearId,
             classCode : data.classCode,
             className : data.className,
             description : data.description

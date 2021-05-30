@@ -77,6 +77,40 @@ async function getStudentByCode(req, res) {
     }
 }
 
+/**
+ * 
+ * @param {*} req req.params.name: Tên giáo viên được encoded
+ * @returns list of students
+ */
+ async function getStudentByName(req, res) {
+    try {
+        let studentName = decodeURI(req.params.name)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+
+        let students = await Student.getStudentByName(studentName, page, perpage)
+
+        if (students.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find student with name = ${req.params.name}`
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: students
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createStudent(req, res) {
     try {
         let student = await Student.createStudent(req.body)
@@ -113,27 +147,28 @@ async function updateStudent(req, res) {
                 message: `Cannot find student with id = ${req.params.id}`
             })
         }
-        //Get update info from request
-        student.studentCode = req.body.studentCode || student.studentCode
-        student.studentName = req.body.studentName || student.studentName
-        student.dateOfBirth = req.body.dateOfBirth || student.dateOfBirth
-        student.gender = req.body.gender || student.gender
-        student.pId = req.body.pId || student.pId
-        student.image = req.body.image || student.image
-        student.address = req.body.address || student.address
-        student.permanentResidence = req.body.permanentResidence || student.permanentResidence
-        student.email = req.body.email || student.email
-        student.phoneNumber = req.body.phoneNumber || student.phoneNumber
-        student.dateOfParty = req.body.dateOfParty || student.dateOfParty
-        student.dateOfUnion = req.body.dateOfUnion || student.dateOfUnion
-        student.fatherName = req.body.fatherName || student.fatherName
-        student.fatherPhone = req.body.fatherPhone || student.fatherPhone
-        student.fatherMail = req.body.fatherMail || student.fatherMail
-        student.motherName = req.body.motherName || student.motherName
-        student.motherPhone = req.body.motherPhone || student.motherPhone
-        student.motherMail = req.body.motherMail || student.motherMail
+        // //Get update info from request
+        // student.studentCode = req.body.studentCode || student.studentCode
+        // student.studentName = req.body.studentName || student.studentName
+        // student.dateOfBirth = req.body.dateOfBirth || student.dateOfBirth
+        // student.gender = req.body.gender || student.gender
+        // student.pId = req.body.pId || student.pId
+        // student.image = req.body.image || student.image
+        // student.address = req.body.address || student.address
+        // student.permanentResidence = req.body.permanentResidence || student.permanentResidence
+        // student.email = req.body.email || student.email
+        // student.phoneNumber = req.body.phoneNumber || student.phoneNumber
+        // student.dateOfParty = req.body.dateOfParty || student.dateOfParty
+        // student.dateOfUnion = req.body.dateOfUnion || student.dateOfUnion
+        // student.fatherName = req.body.fatherName || student.fatherName
+        // student.fatherPhone = req.body.fatherPhone || student.fatherPhone
+        // student.fatherMail = req.body.fatherMail || student.fatherMail
+        // student.motherName = req.body.motherName || student.motherName
+        // student.motherPhone = req.body.motherPhone || student.motherPhone
+        // student.motherMail = req.body.motherMail || student.motherMail
 
         let count = await Student.updateStudent(req.params.id, student)
+        
         if (count == 0) {
             return res.status(404).json({
                 success: false,
@@ -185,6 +220,7 @@ module.exports = {
     getStudentList: getStudentList,
     getStudent: getStudent,
     getStudentByCode: getStudentByCode,
+    getStudentByName: getStudentByName,
     createStudent: createStudent,
     updateStudent: updateStudent,
     deleteStudent: deleteStudent

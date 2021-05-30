@@ -34,7 +34,7 @@ import ReactNotification from 'react-notifications-component'
 import Page404 from './components/Page404/Page404';
 import Class from './components/Class/Class'
 import Subject from './components/Subject/Subject'
-import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
+import SpecialistTeam from './components/SpecialistTeam/specialistTeam'
 import Student from './components/Student/Student'
 import Teacher from './components/Teacher/Teacher'
 class App extends React.Component {

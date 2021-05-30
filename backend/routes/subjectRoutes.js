@@ -9,6 +9,7 @@ subjectRouter.use(authMiddleware.isAuth)
 subjectRouter.get('/list', subjectController.getSubjectList)
 subjectRouter.get('/teaching', subjectController.getTeachingSubjectList)
 subjectRouter.get('/id/:id', subjectController.getSubject)
+subjectRouter.get('/name/:name', subjectController.getSubjectByName)
 
 // subjectRouter.use(adminMiddleware)
 

@@ -8,6 +8,7 @@ sTeamRouter.use(authMiddleware.isAuth)
 
 sTeamRouter.get('/list', sTeamController.getSpecialistTeamList)
 sTeamRouter.get('/id/:id', sTeamController.getSpecialistTeam)
+sTeamRouter.get('/name/:name', sTeamController.getSpecialistTeamByName)
 
 // sTeamRouter.use(adminMiddleware)
 
