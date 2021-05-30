@@ -60,7 +60,6 @@ class Student extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ loading: true })
     await this.refresh(1, this.state.perpage)
   }
 

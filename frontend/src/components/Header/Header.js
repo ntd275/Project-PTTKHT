@@ -88,7 +88,7 @@ class Header extends React.Component {
                                 }
                                 id="basic-nav-dropdown"
                             >
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/teaching-assignment" className="dropdown-item">
                                     Phân công giảng dạy
                                 </Link>
                                 <NavDropdown.Divider />

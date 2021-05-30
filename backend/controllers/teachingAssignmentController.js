@@ -3,8 +3,8 @@ const config = require('../config/config')
 
 async function searchTeachingAssignment(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let searchItems = {};
         searchItems.schoolYearId = req.query.schoolYearId;
         searchItems.teacherId = req.query.teacherId;
@@ -28,8 +28,8 @@ async function searchTeachingAssignment(req, res) {
 
 async function getTeachingAssignmentList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let teachingAssignmentList = await TeachingAssignment.getTeachingAssignmentList(page, perpage)
 
         return res.status(200).json({

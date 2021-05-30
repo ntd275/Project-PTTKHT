@@ -243,7 +243,29 @@ const Api = {
     deleteTeacher: (id) => {
         return user.delete(`/teacher/id/${id}`)
     },
-
+    getTeachingAssignmentList: (page, perpage) => {
+        return user.get(`/teaching-assignment/list?page=${page}&perpage=${perpage}`)
+    },
+    searchTeachingAssignment: (page, perpage, searchCondition) => {
+        let url = `/teaching-assignment/search?page=${page}&perpage=${perpage}`
+        console.log(searchCondition)
+        if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
+        if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
+        if (searchCondition.classId) url += `&classId=${searchCondition.classId}`
+        if (searchCondition.subjectId) url += `&subjectId=${searchCondition.subjectId}`
+        return user.get(url)
+    },
+    addTeachingAssignment: (data) => {
+        return user.post(`/teaching-assignment/`, {
+            schoolYearId: data.schoolYearId,
+            teacherId: data.teacherId,
+            classId: data.classId,
+            subjectId: data.subjectId
+        })
+    },
+    deleteTeachingAssignment: (id) => {
+        return user.delete(`/teaching-assignment/id/${id}`)
+    },
 }
 
 export default Api
