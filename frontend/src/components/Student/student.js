@@ -529,10 +529,10 @@ class Dialog extends React.Component {
       })
       return false;
     }
-    if (!isEmail.test(this.props.data.email) && this.props.data.email.length > 0) {
+    if (!isEmail.test(this.props.data.email)) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
-        message: `Email không hợp lệ!`,
+        message: `Kiểm tra email hợp lệ và không được bỏ trống!`,
         type: "warning",
         container: "top-center",
         dismiss: {

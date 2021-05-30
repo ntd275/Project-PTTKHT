@@ -73,10 +73,28 @@ class ChangePassword extends Component {
     }
     setPassword = async (password1, password2) => {
         //console.log(password1, password2);
+        let isDigit = password1.replace(/[^0-9]/g,"").length > 0 ? 1 : 0;
+        let isLetter = password1.replace(/[^a-zA-Z]/g, '').length > 0 ? 1 : 0;
+        let isPunctuation = (password1.length - password1.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").length) > 0 ? 1 : 0;
+        if(password1.length < 8 || (isDigit+isLetter+isPunctuation < 2)){
+            store.addNotification({
+                title: "Lỗi",
+                message: "Mật khẩu không hợp lệ! Mật khẩu phải dài tối thiểu 8 kí tự và chứa 2 trong 3 loại chữ, số, kí tự đặc biệt!",
+                type: "warning",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__slideInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+            return
+        }
         if (password1 !== password2) {
             store.addNotification({
                 title: "Lỗi",
-                message: "Mật khẩu nhập lại không giống",
+                message: "Mật khẩu nhập lại không đúng",
                 type: "warning",
                 container: "top-center",
                 dismiss: {
