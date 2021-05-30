@@ -451,8 +451,196 @@ class Dialog extends React.Component {
     }
     return null
   }
+  validateData = () => {
+    function removeAscent(str) {
+      if (str === null || str === undefined) return str;
+      str = str.toLowerCase();
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+      str = str.replace(/đ/g, "d");
+      return str;
+    }
+    const isName = /^[a-zA-Z ]{2,}$/g
+    const isPId = /[0-9]{9,12}/
+    const isCode = /^[a-zA-Z0-9]+$/
+    const isVNPhoneMobile = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
+    const isEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
+    if (!isName.test(removeAscent(this.props.data.studentName))) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Họ tên học sinh không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isPId.test(this.props.data.pId) && this.props.data.pId.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Số CMND phải bao gồm 9 đến 12 số`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isCode.test(this.props.data.studentCode)) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Mã học sinh chỉ chứa kí tự chữ hoặc số, không được bỏ trống!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isVNPhoneMobile.test(this.props.data.phoneNumber) && this.props.data.phoneNumber.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Số điện thoại học sinh không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isEmail.test(this.props.data.email) && this.props.data.email.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Email không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isName.test(removeAscent(this.props.data.fatherName)) && this.props.data.fatherName.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Họ tên bố không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isVNPhoneMobile.test(this.props.data.fatherPhone) && this.props.data.fatherPhone.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Số điện thoại bố không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isEmail.test(this.props.data.fatherMail) && this.props.data.fatherMail.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Email bố không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isName.test(removeAscent(this.props.data.motherName)) && this.props.data.motherName.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Họ tên mẹ không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isVNPhoneMobile.test(this.props.data.motherPhone) && this.props.data.motherPhone.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Số điện thoại mẹ không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isEmail.test(this.props.data.motherMail) && this.props.data.motherMail.length > 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Email mẹ không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
 
+    return true;
+  }
   addStudent = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.addStudent(this.props.data)
@@ -491,6 +679,9 @@ class Dialog extends React.Component {
   }
 
   editStudent = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.editStudent(this.props.data)

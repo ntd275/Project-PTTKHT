@@ -463,7 +463,7 @@ class Dialog extends React.Component {
     if (!isName.test(removeAscent(this.props.data.teacherName))) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
-        message: `Họ tên `+ this.props.data.teacherName +` không hợp lệ!`,
+        message: `Họ tên không hợp lệ!`,
         type: "warning",
         container: "top-center",
         dismiss: {
