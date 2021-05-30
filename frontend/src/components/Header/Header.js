@@ -72,8 +72,6 @@ class Header extends React.Component {
                                 <Link to="/teacher" className="dropdown-item">
                                     Quản lý danh mục giáo viên
                                 </Link>
-
-
                             </NavDropdown>
                             <NavDropdown
                                 title={
@@ -96,7 +94,7 @@ class Header extends React.Component {
                                     Phân công GVCN
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/specialist-assignment" className="dropdown-item">
                                     Phân công tổ chuyên môn
                                 </Link>
                                 <NavDropdown.Divider />

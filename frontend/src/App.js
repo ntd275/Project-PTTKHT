@@ -105,6 +105,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/teacher" component={<Teacher />} role={[2]} />
               <PrivateRouter exact path="/teaching-assignment" component={<TeachingAssignment />} role={[2]} />
               <PrivateRouter exact path="/homeroom-teacher-assignment" component={<HomeroomTeacherAssignment />} role={[2]} />
+              <PrivateRouter exact path="/specialist-assignment" component={<SpecialistAssignment />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
@@ -124,11 +125,6 @@ class App extends React.Component {
                 <StudentAttendance />
               </Route>
 
-
-              {/* Phân công giáo viên vào tổ chuyên môn */}
-              <Route path="/SpecialistAssignment">
-                <SpecialistAssignment />
-              </Route>
               {/* Quản lý học sinh trong lớp */}
               <Route path="/TransferClass">
                 <TransferClass />

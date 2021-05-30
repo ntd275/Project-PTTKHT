@@ -11,7 +11,7 @@ exports.searchSpecialistAssignment = async (searchItems, page, perpage) => {
             'SpecialistAssignment.schoolYearId', 'SchoolYear.schoolYear',
         ).where((qb) => {
             if (searchItems.schoolYearId) {
-                qb.where('TeachingAssignment.schoolYearId', searchItems.schoolYearId);
+                qb.where('SpecialistAssignment.schoolYearId', searchItems.schoolYearId);
             }
             if (searchItems.teacherId) {
                 qb.where('Teacher.teacherId', searchItems.teacherId);

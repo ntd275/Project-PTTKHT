@@ -394,7 +394,7 @@ class Dialog extends React.Component {
             return "Thêm phân công giáo viên chủ nhiệm"
         }
         if (this.props.kind === "edit") {
-            return "Sửa phân công giáo viên chủ nhiệm"
+            return "Cập nhật phân công giáo viên chủ nhiệm"
         }
         return "Thông tin phân công giáo viên chủ nhiệm"
     }
@@ -404,7 +404,7 @@ class Dialog extends React.Component {
             return <Button onClick={this.addHomeroomTeacherAssignment}>Thêm</Button>
         }
         if (this.props.kind === "edit") {
-            return <Button onClick={this.editHomeroomTeacherAssignment}>Sửa</Button>
+            return <Button onClick={this.editHomeroomTeacherAssignment}>Cập nhật</Button>
         }
         return null
     }
