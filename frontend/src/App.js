@@ -34,9 +34,9 @@ import ReactNotification from 'react-notifications-component'
 import Page404 from './components/Page404/Page404';
 import Class from './components/Class/Class'
 import Subject from './components/Subject/Subject'
-import SpecialistTeam from './components/SpecialistTeam/specialistTeam'
-import Student from './components/Student/Student'
-import Teacher from './components/Teacher/Teacher'
+import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
+import Student from './components/Student/student'
+import Teacher from './components/Teacher/teacher'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -104,6 +104,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/student" component={<Student />} role={[2]} />
               <PrivateRouter exact path="/teacher" component={<Teacher />} role={[2]} />
               <PrivateRouter exact path="/teaching-assignment" component={<TeachingAssignment />} role={[2]} />
+              <PrivateRouter exact path="/homeroom-teacher-assignment" component={<HomeroomTeacherAssignment />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
@@ -122,10 +123,7 @@ class App extends React.Component {
               <Route path="/StudentAttendance">
                 <StudentAttendance />
               </Route>
-              {/* Phân công GVCN */}
-              <Route path="/HomeroomTeacherAssignment">
-                <HomeroomTeacherAssignment />
-              </Route>
+
 
               {/* Phân công giáo viên vào tổ chuyên môn */}
               <Route path="/SpecialistAssignment">

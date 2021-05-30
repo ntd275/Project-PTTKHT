@@ -266,6 +266,27 @@ const Api = {
     deleteTeachingAssignment: (id) => {
         return user.delete(`/teaching-assignment/id/${id}`)
     },
+    getHomeroomTeacherAssignmentList: (page, perpage) => {
+        return user.get(`/homeroom-teacher-assignment/list?page=${page}&perpage=${perpage}`)
+    },
+    searchHomeroomTeacherAssignment: (page, perpage, searchCondition) => {
+        let url = `/homeroom-teacher-assignment/search?page=${page}&perpage=${perpage}`
+        console.log(searchCondition)
+        if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
+        if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
+        if (searchCondition.classId) url += `&classId=${searchCondition.classId}`
+        return user.get(url)
+    },
+    addHomeroomTeacherAssignment: (data) => {
+        return user.post(`/homeroom-teacher-assignment`, {
+            schoolYearId: data.schoolYearId,
+            teacherId: data.teacherId,
+            classId: data.classId,
+        })
+    },
+    deleteHomeroomTeacherAssignment: (id) => {
+        return user.delete(`/homeroom-teacher-assignment/id/${id}`)
+    },
 }
 
 export default Api

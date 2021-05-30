@@ -637,7 +637,7 @@ class Dialog extends React.Component {
     return true;
   }
   addStudent = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })
@@ -678,7 +678,7 @@ class Dialog extends React.Component {
   }
 
   editStudent = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })
