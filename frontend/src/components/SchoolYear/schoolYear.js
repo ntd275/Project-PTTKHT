@@ -409,8 +409,73 @@ class Dialog extends React.Component {
     }
     return null
   }
-
+  validateData = () => {
+    if (this.props.data.schoolYear.length == 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Tên năm học không được bỏ trống!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (this.props.data.finishFirstSemester <= this.props.data.startFirstSemester) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Kiểm tra ngày Kết thúc kì 1 phải lớn hơn ngày Bắt đầu kì 1!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (this.props.data.startSecondSemester <= this.props.data.finishFirstSemester) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Kiểm tra ngày Bắt đầu kì 2 phải lớn hơn ngày Kết thúc kì 1!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (this.props.data.finishSecondSemester <= this.props.data.startSecondSemester) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Kiểm tra ngày Kết thúc kì 2 phải lớn hơn ngày Bắt đầu kì 2!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    return true;
+  }
   addSchoolYear = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.addSchoolYear(this.props.data)
@@ -449,6 +514,9 @@ class Dialog extends React.Component {
   }
 
   editSchoolYear = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.editSchoolYear(this.props.data)

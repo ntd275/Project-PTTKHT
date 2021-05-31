@@ -51,9 +51,9 @@ async function getAccount(req, res) {
 
 async function getAccountByUsername(req, res) {
     try {
-        let account = await Account.getAccountByUsername(req.params.username)
+        let accounts = await Account.getAccountByUsername(req.params.username)
 
-        if (!account) {
+        if (accounts.length == 0) {
             return res.status(404).json({
                 success: false,
                 message: "Account not found"
@@ -62,7 +62,7 @@ async function getAccountByUsername(req, res) {
 
         return res.status(200).json({
             success: true,
-            result: account
+            result: accounts
         })
 
     } catch (error) {
@@ -76,11 +76,14 @@ async function getAccountByUsername(req, res) {
 
 async function addAccount(req, res) {
     try {
-        let account = Account.createAccount(req.body)
+        let account = req.body
+        account.password = await bcrypt.hash(account.password, config.saltRounds)
+
+        let count = await Account.createAccount(req.body)
 
         return res.status(200).json({
             success: true,
-            result: account
+            result: count
         })
     } catch (error) {
         console.log(error)
@@ -184,6 +187,7 @@ async function changePassword(req, res) {
             })
         }
 
+        newPassword = bcrypt.hash(newPassword, config.saltRounds)
         let count = await Account.updatePassword(accountId, newPassword)
         if (count == 0) {
             return res.status(418).json({

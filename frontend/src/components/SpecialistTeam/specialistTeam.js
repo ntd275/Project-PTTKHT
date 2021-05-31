@@ -390,8 +390,28 @@ class Dialog extends React.Component {
     }
     return null
   }
-
+  validateData = () => {
+    if (this.props.data.specialistName.length == 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Tên tổ chuyên môn không được bỏ trống!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    return true;
+  }
   addSpecialistTeam = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.addSpecialistTeam(this.props.data)
@@ -430,6 +450,9 @@ class Dialog extends React.Component {
   }
 
   editSpecialistTeam = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.editSpecialistTeam(this.props.data)

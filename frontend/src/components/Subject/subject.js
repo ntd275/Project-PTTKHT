@@ -394,8 +394,58 @@ class Dialog extends React.Component {
     }
     return null
   }
+  validateData = () => {
+    function removeAscent(str) {
+      if (str === null || str === undefined) return str;
+      str = str.toLowerCase();
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+      str = str.replace(/đ/g, "d");
+      return str;
+    }
+    const isName = /^[a-zA-Z0-9 ]{2,}$/g
+    const isCode = /^[a-zA-Z0-9]+$/
+    if (!isName.test(removeAscent(this.props.data.subjectName))) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Tên môn học không hợp lệ!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
+    if (!isCode.test(this.props.data.subjectCode)) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Mã môn chỉ chứa kí tự chữ hoặc số, không được bỏ trống!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
 
+    return true;
+  }
   addSubject = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.addSubject(this.props.data)
@@ -434,6 +484,9 @@ class Dialog extends React.Component {
   }
 
   editSubject = async () => {
+    if(!this.validateData()) {
+      return;
+    }
     this.setState({ loading: true })
     try {
       await Api.editSubject(this.props.data)
