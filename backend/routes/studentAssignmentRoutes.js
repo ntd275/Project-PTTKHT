@@ -13,6 +13,7 @@ studentAssignmentRouter.get('/search', studentAssignmentController.searchStudent
 // studentAssignmentRouter.use(adminMiddleware)
 
 studentAssignmentRouter.post('/', studentAssignmentController.createStudentAssignment)
+studentAssignmentRouter.post('/transform-class', studentAssignmentController.transformClass)
 studentAssignmentRouter.delete('/id/:id', studentAssignmentController.deleteStudentAssignment)
 
 studentAssignmentRouter.use(notFound)
