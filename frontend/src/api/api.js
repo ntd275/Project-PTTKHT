@@ -368,8 +368,32 @@ const Api = {
     },
     getStudentByCode: (code) => {
         return user.get(`/student/code/${code}`)
-    }
-
+    },
+    getScoreLockList: (page, perpage) => {
+        return user.get(`/score-lock/list?page=${page}&perpage=${perpage}`)
+    },
+    addScoreLock: (data) => {
+        return user.post(`/score-lock/`, {
+            schoolYearId: data.schoolYearId,
+            term: data.term,
+            lock: data.lock
+        })
+    },
+    lockScoreLock: (data) => {
+        return user.put(`/score-lock/lock/`, {
+            schoolYearId: data.schoolYearId,
+            term: data.term,
+        })
+    },
+    unlockScoreLock: (data) => {
+        return user.put(`/score-lock/unlock/`, {
+            schoolYearId: data.schoolYearId,
+            term: data.term,
+        })
+    },
+    deleteScoreLock: (id) => {
+        return user.delete(`/score-lock/id/${id}`)
+    },
 }
 
 export default Api

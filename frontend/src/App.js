@@ -110,6 +110,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/student-assignment" component={<StudentAssignment />} role={[2]} />
               <PrivateRouter exact path="/account" component={<Account />} role={[2]} />
               <PrivateRouter exact path="/transfer-class" component={<TransferClass />} role={[2]} />
+              <PrivateRouter exact path="/score-lock" component={<ScoreLock />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
@@ -136,10 +137,6 @@ class App extends React.Component {
               </Route>
               <Route path="/statistic/subject">
                 <SubjectStatistic />
-              </Route>
-              {/* QTV khóa/mở nhập điểm */}
-              <Route path="/scorelock">
-                <ScoreLock />
               </Route>
               <Route path="/">
                 <Page404 />

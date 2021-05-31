@@ -135,13 +135,13 @@ class Header extends React.Component {
                                     Thống kê điểm bài thi theo cá nhân
                                 </Link>
                             </NavDropdown>
-                            <Link to="/" className="nav-link">
+                            <Link to="/score-lock" className="nav-link">
                                 <div className="d-inline-block">
                                     <div className="position-relative">
                                         <BsFillLockFill size={this.state.iconSize} className="position-relative title-icon" />
                                         <div className="title-text d-inline-block">
                                             Khóa/Mở nhập điểm
-                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </Link>

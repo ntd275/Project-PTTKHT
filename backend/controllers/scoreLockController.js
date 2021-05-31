@@ -3,8 +3,8 @@ const config = require('../config/config')
 
 async function getScoreLockList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let scoreLockList = await ScoreLock.getScoreLockList(page, perpage)
 
         return res.status(200).json({
@@ -102,7 +102,7 @@ async function deleteScoreLock(req, res) {
 
 async function lock(req, res) {
     try {
-        let lock = ScoreLock.lock(req.body.schoolYear, req.body.term)
+        let lock = ScoreLock.lock(req.body.schoolYearId, req.body.term)
 
         if (lock == 0) {
             return res.status(400).json({
