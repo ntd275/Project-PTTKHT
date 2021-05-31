@@ -1,15 +1,15 @@
 const knex = require('./database')
 
 // exports.getConductList = async () => {
-//     return await knex.select().table('Conduct')
+//     return knex.select().table('Conduct')
 // }
 
 // exports.getConductById = async (conductId) => {
-//     return await knex('Conduct').where('conductId', conductId).first()
+//     return knex('Conduct').where('conductId', conductId).first()
 // }
 
 exports.getConduct = async (studentId, schoolYearId, term) => {
-    return await knex('Conduct').where({
+    return knex('Conduct').where({
         studentId: studentId,
         schoolYearId: schoolYearId,
         term: term
@@ -17,7 +17,7 @@ exports.getConduct = async (studentId, schoolYearId, term) => {
 }
 
 exports.createConduct = async (data) => {
-    return await knex('Conduct').insert([
+    return knex('Conduct').insert([
         {
             studentId: data.studentId,
             classId: data.classId,
@@ -30,7 +30,7 @@ exports.createConduct = async (data) => {
 }
 
 exports.updateConduct = async (data) => {
-    return await knex('Conduct')
+    return knex('Conduct')
         .where('conductId', data.conductId)
         .update({
             studentId: data.studentId,
@@ -43,6 +43,6 @@ exports.updateConduct = async (data) => {
 }
 
 // exports.deleteConduct = async (conductId) => {
-//     return await knex('Conduct').where('conductId', conductId).del()
+//     return knex('Conduct').where('conductId', conductId).del()
 // }
 

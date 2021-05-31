@@ -1,11 +1,11 @@
 const knex = require('./database')
 
 exports.getScoreList = async () => {
-    return await knex.select().table('Score')
+    return knex.select().table('Score')
 }
 
 exports.findScore = async (data) => {
-    return await knex('Score').where({
+    return knex('Score').where({
         studentId: data.studentId,
         teacherId: data.teacherId,
         subjectId: data.subjectId,
@@ -17,7 +17,7 @@ exports.findScore = async (data) => {
 
 //Return an array contains all score of a student by subject in a term of a school year
 exports.getSubjectScore = async (studentId, subjectId, schoolYearId, term) => {
-    return await knex('Score').where({
+    return knex('Score').where({
         studentId: studentId,
         subjectId: subjectId,
         schoolYearId: schoolYearId,
@@ -27,7 +27,7 @@ exports.getSubjectScore = async (studentId, subjectId, schoolYearId, term) => {
 
 //Return an array contains all score of a student in a term of a school year
 exports.getStudentScore = async (studentId, schoolYearId, term) => {
-    return await knex('Score').where({
+    return knex('Score').where({
         studentId: studentId,
         schoolYearId: schoolYearId,
         term: term
@@ -35,7 +35,7 @@ exports.getStudentScore = async (studentId, schoolYearId, term) => {
 }
 
 exports.createScore = async (data) => {
-    return await knex('Score').insert([
+    return knex('Score').insert([
         {
             studentId: data.studentId,
             teacherId: data.teacherId,
@@ -48,19 +48,21 @@ exports.createScore = async (data) => {
     ])
 }
 
+/**
+ * {
+    "scoreId": 99,
+    "studentId": 1,
+    
+}
+ */
 exports.editScore = async (data) => {
-    return await knex('Score').where('scoreId', data.scoreId)
-        .update({
-            studentId: data.studentId,
-            teacherId: data.teacherId,
-            subjectId: data.subjectId,
-            schoolYearId: data.schoolYearId,
-            kind: data.kind,
-            score: data.score,
-        })
+    let students = data.students
+    
+
+    
 }
 
 exports.deleteScore = async (scoreId) => {
-    return await knex('Score').where('scoreId', scoreId).del()
+    return knex('Score').where('scoreId', scoreId).del()
 }
 
