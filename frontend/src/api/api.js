@@ -284,6 +284,13 @@ const Api = {
             classId: data.classId,
         })
     },
+    editHomeroomTeacherAssignment: (data) => {
+        return user.put(`/homeroom-teacher-assignment/id/${data.homeroomTeacherAssignmentId}`, {
+            schoolYearId: data.schoolYearId,
+            teacherId: data.teacherId,
+            classId: data.classId,
+        })
+    },
     deleteHomeroomTeacherAssignment: (id) => {
         return user.delete(`/homeroom-teacher-assignment/id/${id}`)
     },
