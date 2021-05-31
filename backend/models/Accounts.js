@@ -11,7 +11,7 @@ exports.getAccountList = async (page, perpage) => {
 }
 //Use for auth login
 exports.getAccountByUsername = async (accountName) => {
-    return knex('Accounts').where('accountName', accountName)
+    return knex('Accounts').where('accountName', accountName).first()
 }
 //Use for account get accounts
 exports.getAccountsByUsername = async (accountName) => {
