@@ -410,6 +410,21 @@ class Dialog extends React.Component {
     return null
   }
   validateData = () => {
+    if (this.props.data.schoolYear.length == 0) {
+      store.addNotification({
+        title: "Nhập dữ liệu không chính xác",
+        message: `Tên năm học không được bỏ trống!`,
+        type: "warning",
+        container: "top-center",
+        dismiss: {
+          duration: 5000,
+          //showIcon: true,
+        },
+        animationIn: ["animate__slideInDown", "animate__animated"],
+        animationOut: ["animate__fadeOutUp", "animate__animated"],
+      })
+      return false;
+    }
     if (this.props.data.finishFirstSemester <= this.props.data.startFirstSemester) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
