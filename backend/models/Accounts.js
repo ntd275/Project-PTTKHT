@@ -9,8 +9,12 @@ const config = require('../config/config')
 exports.getAccountList = async (page, perpage) => {
     return knex.select('accountId', 'accountName', 'role', 'userCode').table('Accounts').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
-
+//Use for auth login
 exports.getAccountByUsername = async (accountName) => {
+    return knex('Accounts').where('accountName', accountName)
+}
+//Use for account get accounts
+exports.getAccountsByUsername = async (accountName) => {
     return knex('Accounts').where('accountName', 'like', accountName)
 }
 
