@@ -87,6 +87,7 @@ async function getStudentScore(req, res) {
 //If exists, update on the score which matched
 async function editScore(req, res) {
     try {
+        //Return rows affected
         let count = await Score.editScore(req.body)
 
         if (count == 0) {
@@ -95,8 +96,6 @@ async function editScore(req, res) {
                 message: `Cannot update scores`
             })
         }
-
-        console.log(count);
 
         return res.status(200).json({
             success: true,
