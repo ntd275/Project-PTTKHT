@@ -32,9 +32,9 @@ import Api from './api/api';
 import jwt from "jwt-decode";
 import ReactNotification from 'react-notifications-component'
 import Page404 from './components/Page404/Page404';
-import Class from './components/Class/Class'
-import Subject from './components/Subject/Subject'
-import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
+import Class from './components/Class/class'
+import Subject from './components/Subject/subject'
+import SpecialistTeam from './components/SpecialistTeam/specialistTeam'
 import Student from './components/Student/student'
 import Teacher from './components/Teacher/teacher'
 import Account from './components/Account/Account'
@@ -109,6 +109,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/specialist-assignment" component={<SpecialistAssignment />} role={[2]} />
               <PrivateRouter exact path="/student-assignment" component={<StudentAssignment />} role={[2]} />
               <PrivateRouter exact path="/account" component={<Account />} role={[2]} />
+              <PrivateRouter exact path="/transfer-class" component={<TransferClass />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
@@ -128,10 +129,7 @@ class App extends React.Component {
                 <StudentAttendance />
               </Route>
 
-              {/* Quản lý học sinh trong lớp */}
-              <Route path="/TransferClass">
-                <TransferClass />
-              </Route>
+
 
               <Route path="/statistic/rank">
                 <RankStatistic />
@@ -162,16 +160,22 @@ class PrivateRouter extends React.Component {
     this.state = {
     }
   }
+  checkLogin = () => {
+    return this.context.user
+  }
   checkAuth = () => {
-    //console.log(this.props, this.context, this.props.role && this.context.user && this.props.role.includes(this.context.user.role))
     return this.props.role && this.context.user && this.props.role.includes(this.context.user.role)
   }
   render() {
     let { component: Component, ...rest } = this.props;
     return (
       <Route {...rest}>
-        {this.checkAuth() ?
-          Component :
+        {this.checkLogin() ?
+          this.checkAuth() ?
+            Component :
+            <Redirect
+              to='/'
+            /> :
           <Redirect
             to={{
               pathname: '/login',
