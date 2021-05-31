@@ -96,6 +96,8 @@ async function editScore(req, res) {
             })
         }
 
+        console.log(count);
+
         return res.status(200).json({
             success: true,
             result: count
