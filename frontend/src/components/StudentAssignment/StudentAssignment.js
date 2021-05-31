@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import Api from "../../api/api";
 import { FiEdit } from 'react-icons/fi';
 import { BiSearch, BiRefresh } from 'react-icons/bi';
@@ -63,7 +62,8 @@ class StudentAssignment extends Component {
                 Api.getStudentList(1, 1000000),
             ]);
             let searchCondition = {
-                schoolYearId: schoolYearList.data.result.data[schoolYearList.data.result.data.length - 1].schoolYearId
+                schoolYearId: schoolYearList.data.result.data[schoolYearList.data.result.data.length - 1].schoolYearId,
+                classId: classList.data.result.data[0].classId
             }
             this.setState({
                 schoolYearList: schoolYearList.data.result.data,
@@ -155,7 +155,8 @@ class StudentAssignment extends Component {
 
     refreshClear() {
         let searchCondition = {
-            schoolYearId: this.state.searchCondition.schoolYearId
+            schoolYearId: this.state.searchCondition.schoolYearId,
+            classId: this.state.searchCondition.classId
         }
         this.setState({
             searchCondition: searchCondition
@@ -217,17 +218,27 @@ class StudentAssignment extends Component {
         this.setState({ searchCondition: searchCondition })
     }
 
+    formatDate = (d) => {
+        let dd = d.getDate()
+        let mm = d.getMonth() + 1
+        let yyyy = d.getFullYear()
+        if (dd < 10) { dd = '0' + dd }
+        if (mm < 10) { mm = '0' + mm }
+        return dd + '/' + mm + '/' + yyyy
+    }
+
     renderTableData() {
         let sttBase = this.state.perpage * (this.state.pagination.currentPage - 1) + 1
         return this.state.studentAssignmentList.map((data, index) => {
-            const { studentCode, studentName, className, schoolYear } = data;
+            const { studentCode, studentName, dateOfBirth, gender, address } = data;
             return (
                 <tr key={index}>
                     <td>{sttBase + index}</td>
                     <td>{studentCode}</td>
                     <td>{studentName}</td>
-                    <td>{className}</td>
-                    <td>{schoolYear}</td>
+                    <td>{this.formatDate(new Date(dateOfBirth))}</td>
+                    <td>{gender === 1 ? "Nam" : "Nữ"}</td>
+                    <td>{address}</td>
                     <td className="text-center"><BsTrash onClick={() => this.deleteStudentAssignment(index)} /></td>
                 </tr>
             );
@@ -392,7 +403,7 @@ class StudentAssignment extends Component {
                                         <th>Họ tên</th>
                                         <th>Ngày sinh</th>
                                         <th>Giới tính</th>
-                                        <th>Nơi sinh</th>
+                                        <th>Địa chỉ</th>
                                         <th>
                                             <BsTrash />
                                         </th>

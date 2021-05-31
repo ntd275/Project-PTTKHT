@@ -80,6 +80,24 @@ async function createStudentAssignment(req, res) {
     }
 }
 
+async function transformClass(req, res) {
+    try {
+        let studentAssignmentList = await StudentAssignment.createStudentAssignmentList(req.body.data)
+
+        return res.status(200).json({
+            success: true,
+            result: studentAssignmentList
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function deleteStudentAssignment(req, res) {
     try {
         //Return number of affected rows
@@ -111,5 +129,6 @@ module.exports = {
     deleteStudentAssignment: deleteStudentAssignment,
     getStudentAssignmentList: getStudentAssignmentList,
     getStudentAssignment: getStudentAssignment,
-    searchStudentAssignment: searchStudentAssignment
+    searchStudentAssignment: searchStudentAssignment,
+    transformClass: transformClass
 }
