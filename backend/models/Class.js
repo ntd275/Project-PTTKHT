@@ -2,18 +2,18 @@ const knex = require('./database')
 const HomeroomTeacherAssignment = require('./HomeroomTeacherAssignment')
 
 exports.getClassList = async (page, perpage) => {
-    return await knex.select().table('Class').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex.select().table('Class').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getClass = async (classId) => {
-    return await knex('Class').where('classId', classId).first()
+    return knex('Class').where('classId', classId).first()
 }
 
 //Get homeroom class list of a teacher
 exports.getHomeroomClass = async(teacherId) => {
-    // let subQuery = await knex('HomeroomTeacherAssignment').where('teacherId',teacherId).select('classId')
-    // return await knex('Class').where('classId', subQuery)
-    return await knex('Class')
+    // let subQuery = knex('HomeroomTeacherAssignment').where('teacherId',teacherId).select('classId')
+    // return knex('Class').where('classId', subQuery)
+    return knex('Class')
         .join('HomeroomTeacherAssignment', 'Class.classId', 'HomeroomTeacherAssignment.classId')
         .select('Class.classId', 'Class.className', 'Class.classCode', 'Class.description')
         .where('HomeroomTeacherAssignment.teacherId', teacherId)
@@ -21,11 +21,11 @@ exports.getHomeroomClass = async(teacherId) => {
 }
 
 exports.getClassByName = async(className, page, perpage) => {
-    return await knex('Class').where('className', 'like', `%${className}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex('Class').where('className', 'like', `%${className}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createClass = async (data) => {
-    return await knex('Class').insert([
+    return knex('Class').insert([
         {
             classCode : data.classCode,
             className : data.className,
@@ -35,7 +35,7 @@ exports.createClass = async (data) => {
 }
 
 exports.updateClass = async (id, data) => {
-    return await knex('Class')
+    return knex('Class')
         .where('classId', id)
         .update({
             classCode : data.classCode,
@@ -45,6 +45,6 @@ exports.updateClass = async (id, data) => {
 }
 
 exports.deleteClass = async (classId) => {
-    return await knex('Class').where('classId', classId).del()
+    return knex('Class').where('classId', classId).del()
 }
 
