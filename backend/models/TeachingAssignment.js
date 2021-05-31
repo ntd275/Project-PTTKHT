@@ -1,7 +1,7 @@
 const knex = require('./database')
 
 exports.searchTeachingAssignment = async (searchItems, page, perpage) => {
-    return await knex('TeachingAssignment')
+    return knex('TeachingAssignment')
         .join('Teacher', 'TeachingAssignment.teacherId', 'Teacher.teacherId')
         .join('Class', 'TeachingAssignment.classId', 'Class.classId')
         .join('Subject', 'TeachingAssignment.subjectId', 'Subject.subjectId')
@@ -28,7 +28,7 @@ exports.searchTeachingAssignment = async (searchItems, page, perpage) => {
 }
 
 exports.getTeachingAssignmentList = async (page, perpage) => {
-    return await knex('TeachingAssignment')
+    return knex('TeachingAssignment')
         .join('Teacher', 'TeachingAssignment.teacherId', 'Teacher.teacherId')
         .join('Class', 'TeachingAssignment.classId', 'Class.classId')
         .join('Subject', 'TeachingAssignment.subjectId', 'Subject.subjectId')
@@ -42,7 +42,7 @@ exports.getTeachingAssignmentList = async (page, perpage) => {
 }
 
 exports.getTeachingAssignment = async (teachingAssignmentId) => {
-    return await knex('TeachingAssignment')
+    return knex('TeachingAssignment')
         .join('Teacher', 'TeachingAssignment.teacherId', 'Teacher.teacherId')
         .join('Class', 'TeachingAssignment.classId', 'Class.classId')
         .join('Subject', 'TeachingAssignment.subjectId', 'Subject.subjectId')
@@ -56,10 +56,10 @@ exports.getTeachingAssignment = async (teachingAssignmentId) => {
 }
 
 exports.deleteTeachingAssignment = async (teachingAssignmentId) => {
-    return await knex('TeachingAssignment').where('teachingAssignmentId', teachingAssignmentId).del()
+    return knex('TeachingAssignment').where('teachingAssignmentId', teachingAssignmentId).del()
 }
 exports.createTeachingAssignment = async (data) => {
-    return await knex('TeachingAssignment').insert([
+    return knex('TeachingAssignment').insert([
         {
             teacherId: data.teacherId,
             classId: data.classId,

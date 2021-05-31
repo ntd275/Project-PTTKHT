@@ -1,7 +1,7 @@
 const knex = require('./database')
 
 exports.updateHomeroomTeacherAssignment = async (id, data) => {
-    return await knex('HomeroomTeacherAssignment')
+    return knex('HomeroomTeacherAssignment')
         .where('homeroomTeacherAssignmentId', id)
         .update({
             teacherId: data.teacherId,
@@ -9,7 +9,7 @@ exports.updateHomeroomTeacherAssignment = async (id, data) => {
 }
 
 exports.searchHomeroomTeacherAssignment = async (searchItems, page, perpage) => {
-    return await knex('HomeroomTeacherAssignment')
+    return knex('HomeroomTeacherAssignment')
         .join('Teacher', 'HomeroomTeacherAssignment.teacherId', 'Teacher.teacherId')
         .join('Class', 'HomeroomTeacherAssignment.classId', 'Class.classId')
         .join('SchoolYear', 'HomeroomTeacherAssignment.schoolYearId', 'SchoolYear.schoolYearId')
@@ -31,7 +31,7 @@ exports.searchHomeroomTeacherAssignment = async (searchItems, page, perpage) => 
 }
 
 exports.getHomeroomTeacherAssignmentList = async (page, perpage) => {
-    return await knex('HomeroomTeacherAssignment')
+    return knex('HomeroomTeacherAssignment')
         .join('Teacher', 'HomeroomTeacherAssignment.teacherId', 'Teacher.teacherId')
         .join('Class', 'HomeroomTeacherAssignment.classId', 'Class.classId')
         .join('SchoolYear', 'HomeroomTeacherAssignment.schoolYearId', 'SchoolYear.schoolYearId')
@@ -43,7 +43,7 @@ exports.getHomeroomTeacherAssignmentList = async (page, perpage) => {
 }
 
 exports.getHomeroomTeacherAssignment = async (homeroomTeacherAssignmentId) => {
-    return await knex('HomeroomTeacherAssignment')
+    return knex('HomeroomTeacherAssignment')
         .join('Teacher', 'HomeroomTeacherAssignment.teacherId', 'Teacher.teacherId')
         .join('Class', 'HomeroomTeacherAssignment.classId', 'Class.classId')
         .join('SchoolYear', 'HomeroomTeacherAssignment.schoolYearId', 'SchoolYear.schoolYearId')
@@ -55,10 +55,10 @@ exports.getHomeroomTeacherAssignment = async (homeroomTeacherAssignmentId) => {
 }
 
 exports.deleteHomeroomTeacherAssignment = async (homeroomTeacherAssignmentId) => {
-    return await knex('HomeroomTeacherAssignment').where('homeroomTeacherAssignmentId', homeroomTeacherAssignmentId).del()
+    return knex('HomeroomTeacherAssignment').where('homeroomTeacherAssignmentId', homeroomTeacherAssignmentId).del()
 }
 exports.createHomeroomTeacherAssignment = async (data) => {
-    return await knex('HomeroomTeacherAssignment').insert([
+    return knex('HomeroomTeacherAssignment').insert([
         {
             teacherId: data.teacherId,
             schoolYearId: data.schoolYearId,
