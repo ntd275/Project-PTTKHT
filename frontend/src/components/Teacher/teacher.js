@@ -276,7 +276,7 @@ class Teacher extends React.Component {
         <br />
         <div className="d-flex">
           <div>
-            <button type="button" className="btn btn-light" onClick={this.refresh}>
+            <button type="button" className="btn btn-light" onClick={() => this.refresh()}>
               <div className="d-flex">
                 <div>
                   Tải lại trang
@@ -441,7 +441,7 @@ class Dialog extends React.Component {
     }
     return null
   }
-  
+
   validateData = () => {
     function removeAscent(str) {
       if (str === null || str === undefined) return str;
@@ -541,7 +541,7 @@ class Dialog extends React.Component {
 
   addTeacher = async () => {
     //validate TODO
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })
@@ -582,7 +582,7 @@ class Dialog extends React.Component {
   }
 
   editTeacher = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })

@@ -308,6 +308,56 @@ const Api = {
     deleteSpecialistAssignment: (id) => {
         return user.delete(`/specialist-assignment/id/${id}`)
     },
+    getStudentAssignmentList: (page, perpage) => {
+        return user.get(`/student-assignment/list?page=${page}&perpage=${perpage}`)
+    },
+    searchStudentAssignment: (page, perpage, searchCondition) => {
+        let url = `/student-assignment/search?page=${page}&perpage=${perpage}`
+        console.log(searchCondition)
+        if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
+        if (searchCondition.studentId) url += `&studentId=${searchCondition.studentId}`
+        if (searchCondition.classId) url += `&classId=${searchCondition.classId}`
+        return user.get(url)
+    },
+    addStudentAssignment: (data) => {
+        return user.post(`/student-assignment`, {
+            schoolYearId: data.schoolYearId,
+            studentId: data.studentId,
+            classId: data.classId
+        })
+    },
+    deleteStudentAssignment: (id) => {
+        return user.delete(`/student-assignment/id/${id}`)
+    },
+    getAccountList: (page, perpage) => {
+        return user.get(`/account/list?page=${page}&perpage=${perpage}`)
+    },
+    addAccount: (data) => {
+        return user.post(`/account/`, {
+            accountName: data.accountName,
+            password: data.password,
+            userCode: data.userCode,
+            role: data.role
+        })
+    },
+    editAccount: (data) => {
+        return user.put(`/account/${data.accountId}`, {
+            accountName: data.accountName,
+            password: data.password,
+            userCode: data.userCode,
+            role: parseInt(data.role)
+        })
+    },
+    deleteAccount: (id) => {
+        return user.delete(`/account/${id}`)
+    },
+    getTeacherByCode: (code) => {
+        return user.get(`/teacher/code/${code}`)
+    },
+    getStudentByCode: (code) => {
+        return user.get(`/student/code/${code}`)
+    }
+
 }
 
 export default Api

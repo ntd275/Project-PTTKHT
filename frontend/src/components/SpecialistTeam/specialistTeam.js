@@ -225,7 +225,7 @@ class SpecialistTeam extends React.Component {
         <br />
         <div className="d-flex">
           <div>
-            <button type="button" className="btn btn-light" onClick={this.refresh}>
+            <button type="button" className="btn btn-light" onClick={() => this.refresh()}>
               <div className="d-flex">
                 <div>
                   Tải lại trang

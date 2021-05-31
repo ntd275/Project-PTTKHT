@@ -37,6 +37,7 @@ import Subject from './components/Subject/Subject'
 import SpecialistTeam from './components/SpecialistTeam/SpecialistTeam'
 import Student from './components/Student/student'
 import Teacher from './components/Teacher/teacher'
+import Account from './components/Account/Account'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -106,6 +107,8 @@ class App extends React.Component {
               <PrivateRouter exact path="/teaching-assignment" component={<TeachingAssignment />} role={[2]} />
               <PrivateRouter exact path="/homeroom-teacher-assignment" component={<HomeroomTeacherAssignment />} role={[2]} />
               <PrivateRouter exact path="/specialist-assignment" component={<SpecialistAssignment />} role={[2]} />
+              <PrivateRouter exact path="/student-assignment" component={<StudentAssignment />} role={[2]} />
+              <PrivateRouter exact path="/account" component={<Account />} role={[2]} />
               <Route path="/student/score">
                 <StudentScore />
               </Route>
@@ -129,10 +132,7 @@ class App extends React.Component {
               <Route path="/TransferClass">
                 <TransferClass />
               </Route>
-              {/* Kết chuyển lớp */}
-              <Route path="/StudentAssignment">
-                <StudentAssignment />
-              </Route>
+
               <Route path="/statistic/rank">
                 <RankStatistic />
               </Route>
