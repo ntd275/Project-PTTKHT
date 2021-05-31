@@ -336,6 +336,11 @@ const Api = {
     deleteStudentAssignment: (id) => {
         return user.delete(`/student-assignment/id/${id}`)
     },
+    tranferClass: (list) => {
+        return user.post(`/student-assignment/transform-class`, {
+            data: list
+        })
+    },
     getAccountList: (page, perpage) => {
         return user.get(`/account/list?page=${page}&perpage=${perpage}`)
     },

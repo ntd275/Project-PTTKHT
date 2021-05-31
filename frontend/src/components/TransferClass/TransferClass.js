@@ -1,143 +1,409 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import Api from "../../api/api";
-import { FiEdit } from 'react-icons/fi';
-import { Modal } from 'react-bootstrap';
-// import '../../css/TransferClass.css';
+import { store } from 'react-notifications-component';
+import SelectSearch, { fuzzySearch } from 'react-select-search';
+import { withRouter } from 'react-router-dom'
+import 'react-select-search/style.css'
+import Loading from '../Loading/Loading'
+import { BsArrowLeftShort } from 'react-icons/bs'
+
 
 class TransferClass extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showAddModal: false,
-            showDeleteModal: false,
-            schoolYearList: ["2020-2021", "2019-2020", "2018-2019", "2017-2018"],
-            schoolYear: 0,
-            classList: ["9A", "9B", "9C", "9D"],
-            class: 0,
-            termList: ["Cả năm", "Học kỳ 1", "Học kỳ 2"],
-            term: 0,
-            studentList: ["Bùi Minh Tuấn", "Nguyễn Thế Đức", "Hoàng Thế Anh", "Trần Tiến Anh"],
-            subjectList: ["Toán", "Lý", "Hóa", "Văn", "Anh"],
-            student: {
-                name: "Hoàng Thế Anh",
-                birthday: "19/12/1999",
-                class: "9A"
-            },
-            iconSize: '20px'
+            schoolYearList: [],
+            newSchoolYearId: 0,
+            classList: [],
+            newClassId: 0,
+            studentList: [],
+            checkboxList: [],
+            iconSize: '20px',
+            searchCondition: {}
         };
     }
-    addModalHandler = () => {
+
+    async componentDidMount() {
         this.setState({
-            showAddModal: !this.state.showAddModal
-        });
+            loading: true
+        })
+        try {
+            let [schoolYearList, classList] = await Promise.all([
+                Api.getSchoolYearList(1, 1000000),
+                Api.getClassList(1, 1000000),
+            ]);
+            let searchCondition = {
+                schoolYearId: schoolYearList.data.result.data[schoolYearList.data.result.data.length - 1].schoolYearId,
+                classId: classList.data.result.data[0].classId
+            }
+            this.setState({
+                schoolYearList: schoolYearList.data.result.data,
+                classList: classList.data.result.data,
+                searchCondition: searchCondition,
+                newSchoolYearId: schoolYearList.data.result.data[schoolYearList.data.result.data.length - 1].schoolYearId,
+                newClassId: classList.data.result.data[0].classId,
+                loading: false,
+            })
+        } catch (err) {
+            console.log(err)
+            this.setState({ loading: false })
+            if (err.response && err.response.status === 400) {
+                store.addNotification({
+                    title: "Thông báo",
+                    message: "Danh sách rỗng",
+                    type: "info",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
+            store.addNotification({
+                title: "Hệ thống có lỗi",
+                message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+                type: "danger",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+        }
     }
-    deleteModalHandler = () => {
+
+    back = () => {
+        this.props.history.goBack()
+    }
+
+    refresh = async (searchCondition) => {
+        this.setState({ loading: true })
+        try {
+            let res = await Api.searchStudentAssignment(1, 1000000, searchCondition || this.state.searchCondition)
+            console.log(res)
+            let studentList = res.data.result.data;
+            this.state.checkboxList.length = studentList.length
+            this.state.checkboxList.fill(false)
+            this.setState({
+                loading: false,
+                studentList: studentList,
+                checkboxList: this.state.checkboxList
+            })
+        } catch (err) {
+            console.log(err)
+            this.setState({ loading: false })
+            if (err.response && err.response.status === 400) {
+                store.addNotification({
+                    title: "Thông báo",
+                    message: "Danh sách rỗng",
+                    type: "info",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
+            store.addNotification({
+                title: "Hệ thống có lỗi",
+                message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+                type: "danger",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+        }
+    }
+
+    getSchoolYearOption = () => {
+        let list = this.state.schoolYearList
+        let options = []
+        for (let i = 0; i < list.length; i++) {
+            let { schoolYearId, schoolYear } = list[i];
+            options.push({
+                name: schoolYear,
+                value: schoolYearId
+            })
+        }
+        return options
+    }
+
+    changeSearchCondition = (name, value) => {
+        console.log(name, value)
+        let searchCondition = this.state.searchCondition
+        searchCondition[name] = value
+        this.setState({ searchCondition: searchCondition })
+    }
+
+    getClassOption = () => {
+        let list = this.state.classList
+        let options = []
+        for (let i = 0; i < list.length; i++) {
+            let { classId, className } = list[i];
+            options.push({
+                name: className,
+                value: classId
+            })
+        }
+        return options
+    }
+
+    formatDate = (d) => {
+        let dd = d.getDate()
+        let mm = d.getMonth() + 1
+        let yyyy = d.getFullYear()
+        if (dd < 10) { dd = '0' + dd }
+        if (mm < 10) { mm = '0' + mm }
+        return dd + '/' + mm + '/' + yyyy
+    }
+
+    check = (index) => {
+        let checkboxList = this.state.checkboxList
+        checkboxList[index] = true
         this.setState({
-            showDeleteModal: !this.state.showDeleteModal
+            checkboxList: checkboxList
+        })
+    }
+
+    uncheck = (index) => {
+        let checkboxList = this.state.checkboxList
+        checkboxList[index] = false
+        this.setState({
+            checkboxList: checkboxList
+        })
+    }
+
+    checkAll = () => {
+        let checkboxList = this.state.checkboxList
+        checkboxList.fill(true)
+        this.setState({
+            checkboxList: checkboxList
+        })
+    }
+
+    uncheckAll = () => {
+        let checkboxList = this.state.checkboxList
+        checkboxList.fill(false)
+        this.setState({
+            checkboxList: checkboxList
+        })
+    }
+
+    renderTableData() {
+        let sttBase = 1
+        return this.state.studentList.map((data, index) => {
+            const { studentCode, studentName, dateOfBirth, gender, address } = data;
+            return (
+                <tr key={index}>
+                    <th>
+                        <input
+                            type="checkbox"
+                            className="checkbox-assignment"
+                            checked={this.state.checkboxList[index]}
+                            onClick={() => this.state.checkboxList[index] ? this.uncheck(index) : this.check(index)}
+                        />
+                    </th>
+                    <td>{sttBase + index}</td>
+                    <td>{studentCode}</td>
+                    <td>{studentName}</td>
+                    <td>{this.formatDate(new Date(dateOfBirth))}</td>
+                    <td>{gender === 1 ? "Nam" : "Nữ"}</td>
+                    <td>{address}</td>
+                </tr>
+            );
         });
     }
-    changeHandler = (e) => {
-        let name = e.target.name;
-        let value = e.target.value;
-        this.setState({ [name]: value }, () => {
-            console.log(this.state);
-        });
+
+    tranferClass = async () => {
+        this.setState({ loadingModal: true })
+        try {
+            let studentList = this.state.studentList
+            let checkboxList = this.state.checkboxList
+            let list = []
+            for (let i = 0; i < studentList.length; i++) {
+                if (checkboxList[i]) {
+                    list.push({
+                        studentId: studentList[i].studentId,
+                        classId: this.state.newClassId,
+                        schoolYearId: this.state.newSchoolYearId
+                    })
+                }
+            }
+            await Api.tranferClass(list)
+            store.addNotification({
+                title: "Thành công",
+                message: `Kết chuyển lớp thành công`,
+                type: "success",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    //showIcon: true,
+                },
+                animationIn: ["animate__slideInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+
+            this.setState({
+                loadingModal: false
+            })
+
+        } catch (err) {
+            console.log(err)
+            this.setState({ loadingModal: false })
+            store.addNotification({
+                title: "Hệ thống có lỗi",
+                message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
+                type: "danger",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+        }
     }
-    submitHandler = async (e) => {
-        let data = this.state;
-        e.preventDefault();
-        console.log(data);
-        // let res = await Api.login(data.username, data.password)
-        // console.log(res)
-    }
+
+
     render() {
+        if (this.state.loading) {
+            return (
+                <div className="container-fluid d-flex justify-content-center">
+                    <div className="d-flex justify-content-center text-primary mt-auto mb-auto">
+                        <div className="spinner-border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div >
+            )
+        }
         return (
             <div className="container">
+                <Loading show={this.state.loadingModal} />
+                <div className="row">
+                    <div className="col align-self-center d-flex">
+                        <div className="align-self-center">
+                            <BsArrowLeftShort size={50} onClick={this.back} />
+                        </div>
+                        <div className="h3 align-self-center mb-0">
+                            Kết chuyển lớp
+                        </div>
+                    </div>
+                </div>
                 <div className="row mt-3">
                     <div className="col-12">
                         <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
-                            <label className="mr-1">Chọn lớp kết chuyển:</label>
-                            <select className="mr-4 form-control-sm" name="class" id="class">
-                                <option>Chọn lớp</option>
-                                <option value="0">{this.state.classList[0]}</option>
-                                <option value="1">{this.state.classList[1]}</option>
-                                <option value="2">{this.state.classList[2]}</option>
-                                <option value="3">{this.state.classList[3]}</option>
-                            </select>
-                            <label className="mr-1">Năm học:</label>
-                            <select className="custom-select mr-2" name="schoolYear" onChange={e => this.changeHandler(e)}>
-                                <option value="0">{this.state.schoolYearList[0]}</option>
-                                <option value="1">{this.state.schoolYearList[1]}</option>
-                                <option value="2">{this.state.schoolYearList[2]}</option>
-                                <option value="3">{this.state.schoolYearList[3]}</option>
-                            </select>
-                            <button type="button" className="btn btn-primary btn-sm ml-3" onClick={() => { }}>
+                            <label>Chọn lớp kết chuyển:</label>
+                            <div className="ml-1 select-class">
+                                <SelectSearch
+                                    options={this.getClassOption()}
+                                    search
+                                    filterOptions={fuzzySearch}
+                                    emptyMessage="Không tìm thấy"
+                                    placeholder=" "
+                                    value={this.state.searchCondition.classId}
+                                    onChange={v => this.changeSearchCondition("classId", v)}
+                                />
+                            </div>
+                            <label className="ml-2" >Năm học:</label>
+                            <div className="ml-1 select-school-year">
+                                <SelectSearch
+                                    options={this.getSchoolYearOption()}
+                                    search
+                                    filterOptions={fuzzySearch}
+                                    emptyMessage="Không tìm thấy"
+                                    placeholder=" "
+                                    value={this.state.searchCondition.schoolYearId}
+                                    onChange={v => this.changeSearchCondition("schoolYearId", v)}
+                                />
+                            </div>
+                            <button type="button" className="btn btn-primary btn-sm ml-3" onClick={() => { this.refresh() }}>
                                 OK
                             </button>
                         </form>
                     </div>
                 </div>
                 <hr />
-                <div className="row mt-4">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                        <table className="table table-bordered table-striped">
-                            <thead className="text-center">
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Mã số học sinh</th>
-                                    <th>Họ tên</th>
-                                    <th>Ngày sinh</th>
-                                    <th>Giới tính</th>
-                                    <th>Nơi sinh</th>
-                                    <th>
-                                        <input type="checkbox" value="" className="checkbox-assignment" />
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr className="text-center">
-                                    <td>1</td>
-                                    <td>HS01</td>
-                                    <td>Nguyễn Thế Đức</td>
-                                    <td>27/05/1999</td>
-                                    <td>Nam</td>
-                                    <td>Hưng Yên</td>
-                                    <td>
-                                        <input type="checkbox" value="" className="checkbox-assignment" />
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                {this.state.studentList.length !== 0 &&
+                    <div className="row mt-4">
+                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                            <table className="table table-bordered table-striped">
+                                <thead className="text-center">
+                                    <tr>
+                                        <th>
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox-assignment"
+                                                checked={this.state.checkboxList.indexOf(false) === -1}
+                                                onClick={() => this.state.checkboxList.indexOf(false) === -1 ? this.uncheckAll() : this.checkAll()}
+                                            />
+                                        </th>
+                                        <th>STT</th>
+                                        <th>Mã số học sinh</th>
+                                        <th>Họ tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Giới tính</th>
+                                        <th>Địa chỉ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.renderTableData()}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div className="row mt-3">
-                    <div className="col-12">
-                        <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
-                            <label className="mr-1">Chọn lớp kết chuyển lên:</label>
-                            <select className="mr-4 form-control-sm" name="class" id="class">
-                                <option>Chọn lớp</option>
-                                <option value="0">{this.state.classList[0]}</option>
-                                <option value="1">{this.state.classList[1]}</option>
-                                <option value="2">{this.state.classList[2]}</option>
-                                <option value="3">{this.state.classList[3]}</option>
-                            </select>
-                            <label className="mr-1">Năm học:</label>
-                            <select className="custom-select mr-2" name="schoolYear" onChange={e => this.changeHandler(e)}>
-                                <option value="0">{this.state.schoolYearList[0]}</option>
-                                <option value="1">{this.state.schoolYearList[1]}</option>
-                                <option value="2">{this.state.schoolYearList[2]}</option>
-                                <option value="3">{this.state.schoolYearList[3]}</option>
-                            </select>
-                            <button type="button" className="btn btn-primary btn-sm ml-3" onClick={() => { }}>
-                                Kết chuyển lên
+                }
+                {this.state.studentList.length !== 0 &&
+                    <div className="row mt-3">
+                        <div className="col-12">
+                            <form className="form-inline">
+                                <label>Chọn lớp kết chuyển lên:</label>
+                                <div className="ml-1 select-class">
+                                    <SelectSearch
+                                        options={this.getClassOption()}
+                                        search
+                                        filterOptions={fuzzySearch}
+                                        emptyMessage="Không tìm thấy"
+                                        placeholder=" "
+                                        value={this.state.newClassId}
+                                        onChange={v => this.setState({ newClassId: v })}
+                                    />
+                                </div>
+                                <label className="ml-2" >Năm học:</label>
+                                <div className="ml-1 select-school-year">
+                                    <SelectSearch
+                                        options={this.getSchoolYearOption()}
+                                        search
+                                        filterOptions={fuzzySearch}
+                                        emptyMessage="Không tìm thấy"
+                                        placeholder=" "
+                                        value={this.state.newSchoolYearId}
+                                        onChange={v => this.setState({ newSchoolYearId: v })}
+                                    />
+                                </div>
+                                <button type="button" className="btn btn-primary btn-sm ml-3" onClick={() => { this.tranferClass() }}>
+                                    Kết chuyển lên
                             </button>
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         );
     }
 }
 
-export default TransferClass;
+export default withRouter(TransferClass);
