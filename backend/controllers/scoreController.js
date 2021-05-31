@@ -10,7 +10,7 @@ async function checkLockScore(req, res) {
         
         let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId, req.query.term)
 
-        if (sLock === undefined) {
+        if (!sLock || sLock === undefined) {
             return res.status(400).json({
                 success: false,
                 message: `Cannot find score lock`
@@ -87,24 +87,12 @@ async function getStudentScore(req, res) {
 //If exists, update on the score which matched
 async function editScore(req, res) {
     try {
-        let score = req.body
-
-        //If not exists
-        if (score.scoreId === undefined || score.scoreId === NaN) {
-            let result = await Score.createScore(req.body)
-
-            return res.status(200).json({
-                success: true,
-                result: result
-            })
-        }
-
-        let count = await Score.editScore(score)
+        let count = await Score.editScore(req.body)
 
         if (count == 0) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot update score with id = ${score.scoreId}`
+                message: `Cannot update scores`
             })
         }
 
