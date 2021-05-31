@@ -5,8 +5,8 @@ const { json } = require('express')
 
 async function getAccountList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
 
         let accountList = await Account.getAccountList(page, perpage)
 
@@ -173,7 +173,7 @@ async function checkPassword(req, res) {
 
 async function changePassword(req, res) {
     try {
-        let accountId = req.params.id
+        let accountId = parseInt(req.params.id)
         let oldPassword = req.body.old_password
         let newPassword = req.body.new_password
 
