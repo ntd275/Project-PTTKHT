@@ -66,11 +66,12 @@ exports.editScore = async (data) => {
                         return Promise.reject(message)
                     }
 
+                    let scoreExist = null
                     //Check & update score
                     switch (scores[j].method) {
                         case "add":
                             //Check exists
-                            let scoreExist = trx.where({
+                            scoreExist = trx.where({
                                 'studentId': student.studentId,
                                 'schoolYearId': scores[j].schoolYearId,
                                 'subjectId': scores[j].subjectId,
@@ -95,9 +96,9 @@ exports.editScore = async (data) => {
                             break;
 
                         case "edit":
-                            let existScore = trx.where('scoreId', scores[j].scoreId).from('Score').first()
+                            scoreExist = trx.where('scoreId', scores[j].scoreId).from('Score').first()
                             
-                            if (existScore === undefined || !existScore) {
+                            if (scoreExist === undefined || !scoreExist) {
                                 let message = `Student id = ${scores[j].scoreId} not found`
                                 return Promise.reject(message)
                             }
@@ -109,9 +110,9 @@ exports.editScore = async (data) => {
                             break;
 
                         case "delete":
-                            let existScore = trx.where('scoreId', scores[j].scoreId).from('Score').first()
+                            scoreExist = trx.where('scoreId', scores[j].scoreId).from('Score').first()
                             
-                            if (existScore === undefined || !existScore) {
+                            if (scoreExist === undefined || !scoreExist) {
                                 let message = `Student id = ${scores[j].scoreId} not found`
                                 return Promise.reject(message)
                             }
