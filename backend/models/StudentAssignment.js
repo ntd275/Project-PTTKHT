@@ -5,8 +5,8 @@ exports.searchStudentAssignment = async (searchItems, page, perpage) => {
         .join('Student', 'StudentAssignment.studentId', 'Student.studentId')
         .join('Class', 'StudentAssignment.classId', 'Class.classId')
         .join('SchoolYear', 'StudentAssignment.schoolYearId', 'SchoolYear.schoolYearId')
-        .select('StudentAssignment.studentAssignmentId',
-            'StudentAssignment.studentId', 'Student.studentName', 'Student.dateOfBirth', 'Student.address',
+        .select('StudentAssignment.studentAssignmentId', 'StudentAssignment.studentId',
+            'Student.studentCode', 'Student.studentName', 'Student.dateOfBirth', 'Student.address', 'Student.gender',
             'StudentAssignment.classId', 'Class.className',
             'StudentAssignment.schoolYearId', 'SchoolYear.schoolYear',
         ).where((qb) => {
@@ -27,8 +27,8 @@ exports.getStudentAssignmentList = async (page, perpage) => {
         .join('Student', 'StudentAssignment.studentId', 'Student.studentId')
         .join('Class', 'StudentAssignment.classId', 'Class.classId')
         .join('SchoolYear', 'StudentAssignment.schoolYearId', 'SchoolYear.schoolYearId')
-        .select('StudentAssignment.studentAssignmentId',
-            'StudentAssignment.studentId', 'Student.studentName', 'Student.dateOfBirth', 'Student.address',
+        .select('StudentAssignment.studentAssignmentId', 'StudentAssignment.studentId',
+            'Student.studentCode', 'Student.studentName', 'Student.dateOfBirth', 'Student.address', 'Student.gender',
             'StudentAssignment.classId', 'Class.className',
             'StudentAssignment.schoolYearId', 'SchoolYear.schoolYear',
         ).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
@@ -39,8 +39,8 @@ exports.getStudentAssignment = async (studentAssignmentId) => {
         .join('Student', 'StudentAssignment.studentId', 'Student.studentId')
         .join('Class', 'StudentAssignment.classId', 'Class.classId')
         .join('SchoolYear', 'StudentAssignment.schoolYearId', 'SchoolYear.schoolYearId')
-        .select('StudentAssignment.studentAssignmentId',
-            'StudentAssignment.studentId', 'Student.studentName', 'Student.dateOfBirth', 'Student.address',
+        .select('StudentAssignment.studentAssignmentId', 'StudentAssignment.studentId',
+            'Student.studentCode', 'Student.studentName', 'Student.dateOfBirth', 'Student.address', 'Student.gender',
             'StudentAssignment.classId', 'Class.className',
             'StudentAssignment.schoolYearId', 'SchoolYear.schoolYear',
         ).where('StudentAssignmentId', studentAssignmentId).first()
