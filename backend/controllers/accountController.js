@@ -51,7 +51,7 @@ async function getAccount(req, res) {
 
 async function getAccountByUsername(req, res) {
     try {
-        let accounts = await Account.getAccountByUsername(req.params.username)
+        let accounts = await Account.getAccountsByUsername(req.params.username)
 
         if (accounts.length == 0) {
             return res.status(404).json({
