@@ -19,14 +19,12 @@ exports.getAccount = async function (accountId) {
 }
 
 exports.createAccount = async function (account) {
-    return knex("Accounts").insert([
-        {
-            role: account.role,
-            accountName: account.accountName,
-            password: account.password,
-            userCode: account.userCode
-        },
-    ]);
+    return knex("Accounts").insert({
+        role: account.role,
+        accountName: account.accountName,
+        password: account.password,
+        userCode: account.userCode
+    });
 }
 
 exports.editAccount = async function (id, data) {
