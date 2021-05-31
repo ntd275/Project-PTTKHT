@@ -160,16 +160,22 @@ class PrivateRouter extends React.Component {
     this.state = {
     }
   }
+  checkLogin = () => {
+    return this.context.user
+  }
   checkAuth = () => {
-    //console.log(this.props, this.context, this.props.role && this.context.user && this.props.role.includes(this.context.user.role))
     return this.props.role && this.context.user && this.props.role.includes(this.context.user.role)
   }
   render() {
     let { component: Component, ...rest } = this.props;
     return (
       <Route {...rest}>
-        {this.checkAuth() ?
-          Component :
+        {this.checkLogin() ?
+          this.checkAuth() ?
+            Component :
+            <Redirect
+              to='/'
+            /> :
           <Redirect
             to={{
               pathname: '/login',
