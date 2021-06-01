@@ -191,7 +191,7 @@ async function updateTeacher(req, res) {
         // teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
         // teacher.major = req.body.major || teacher.major
         
-        let count = await Teacher.updateTeacher(req.params.id, teacher)
+        let count = await Teacher.updateTeacher(req.params.id, req.body)
 
         if (count == 0) { //Cannot update
             return res.status(404).json({

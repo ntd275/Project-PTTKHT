@@ -195,7 +195,7 @@ async function updateStudent(req, res) {
         // student.motherPhone = req.body.motherPhone || student.motherPhone
         // student.motherMail = req.body.motherMail || student.motherMail
 
-        let count = await Student.updateStudent(req.params.id, student)
+        let count = await Student.updateStudent(req.params.id, req.body)
         
         if (count == 0) {
             return res.status(404).json({
