@@ -560,7 +560,7 @@ class TeachingClassScore extends Component {
                 animationIn: ["animate__slideInDown", "animate__animated"],
                 animationOut: ["animate__fadeOutUp", "animate__animated"],
             })
-            this.setState({ submitLoading: false })
+            this.setState({ submitLoading: false, edited: false })
         } catch (err) {
             console.log(err)
             this.setState({ submitLoading: false })
