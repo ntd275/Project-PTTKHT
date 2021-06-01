@@ -463,7 +463,7 @@ class Dialog extends React.Component {
       str = str.replace(/đ/g, "d");
       return str;
     }
-    const isName = /^[a-zA-Z ]{2,}$/g
+    const isName = /^[a-zA-Z ]{2,}$/
     const isPId = /[0-9]{9,12}/
     const isCode = /^[a-zA-Z0-9]+$/
     const isVNPhoneMobile = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;

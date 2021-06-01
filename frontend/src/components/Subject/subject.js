@@ -407,7 +407,7 @@ class Dialog extends React.Component {
       str = str.replace(/đ/g, "d");
       return str;
     }
-    const isName = /^[a-zA-Z0-9 ]{2,}$/g
+    const isName = /^[a-zA-Z0-9 ]{2,}$/
     const isCode = /^[a-zA-Z0-9]+$/
     if (!isName.test(removeAscent(this.props.data.subjectName))) {
       store.addNotification({
