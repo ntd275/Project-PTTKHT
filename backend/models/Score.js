@@ -1,4 +1,7 @@
 const knex = require('./database')
+const config = require('../config/config')
+
+const maxScoreNum = [5,5,3,1]
 
 exports.getScoreList = async () => {
     return knex.select().table('Score')
@@ -38,6 +41,12 @@ exports.getStudentScore = async (studentId, schoolYearId, term) => {
  * 1: 15 phút
  * 2: 1 tiết
  * 3: Học kỳ
+ * 
+ ** Số lượng tối đa của mỗi loại:
+ * Miệng: 5
+ * 15p: 5
+ * 1 tiết: 3
+ * học kỳ: 1
  */
 exports.editScore = async (data) => {
     let students = data.students
@@ -77,13 +86,15 @@ exports.editScore = async (data) => {
                                 'subjectId': scores[j].subjectId,
                                 'kind': kind,
                                 'term': term
-                            }).select().from('Score').first()
+                            }).count('scoreId as cnt').from('Score')
 
-                            if (scoreExist || scoreExist !=undefined) {
-                                let message = `Cannot add existed scoreId=${scoreExist.scoreId}`
+                            console.log(scoreExist);
+
+                            if (scoreExist[0].cnt >= maxScoreNum[kind]) {
+                                let message = `Cannot add more score kind = ${kind}`
                                 return Promise.reject(message)
-                            }
-                            
+                            }                           
+
                             //Add
                             await trx.insert({
                                 'studentId': student.studentId,
