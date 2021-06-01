@@ -1,6 +1,17 @@
 .statistic-title {
     font-size: 30px;
 }
+
+.td-score {
+    padding: 0.75rem 0.1rem!important
+}
+
 .score-input {
-    width: 20px;
+    width: 40px;
+    border: none;
+    text-align: center;
+    background: none;
+    display: inline !important;
+    padding: 0 0.1rem!important;
+    color: black !important;
 }

@@ -7,11 +7,11 @@ import { store } from 'react-notifications-component';
 import SelectSearch, { fuzzySearch } from 'react-select-search';
 import { withRouter } from 'react-router-dom'
 import 'react-select-search/style.css'
-import Pagination from '../Pagination/Pagination'
 import AppContext from '../../context/AppContext'
 
-class TeachingAssignment extends Component {
+class MyTeachingAssignment extends Component {
     constructor(props) {
+        //console.log(props)
         super(props);
         this.state = {
             schoolYearList: [],
@@ -21,7 +21,6 @@ class TeachingAssignment extends Component {
             teachingAssignmentList: [],
             iconSize: '20px',
             searchCondition: {
-
             },
             perpage: 1000000,
             pagination: {
@@ -29,23 +28,6 @@ class TeachingAssignment extends Component {
                 lastPage: 1,
             },
             loading: true,
-            modalData: {
-                classId: null,
-                className: "",
-                schoolYear: "",
-                schoolYearId: null,
-                subjectId: null,
-                subjectName: "",
-                teacherCode: "",
-                teacherId: null,
-                teacherName: "",
-                teachingAssignmentId: 0,
-            },
-            showModal: false,
-            modalKind: "",
-            modalLoading: true,
-            modalEdited: false,
-            showDelete: false,
             term: 1,
         };
     }
@@ -165,10 +147,6 @@ class TeachingAssignment extends Component {
         this.refresh(1, this.state.perpage, searchCondition)
     }
 
-    changePage = async (page) => {
-        await this.refresh(page, this.state.perpage)
-    }
-
     getSchoolYearOption = () => {
         let list = this.state.schoolYearList
         let options = []
@@ -208,6 +186,10 @@ class TeachingAssignment extends Component {
         return options
     }
 
+    getTermOptions = () => {
+        return [{ name: "1", value: 1 }, { name: "2", value: 2 }]
+    }
+
     changeSearchCondition = (name, value) => {
         console.log(name, value)
         let searchCondition = this.state.searchCondition
@@ -227,11 +209,18 @@ class TeachingAssignment extends Component {
                     <td>{schoolYear}</td>
                     <td>{this.state.term}</td>
                     <td className="text-center">
-                        <button className="btn btn-danger">Nhập điểm</button>
+                        <button className="btn btn-danger" onClick={() => this.inputScore(index)}>Nhập điểm</button>
                     </td>
                 </tr>
             );
         });
+    }
+
+    inputScore = (index) => {
+        this.props.history.push("/teaching-class-score", {
+            term: this.state.term,
+            ...this.state.teachingAssignmentList[index],
+        })
     }
 
     closeDelete = () => {
@@ -268,7 +257,7 @@ class TeachingAssignment extends Component {
                 </div>
                 <div className="row mt-3">
                     <div className="col-12">
-                        <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
+                        <form className="form-inline">
                             <button type="button" className="btn btn-primary btn-sm" onClick={() => { this.refreshClear() }}>
                                 <BiRefresh size={this.state.iconSize} />Tải lại trang
                             </button>
@@ -293,7 +282,7 @@ class TeachingAssignment extends Component {
                             <label className="ml-2">Kỳ học</label>
                             <div className="ml-1 select-term">
                                 <SelectSearch
-                                    options={[{ value: 1, name: 1 }, { value: 2, name: 2 }]}
+                                    options={this.getTermOptions()}
                                     search
                                     filterOptions={fuzzySearch}
                                     emptyMessage="Không tìm thấy"
@@ -354,7 +343,6 @@ class TeachingAssignment extends Component {
                                 </tbody>
                             </table>
                         </div>
-                        <Pagination pagination={this.state.pagination} changePage={this.changePage} />
                     </div>
                 </div>
             </div>
@@ -362,6 +350,6 @@ class TeachingAssignment extends Component {
     }
 }
 
-TeachingAssignment.contextType = AppContext
+MyTeachingAssignment.contextType = AppContext
 
-export default withRouter(TeachingAssignment);
+export default withRouter(MyTeachingAssignment);
