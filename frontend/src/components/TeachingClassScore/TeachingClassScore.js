@@ -31,9 +31,7 @@ class TeachingClassScore extends Component {
             return
         }
 
-        console.log("b", this.state)
         this.unblock = this.props.history.block(tx => {
-            console.log("un", this.state)
             if (!this.state.edited) {
                 this.unblock()
                 return true
@@ -184,8 +182,8 @@ class TeachingClassScore extends Component {
                         term: info.term,
                     })
                 }
-                if (!list[i].scoreTeam) {
-                    list[i].scoreTeam = {
+                if (!list[i].scoreTerm.scoreId) {
+                    list[i].scoreTerm = {
                         kind: 3,
                         schoolYearId: info.schoolYearId,
                         score: "",
@@ -292,12 +290,46 @@ class TeachingClassScore extends Component {
         })
     }
 
-    isNumber = (v) => {
-        return !isNaN(v)
+    validateScore = (score) => {
+        if (score === "") {
+            return true
+        }
+        if (isNaN(score)) {
+            store.addNotification({
+                title: "Lỗi ",
+                message: "Điểm nhập phải là số",
+                type: "warning",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+            return false
+        }
+
+        if (parseFloat(score) < 0 || parseFloat(score) > 10) {
+            store.addNotification({
+                title: "Lỗi ",
+                message: "Điểm nhập phải >= 0 và <= 10",
+                type: "warning",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+            return false
+        }
+
+        return true
     }
 
-    submit = async (e) => {
-        e.preventDefault()
+    submit = async () => {
         this.setState({
             submitLoading: true,
         })
@@ -311,24 +343,14 @@ class TeachingClassScore extends Component {
                     if (!score.edited) {
                         continue
                     }
+
+                    if (!this.validateScore(score.score)) {
+                        return
+                    }
+
                     if (!score.scoreId) {
                         if (score.score === "") {
                             continue
-                        }
-                        if (isNaN(score.score)) {
-                            store.addNotification({
-                                title: "Lỗi ",
-                                message: "Điểm nhập phải là số",
-                                type: "warning",
-                                container: "top-center",
-                                dismiss: {
-                                    duration: 5000,
-                                    showIcon: true,
-                                },
-                                animationIn: ["animate__backInDown", "animate__animated"],
-                                animationOut: ["animate__fadeOutUp", "animate__animated"],
-                            })
-                            return
                         }
                         scores.push({
                             method: "add",
@@ -344,23 +366,6 @@ class TeachingClassScore extends Component {
                         })
                         continue
                     }
-
-                    if (isNaN(score.score)) {
-                        store.addNotification({
-                            title: "Lỗi ",
-                            message: "Điểm nhập phải là số",
-                            type: "warning",
-                            container: "top-center",
-                            dismiss: {
-                                duration: 5000,
-                                showIcon: true,
-                            },
-                            animationIn: ["animate__backInDown", "animate__animated"],
-                            animationOut: ["animate__fadeOutUp", "animate__animated"],
-                        })
-                        return
-                    }
-
 
                     scores.push({
                         method: "edit",
@@ -373,24 +378,12 @@ class TeachingClassScore extends Component {
                     if (!score.edited) {
                         continue
                     }
+                    if (!this.validateScore(score.score)) {
+                        return
+                    }
                     if (!score.scoreId) {
                         if (score.score === "") {
                             continue
-                        }
-                        if (isNaN(score.score)) {
-                            store.addNotification({
-                                title: "Lỗi ",
-                                message: "Điểm nhập phải là số",
-                                type: "warning",
-                                container: "top-center",
-                                dismiss: {
-                                    duration: 5000,
-                                    showIcon: true,
-                                },
-                                animationIn: ["animate__backInDown", "animate__animated"],
-                                animationOut: ["animate__fadeOutUp", "animate__animated"],
-                            })
-                            return
                         }
                         scores.push({
                             method: "add",
@@ -406,21 +399,7 @@ class TeachingClassScore extends Component {
                         })
                         continue
                     }
-                    if (isNaN(score.score)) {
-                        store.addNotification({
-                            title: "Lỗi ",
-                            message: "Điểm nhập phải là số",
-                            type: "warning",
-                            container: "top-center",
-                            dismiss: {
-                                duration: 5000,
-                                showIcon: true,
-                            },
-                            animationIn: ["animate__backInDown", "animate__animated"],
-                            animationOut: ["animate__fadeOutUp", "animate__animated"],
-                        })
-                        return
-                    }
+
                     scores.push({
                         method: "edit",
                         ...score,
@@ -432,25 +411,14 @@ class TeachingClassScore extends Component {
                     if (!score.edited) {
                         continue
                     }
+                    if (!this.validateScore(score.score)) {
+                        return
+                    }
                     if (!score.scoreId) {
                         if (score.score === "") {
                             continue
                         }
-                        if (isNaN(score.score)) {
-                            store.addNotification({
-                                title: "Lỗi ",
-                                message: "Điểm nhập phải là số",
-                                type: "warning",
-                                container: "top-center",
-                                dismiss: {
-                                    duration: 5000,
-                                    showIcon: true,
-                                },
-                                animationIn: ["animate__backInDown", "animate__animated"],
-                                animationOut: ["animate__fadeOutUp", "animate__animated"],
-                            })
-                            return
-                        }
+
                         scores.push({
                             method: "add",
                             ...score,
@@ -465,21 +433,6 @@ class TeachingClassScore extends Component {
                         })
                         continue
                     }
-                    if (isNaN(score.score)) {
-                        store.addNotification({
-                            title: "Lỗi ",
-                            message: "Điểm nhập phải là số",
-                            type: "warning",
-                            container: "top-center",
-                            dismiss: {
-                                duration: 5000,
-                                showIcon: true,
-                            },
-                            animationIn: ["animate__backInDown", "animate__animated"],
-                            animationOut: ["animate__fadeOutUp", "animate__animated"],
-                        })
-                        return
-                    }
 
                     scores.push({
                         method: "edit",
@@ -489,28 +442,14 @@ class TeachingClassScore extends Component {
 
                 let score = scoreList[i].scoreTerm;
                 if (score.edited) {
+                    if (!this.validateScore(score.score)) {
+                        return
+                    }
                     if (!score.scoreId) {
-                        if (!score.score === "") {
-                            if (isNaN(score.score)) {
-                                store.addNotification({
-                                    title: "Lỗi ",
-                                    message: "Điểm nhập phải là số",
-                                    type: "warning",
-                                    container: "top-center",
-                                    dismiss: {
-                                        duration: 5000,
-                                        showIcon: true,
-                                    },
-                                    animationIn: ["animate__backInDown", "animate__animated"],
-                                    animationOut: ["animate__fadeOutUp", "animate__animated"],
-                                })
-                                return
-                            }
-                            scores.push({
-                                method: "add",
-                                ...score,
-                            })
-                        }
+                        scores.push({
+                            method: "add",
+                            ...score,
+                        })
                     } else {
                         if (score.score === "") {
                             scores.push({
@@ -518,21 +457,6 @@ class TeachingClassScore extends Component {
                                 ...score,
                             })
                         } else {
-                            if (isNaN(score.score)) {
-                                store.addNotification({
-                                    title: "Lỗi ",
-                                    message: "Điểm nhập phải là số",
-                                    type: "warning",
-                                    container: "top-center",
-                                    dismiss: {
-                                        duration: 5000,
-                                        showIcon: true,
-                                    },
-                                    animationIn: ["animate__backInDown", "animate__animated"],
-                                    animationOut: ["animate__fadeOutUp", "animate__animated"],
-                                })
-                                return
-                            }
                             scores.push({
                                 method: "edit",
                                 ...score,
@@ -545,7 +469,6 @@ class TeachingClassScore extends Component {
                     scores: scores
                 })
             }
-
             await Api.editScore({ students: list })
             await this.refresh()
             store.addNotification({
@@ -639,7 +562,7 @@ class TeachingClassScore extends Component {
                 </div>
                 <hr />
                 <div className="row mt-3">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                         <form className="text-center">
                             <table className="table table-bordered table-striped">
                                 <thead className="text-center">
@@ -657,8 +580,8 @@ class TeachingClassScore extends Component {
                                     {this.renderTableData()}
                                 </tbody>
                             </table>
-                            <button className="btn btn-primary" onClick={this.submit}>Lưu</button>
                         </form>
+                        <button className="btn btn-primary" onClick={() => { this.submit(); this.setState({ submitLoading: false }) }}>Lưu</button>
                     </div>
                 </div>
             </div>
