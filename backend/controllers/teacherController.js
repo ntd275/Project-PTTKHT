@@ -116,7 +116,7 @@ async function searchTeacher(req, res) {
         let name = decodeURI(req.query.name)
         let code = decodeURI(req.query.code)
 
-        let teachers = Teacher.searchTeacher(name, code)
+        let teachers = await Teacher.searchTeacher(name, code)
 
         if (teachers.length == 0 || teachers == undefined) {
             return res.status(400).json({
