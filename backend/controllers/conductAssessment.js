@@ -42,15 +42,22 @@ async function assessConduct(req, res) {
                 result: count
             })
         }
+        // conduct.studentId = req.body.studentId || conduct.studentId
+        // conduct.classId = req.body.classId || conduct.classId
+        // conduct.teacherId = req.body.teacherId || conduct.teacherId,
+        // conduct.schoolYearId = req.body.schoolYearId || conduct.schoolYearId,
+        // conduct.conduct = req.body.conduct || conduct.conduct
+        // conduct.term = req.body.term || conduct.term
 
-        conduct.studentId = req.body.studentId || conduct.studentId
-        conduct.classId = req.body.classId || conduct.classId
-        conduct.teacherId = req.body.teacherId || conduct.teacherId,
-        conduct.schoolYearId = req.body.schoolYearId || conduct.schoolYearId,
-        conduct.conduct = req.body.conduct || conduct.conduct
-        conduct.term = req.body.term || conduct.term
+        //Check conduct validation
+        if (req.body.conduct < 0 || req.body.conduct > 3) {
+            return res.status(400).json({
+                success: false,
+                message: "conduct not valid"
+            })
+        }
 
-        let count = await Conduct.updateConduct(conduct)
+        let count = await Conduct.updateConduct(req.body)
 
         return res.status(200).json({
             success: true,
