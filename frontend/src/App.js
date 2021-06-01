@@ -38,6 +38,10 @@ import SpecialistTeam from './components/SpecialistTeam/specialistTeam'
 import Student from './components/Student/student'
 import Teacher from './components/Teacher/teacher'
 import Account from './components/Account/Account'
+import SearchTeacher from './components/SearchTeacher/SearchTeacher'
+import SearchStudent from './components/SearchStudent/SearchStudent'
+import SearchHomroomTeacherAssignment from './components/SearchHomroomTeacherAssignment/SearchHomroomTeacherAssignment'
+import SearchTeachingAssignment from './components/SearchTeachingAssignment/SearchTeachingAssignment'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -111,6 +115,12 @@ class App extends React.Component {
               <PrivateRouter exact path="/account" component={<Account />} role={[2]} />
               <PrivateRouter exact path="/transfer-class" component={<TransferClass />} role={[2]} />
               <PrivateRouter exact path="/score-lock" component={<ScoreLock />} role={[2]} />
+              <PrivateRouter exact path="/search-teacher" component={<SearchTeacher />} role={[2]} />
+              <PrivateRouter exact path="/search-student" component={<SearchStudent />} role={[2]} />
+              <PrivateRouter exact path="/search-homeroom-teacher-assignment" component={<SearchHomroomTeacherAssignment />} role={[2]} />
+              <PrivateRouter exact path="/search-teaching-assignment" component={<SearchTeachingAssignment />} role={[2]} />
+
+
               <Route path="/student/score">
                 <StudentScore />
               </Route>

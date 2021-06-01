@@ -5,3 +5,8 @@
 .react-datepicker-wrapper {
     width: 100%;
 }
+
+.autosuggest {
+    width: 70%;
+    align-self: auto;
+}

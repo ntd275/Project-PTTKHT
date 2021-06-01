@@ -8,7 +8,7 @@ scoreLockRouter.use(authMiddleware.isAuth)
 // scoreLockRouter.use(adminMiddleware)
 
 scoreLockRouter.get('/list', scoreLockController.getScoreLockList)
-scoreLockRouter.get('/id/:id', scoreLockController.getScoreLock)
+scoreLockRouter.get('/id/:id', scoreLockController.getScoreLockById)
 scoreLockRouter.put('/lock', scoreLockController.lock)
 scoreLockRouter.put('/unlock', scoreLockController.unlock)
 scoreLockRouter.post('/', scoreLockController.createScoreLock)

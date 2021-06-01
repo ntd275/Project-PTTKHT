@@ -27,6 +27,207 @@ class Header extends React.Component {
     }
 
     render() {
+        if (!this.context.user) {
+            return (
+                <header>
+                    <Navbar bg="primary" expand="lg" variant="dark">
+                        <Link to="/" className="navbar-brand">
+                            <FaHome size={this.state.iconSize * 1.5} />
+                        </Link>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    </Navbar>
+                </header>
+            )
+        }
+        if (this.context.user.role === 0) {
+            return (
+                <header>
+                    <Navbar bg="primary" expand="lg" variant="dark">
+                        <Link to="/" className="navbar-brand">
+                            <FaHome size={this.state.iconSize * 1.5} />
+                        </Link>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="mr-auto">
+                                <NavDropdown
+                                    title={
+                                        <div className="d-inline-block">
+                                            <div className="position-relative">
+                                                <BsSearch size={this.state.iconSize} className="position-relative title-icon" />
+                                                <div className="title-text d-inline-block">
+                                                    Tra cứu
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    id="basic-nav-dropdown"
+                                >
+                                    <Link to="/" className="dropdown-item">
+                                        Tra cứu điểm
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Tra cứu phiếu liên lạc
+                                    </Link>
+                                </NavDropdown>
+                            </Nav>
+                            <Nav>
+                                {this.context.user &&
+                                    <NavDropdown
+                                        alignRight
+                                        title={
+                                            <div className="d-inline-block">
+                                                <div className="position-relative">
+                                                    <FaUserCircle size={this.state.iconSize} className="position-relative title-icon" />
+                                                    <div className="title-text d-inline-block">
+                                                        {this.context.user && this.context.user.accountName}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        id="basic-nav-dropdown"
+                                    >
+                                        <Link to="/account-info" className="dropdown-item">
+                                            Xem thông tin tài khoản
+                                    </Link>
+                                        <NavDropdown.Divider />
+                                        <Link to="/change-password" className="dropdown-item">
+                                            Đổi mật khẩu
+                                    </Link>
+                                        <NavDropdown.Divider />
+                                        <div className="dropdown-item" onClick={this.logout}>
+                                            Đăng xuất
+                                    </div>
+                                    </NavDropdown>
+                                }
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                </header>
+            )
+        }
+
+        if (this.context.user.role === 1) {
+            return (
+                <header>
+                    <Navbar bg="primary" expand="lg" variant="dark">
+                        <Link to="/" className="navbar-brand">
+                            <FaHome size={this.state.iconSize * 1.5} />
+                        </Link>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="mr-auto">
+                                <NavDropdown
+                                    title={
+                                        <div className="d-inline-block">
+                                            <div className="position-relative">
+                                                <FiMenu size={this.state.iconSize} className="position-relative title-icon" />
+                                                <div className="title-text d-inline-block">
+                                                    Chức năng
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    id="basic-nav-dropdown"
+                                >
+                                    <Link to="/" className="dropdown-item">
+                                        Cập nhật đánh giá hạnh kiểm
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Điểm danh
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Xuất phiếu liên lạc
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Nhập điểm
+                                    </Link>
+                                </NavDropdown>
+                                <NavDropdown
+                                    title={
+                                        <div className="d-inline-block">
+                                            <div className="position-relative">
+                                                <BiLineChart size={this.state.iconSize} className="position-relative title-icon" />
+                                                <div className="title-text d-inline-block">
+                                                    Thống kê
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    id="basic-nav-dropdown"
+                                >
+                                    <Link to="/" className="dropdown-item">
+                                        Thông kê danh sách theo hạng
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Thống kê kết quả theo lớp
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Thống kê điểm bài thi theo cá nhân
+                                    </Link>
+                                </NavDropdown>
+                                <NavDropdown
+                                    title={
+                                        <div className="d-inline-block">
+                                            <div className="position-relative">
+                                                <BsSearch size={this.state.iconSize} className="position-relative title-icon" />
+                                                <div className="title-text d-inline-block">
+                                                    Tra cứu
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    id="basic-nav-dropdown"
+                                >
+                                    <Link to="/" className="dropdown-item">
+                                        Xem thông tin lớp chủ nhiệm
+                                    </Link>
+                                    <NavDropdown.Divider />
+                                    <Link to="/" className="dropdown-item">
+                                        Tra cứu điểm các lớp giảng dạy
+                                    </Link>
+                                </NavDropdown>
+                            </Nav>
+                            <Nav>
+                                {this.context.user &&
+                                    <NavDropdown
+                                        alignRight
+                                        title={
+                                            <div className="d-inline-block">
+                                                <div className="position-relative">
+                                                    <FaUserCircle size={this.state.iconSize} className="position-relative title-icon" />
+                                                    <div className="title-text d-inline-block">
+                                                        {this.context.user && this.context.user.accountName}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        id="basic-nav-dropdown"
+                                    >
+                                        <Link to="/account-info" className="dropdown-item">
+                                            Xem thông tin tài khoản
+                                    </Link>
+                                        <NavDropdown.Divider />
+                                        <Link to="/change-password" className="dropdown-item">
+                                            Đổi mật khẩu
+                                    </Link>
+                                        <NavDropdown.Divider />
+                                        <div className="dropdown-item" onClick={this.logout}>
+                                            Đăng xuất
+                                    </div>
+                                    </NavDropdown>
+                                }
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Navbar>
+                </header>
+            )
+        }
         return (
             <header>
                 <Navbar bg="primary" expand="lg" variant="dark">
@@ -158,19 +359,19 @@ class Header extends React.Component {
                                 }
                                 id="basic-nav-dropdown"
                             >
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/search-teacher" className="dropdown-item">
                                     Tra cứu thông tin giáo viên
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/search-student" className="dropdown-item">
                                     Tra cứu thông tin học sinh
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/search-homeroom-teacher-assignment" className="dropdown-item">
                                     Tra cứu phân công GVCN
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/search-teaching-assignment" className="dropdown-item">
                                     Tra cứu phân công giảng dạy
                                 </Link>
                             </NavDropdown>

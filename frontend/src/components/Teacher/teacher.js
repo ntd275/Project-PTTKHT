@@ -119,7 +119,7 @@ class Teacher extends React.Component {
         <th>Họ tên</th>
         <th>Ngày sinh</th>
         <th>Giới tính</th>
-        <th>Nơi sinh</th>
+        <th>Địa chỉ</th>
         <th className="text-center"><BsTrash /></th>
         <th className="text-center"><FaPencilAlt /></th>
       </tr>
