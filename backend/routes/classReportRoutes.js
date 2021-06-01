@@ -7,6 +7,7 @@ const notFound = require('./404')
 classReportRouter.use(authMiddleware.isAuth)
 
 classReportRouter.get('/subject', classReportController.getSubjectReport)
+classReportRouter.get('/rank', classReportController.getRankReport)
 // classRouter.use(adminMiddleware)
 
 classReportRouter.use(notFound)
