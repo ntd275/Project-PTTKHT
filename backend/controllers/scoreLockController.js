@@ -34,7 +34,7 @@ async function getScoreLockById(req, res) {
         if (sLock == undefined || sLock == null) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find score lock with id=${req.params.id}`
+                message: `Cannot find score lock with id = ${req.params.id}`
             })
         }
 
@@ -59,7 +59,7 @@ async function getScoreLock(req, res) {
         if (sLock == undefined || sLock == null) {
             return res.status(400).json({
                 success: false,
-                message: `Cannot find score lock for schoolYearId=${req.query.schoolYearId}`
+                message: `Cannot find score lock for schoolYearId = ${req.query.schoolYearId}`
             })
         }
 
@@ -103,7 +103,7 @@ async function deleteScoreLock(req, res) {
         if (!count) {
             return res.status(404).json({
                 success: false,
-                message: `Cannot delete scoreLockId=${req.params.id}`
+                message: `Cannot delete scoreLockId = ${req.params.id}`
             })
         }
 
@@ -123,10 +123,21 @@ async function deleteScoreLock(req, res) {
 
 async function lock(req, res) {
     try {
-        let lock = ScoreLock.lock(req.body.schoolYear, req.body.term)
-
-        if (lock == 0) {
+        let schoolYearId = req.body.schoolYearId
+        let term = req.body.term
+        //Check data
+        if (typeof (schoolYearId) !== "number" || typeof (term) !== "number" || schoolYearId < 0 || term < 0) {
             return res.status(400).json({
+                success: false,
+                message: "schoolYearId or term is inappropriate"
+            })
+        }
+
+        //return rows affected
+        let count = await ScoreLock.lock(schoolYearId, term)
+
+        if (count == 0) {
+            return res.status(409).json({
                 success: false,
                 message: "Cannot lock"
             })
@@ -134,7 +145,7 @@ async function lock(req, res) {
 
         return res.status(200).json({
             success: true,
-            result: lock
+            result: count
         })
     } catch (error) {
         console.log(error)
@@ -147,9 +158,19 @@ async function lock(req, res) {
 
 async function unlock(req, res) {
     try {
-        let lock = ScoreLock.unlock(req.body.schoolYearId, req.body.term)
+        let schoolYearId = req.body.schoolYearId
+        let term = req.body.term
+        //Check data
+        if (typeof (schoolYearId) !== "number" || typeof (term) !== "number" || schoolYearId < 0 || term < 0) {
+            return res.status(400).json({
+                success: false,
+                message: "schoolYearId or term is inappropriate"
+            })
+        }
+        //Number of rows affected
+        let count = await ScoreLock.unlock(schoolYearId, term)
 
-        if (lock == 0) {
+        if (count == 0) {
             return res.status(400).json({
                 success: false,
                 message: "Cannot unlock"
@@ -158,7 +179,7 @@ async function unlock(req, res) {
 
         return res.status(200).json({
             success: true,
-            result: lock
+            result: count
         })
     } catch (error) {
         console.log(error)

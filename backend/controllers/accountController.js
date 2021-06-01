@@ -94,6 +94,18 @@ async function addAccount(req, res) {
     }
 }
 
+async function uploadImage(req, res) {
+    try {
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function editAccount(req, res) {
     try {
         //Return number of affected row
