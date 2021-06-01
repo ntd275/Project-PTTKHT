@@ -204,6 +204,9 @@ const Api = {
     getTeacherList: (page, perpage) => {
         return user.get(`/teacher/list?page=${page}&perpage=${perpage}`)
     },
+    getTeacherByCode: (code) => {
+        return user.get(`/teacher/code/${code}`)
+    },
     addTeacher: (data) => {
         return user.post(`/teacher/`, {
             teacherCode: data.teacherCode,

@@ -42,6 +42,7 @@ import SearchTeacher from './components/SearchTeacher/SearchTeacher'
 import SearchStudent from './components/SearchStudent/SearchStudent'
 import SearchHomroomTeacherAssignment from './components/SearchHomroomTeacherAssignment/SearchHomroomTeacherAssignment'
 import SearchTeachingAssignment from './components/SearchTeachingAssignment/SearchTeachingAssignment'
+import MyTeachingAssignment from './components/MyTeachingAssignment/MyTeachingAssignment'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -119,6 +120,9 @@ class App extends React.Component {
               <PrivateRouter exact path="/search-student" component={<SearchStudent />} role={[2]} />
               <PrivateRouter exact path="/search-homeroom-teacher-assignment" component={<SearchHomroomTeacherAssignment />} role={[2]} />
               <PrivateRouter exact path="/search-teaching-assignment" component={<SearchTeachingAssignment />} role={[2]} />
+              <PrivateRouter exact path="/teaching-class-score" component={<TeachingClassScore />} role={[2, 1]} />
+              <PrivateRouter exact path="/my-teaching-assignment" component={<MyTeachingAssignment />} role={[2, 1]} />
+
 
 
               <Route path="/student/score">
@@ -126,10 +130,6 @@ class App extends React.Component {
               </Route>
               <Route path="/student/pll">
                 <StudentPLL />
-              </Route>
-              {/* GVBM nhập điểm */}
-              <Route path="/TeachingClassScore">
-                <TeachingClassScore />
               </Route>
               {/* GVCN đánh giá hạnh kiểm */}
               <Route path="/ConductAssessment">

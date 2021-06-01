@@ -113,6 +113,9 @@ class Pagination extends React.Component {
     }
 
     render() {
+        if (this.props.pagination.lastPage === 0) {
+            this.props.pagination.lastPage = 1
+        }
         //console.log(this.props)
         return (
             <div>
