@@ -36,13 +36,6 @@ async function getSubjectScore(req, res) {
     try {
         let subjectScores = await Score.getSubjectScore(req.query.studentId, req.query.subjectId, req.query.schoolYearId, req.query.term)
 
-        if (subjectScores.length == 0) {
-            return res.status(400).json({
-                success: false,
-                message: `Cannot find subject score of student`
-            })
-        }
-
         return res.status(200).json({
             success: true,
             scores: subjectScores
