@@ -55,13 +55,6 @@ async function getStudentScore(req, res) {
     try {
         let studentScores = await Score.getStudentScore(req.query.studentId, req.query.schoolYearId, req.query.term)
 
-        if (studentScores.length == 0) {
-            return res.status(400).json({
-                success: false,
-                message: `Cannot find student score`
-            })
-        }
-
         return res.status(200).json({
             success: true,
             scores: studentScores
