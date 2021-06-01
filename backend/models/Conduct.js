@@ -23,30 +23,52 @@ exports.getConduct = async (studentId, schoolYearId, term) => {
     }).first()
 }
 
-exports.createConduct = async (data) => {
-    return knex('Conduct').insert([
-        {
-            studentId: data.studentId,
-            classId: data.classId,
-            teacherId: data.teacherId,
-            schoolYearId: data.schoolYearId,
-            conduct: data.conduct,
-            term: data.term,
-            note: data.note
-        }
-    ])
+exports.getClassConduct = async (classId, schoolYearId, term) => {
+    return knex('Conduct').where({
+        'classId': classId,
+        'schoolYearId': schoolYearId,
+        'term': term
+    })
 }
 
+exports.createConduct = async (data) => {
+    return knex('Conduct').insert({
+        studentId: data.studentId,
+        classId: data.classId,
+        teacherId: data.teacherId,
+        schoolYearId: data.schoolYearId,
+        conduct: data.conduct,
+        term: data.term,
+        note: data.note
+    })
+}
+
+/** Only update these fields:
+ * teacherId: who assesses sutdent's conduct
+ * conduct: student's conduct
+ * note: note/comment of teacher for student
+ */
 exports.updateConduct = async (data) => {
     return knex('Conduct')
-        .where('conductId', data.conductId)
+        .where((builder) => {
+            if (data.conductId) {
+                builder.where({
+                    conductId: data.conductId,
+                    studentId: data.studentId,
+                    schoolYearId: data.schoolYearId,
+                    term: data.term
+                })
+            } else {
+                builder.where({
+                    studentId: data.studentId,
+                    schoolYearId: data.schoolYearId,
+                    term: data.term
+                })
+            }
+        })
         .update({
-            studentId: data.studentId,
-            classId: data.classId,
             teacherId: data.teacherId,
-            schoolYearId: data.schoolYearId,
             conduct: data.conduct,
-            term: data.term,
             note: data.note
         })
 }

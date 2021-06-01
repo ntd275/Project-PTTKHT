@@ -6,7 +6,8 @@ const teacherMiddleware = require('../middlewares/teacher')
 const notFound = require('./404')
 
 ConductRouter.use(authMiddleware.isAuth)
-ConductRouter.get('/', ConductController.getConduct)
+ConductRouter.get('/student', ConductController.getStudentConduct)
+ConductRouter.get('/class', ConductController.getClassConduct)
 
 ConductRouter.use(teacherMiddleware.isTeacher)
 ConductRouter.post('/', ConductController.assessConduct)
