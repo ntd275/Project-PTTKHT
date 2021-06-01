@@ -39,6 +39,7 @@ class Subject extends React.Component {
       modalKind: "",
       modalLoading: true,
       modalEdited: false,
+      searchValue: ""
     };
   }
 
@@ -51,10 +52,15 @@ class Subject extends React.Component {
     this.props.history.goBack()
   }
 
-  refresh = async (page, perpage) => {
+  refresh = async (page, perpage, searchValue) => {
     this.setState({ loading: true })
     try {
-      let res = await Api.getSubjectList(page || this.state.pagination.currentPage, perpage || this.state.perpage)
+      let res
+      if (searchValue || this.state.searchValue) {
+        res = await Api.searchSubjectByName(page || this.state.pagination.currentPage, perpage || this.state.perpage, searchValue || this.state.searchValue)
+      } else {
+        res = await Api.getSubjectList(page || this.state.pagination.currentPage, perpage || this.state.perpage)
+      }
       console.log(res)
       this.setState({ loading: false, subjectList: res.data.result.data, pagination: res.data.result.pagination })
 
@@ -271,9 +277,9 @@ class Subject extends React.Component {
           </div>
           <div className="d-flex ml-auto">
             <div className="input-group">
-              <input type="text" className="form-control" placeholder="Tìm kiếm" />
+              <input type="text" className="form-control" placeholder="Tìm kiếm" value={this.state.searchValue} onChange={e => this.setState({ searchValue: e.target.value })} />
               <div className="input-group-append">
-                <button className="btn btn-primary" type="button"><BsSearch /></button>
+                <button className="btn btn-primary" type="button" onClick={() => this.refresh(1)}><BsSearch /></button>
               </div>
             </div>
           </div>
@@ -443,7 +449,7 @@ class Dialog extends React.Component {
     return true;
   }
   addSubject = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })
@@ -484,7 +490,7 @@ class Dialog extends React.Component {
   }
 
   editSubject = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })

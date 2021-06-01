@@ -13,7 +13,7 @@ exports.getStudentByCode = async (studentCode) => {
 }
 
 exports.getStudentByName = async (studentName, page, perpage) => {
-    return knex('Student').where('studentName', 'like', `%${studentName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex('Student').where('studentName', 'like', `%${studentName}%`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.searchStudent = async (name, code) => {

@@ -92,6 +92,9 @@ const Api = {
     getClassList: (page, perpage) => {
         return user.get(`/class/list?page=${page}&perpage=${perpage}`)
     },
+    searchClassByName: (page, perpage, name) => {
+        return user.get(`/class/name/${name}?page=${page}&perpage=${perpage}`)
+    },
     addClass: (data) => {
         return user.post(`/class/`, {
             className: data.className,
@@ -114,6 +117,9 @@ const Api = {
     getSubjectList: (page, perpage) => {
         return user.get(`/subject/list?page=${page}&perpage=${perpage}`)
     },
+    searchSubjectByName: (page, perpage, name) => {
+        return user.get(`/subject/name/${name}?page=${page}&perpage=${perpage}`)
+    },
     addSubject: (data) => {
         return user.post(`/subject/`, {
             subjectName: data.subjectName,
@@ -133,6 +139,9 @@ const Api = {
     },
     getSpecialistTeamList: (page, perpage) => {
         return user.get(`/specialist-team/list?page=${page}&perpage=${perpage}`)
+    },
+    searchSpecialistTeamByName: (page, perpage, name) => {
+        return user.get(`/specialist-team/name/${name}?page=${page}&perpage=${perpage}`)
     },
     addSpecialistTeam: (data) => {
         return user.post(`/specialist-team/`, {
@@ -154,6 +163,9 @@ const Api = {
     },
     getStudentByCode: (code) => {
         return user.get(`/student/code/${code}`)
+    },
+    searchStudentByName: (page, perpage, name) => {
+        return user.get(`/student/name/${name}?page=${page}&perpage=${perpage}`)
     },
     addStudent: (data) => {
         return user.post(`/student/`, {
@@ -209,6 +221,9 @@ const Api = {
     },
     getTeacherByCode: (code) => {
         return user.get(`/teacher/code/${code}`)
+    },
+    searchTeacherByName: (page, perpage, name) => {
+        return user.get(`/teacher/name/${name}?page=${page}&perpage=${perpage}`)
     },
     addTeacher: (data) => {
         return user.post(`/teacher/`, {

@@ -1,6 +1,5 @@
 import {
     BsArrowLeftShort,
-    BsSearch,
 } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
@@ -15,7 +14,7 @@ import Loading from '../Loading/Loading'
 import { withRouter } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 import Autosuggest from 'react-autosuggest';
-import { BiSearch, BiRefresh } from 'react-icons/bi';
+import { BiSearch } from 'react-icons/bi';
 class Teacher extends React.Component {
     constructor(props) {
         super(props);
@@ -50,7 +49,7 @@ class Teacher extends React.Component {
             modalLoading: true,
             modalEdited: false,
             suggestions: [],
-            searchValue: '',
+            searchValue: "",
         };
     }
 
@@ -63,10 +62,15 @@ class Teacher extends React.Component {
         this.props.history.goBack()
     }
 
-    refresh = async (page, perpage) => {
+    refresh = async (page, perpage, searchValue) => {
         this.setState({ loading: true })
         try {
-            let res = await Api.getTeacherList(page || this.state.pagination.currentPage, perpage || this.state.perpage)
+            let res
+            if (searchValue || this.state.searchValue) {
+                res = await Api.searchTeacherByName(page || this.state.pagination.currentPage, perpage || this.state.perpage, searchValue || this.state.searchValue)
+            } else {
+                res = await Api.getTeacherList(page || this.state.pagination.currentPage, perpage || this.state.perpage)
+            }
             console.log(res)
             this.setState({ loading: false, teacherList: res.data.result.data, pagination: res.data.result.pagination })
 
@@ -107,6 +111,7 @@ class Teacher extends React.Component {
         this.setState({ perpage: e.target.value })
         await this.refresh(this.state.pagination.currentPage, e.target.value)
     }
+
     changePage = async (page) => {
         await this.refresh(page, this.state.perpage)
     }
@@ -166,10 +171,6 @@ class Teacher extends React.Component {
         })
     }
 
-    closeDelete = () => {
-        this.setState({ showDelete: false });
-    }
-
     closeModal = () => {
         this.setState({ showModal: false });
     }
@@ -179,7 +180,7 @@ class Teacher extends React.Component {
             clearTimeout(this.timeout);
         }
         this.timeout = setTimeout(async () => {
-            let req = this.lastReq = Api.getTeacherList(1, 10)
+            let req = this.lastReq = Api.searchTeacherByName(1, this.state.perpage, value)
             try {
                 let res = await req;
                 if (req === this.lastReq) {
@@ -207,6 +208,10 @@ class Teacher extends React.Component {
 
     getSuggestionValue = suggestion => suggestion.teacherName;
 
+    onSuggestionSelected = (event, { suggestion, suggestionValue, suggestionIndex, sectionIndex, method }) => {
+        this.refresh(null, null, suggestionValue)
+    }
+
     renderSuggestion = (suggestion) => {
         return (
             <div className="w-100">{suggestion.teacherName + " - " + suggestion.teacherCode}</div>
@@ -221,7 +226,8 @@ class Teacher extends React.Component {
             suggestionsContainer: 'dropdown',
             suggestionsList: `dropdown-menu w-100 ${this.state.suggestions.length ? 'show' : ''}`,
             suggestion: 'dropdown-item w-100',
-            suggestionFocused: 'active'
+            suggestionFocused: 'active',
+            suggestionHighlighted: 'active'
         };
 
         const inputProps = {
@@ -273,6 +279,7 @@ class Teacher extends React.Component {
                         renderSuggestion={this.renderSuggestion}
                         inputProps={inputProps}
                         theme={theme}
+                        onSuggestionSelected={this.onSuggestionSelected}
                     />
                     <button type="button" className="btn btn-primary ml-3 align-self-center" onClick={() => this.refresh()}>
                         <BiSearch size={this.state.iconSize} />Tra cứu
