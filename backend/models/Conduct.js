@@ -1,3 +1,10 @@
+/**
+ * Student conduct type:
+ * 0: Tốt
+ * 1: Khá
+ * 2: Trung bình
+ * 3: Kém
+ */
 const knex = require('./database')
 
 // exports.getConductList = async () => {
@@ -24,7 +31,8 @@ exports.createConduct = async (data) => {
             teacherId: data.teacherId,
             schoolYearId: data.schoolYearId,
             conduct: data.conduct,
-            term: data.term
+            term: data.term,
+            note: data.note
         }
     ])
 }
@@ -38,7 +46,8 @@ exports.updateConduct = async (data) => {
             teacherId: data.teacherId,
             schoolYearId: data.schoolYearId,
             conduct: data.conduct,
-            term: data.term
+            term: data.term,
+            note: data.note
         })
 }
 
