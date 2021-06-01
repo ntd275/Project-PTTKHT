@@ -152,6 +152,9 @@ const Api = {
     getStudentList: (page, perpage) => {
         return user.get(`/student/list?page=${page}&perpage=${perpage}`)
     },
+    getStudentByCode: (code) => {
+        return user.get(`/student/code/${code}`)
+    },
     addStudent: (data) => {
         return user.post(`/student/`, {
             studentCode: data.studentCode,
@@ -251,7 +254,7 @@ const Api = {
     },
     searchTeachingAssignment: (page, perpage, searchCondition) => {
         let url = `/teaching-assignment/search?page=${page}&perpage=${perpage}`
-        console.log(searchCondition)
+        //console.log(searchCondition)
         if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
         if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
         if (searchCondition.classId) url += `&classId=${searchCondition.classId}`
@@ -366,12 +369,6 @@ const Api = {
     deleteAccount: (id) => {
         return user.delete(`/account/${id}`)
     },
-    getTeacherByCode: (code) => {
-        return user.get(`/teacher/code/${code}`)
-    },
-    getStudentByCode: (code) => {
-        return user.get(`/student/code/${code}`)
-    },
     getScoreLockList: (page, perpage) => {
         return user.get(`/score-lock/list?page=${page}&perpage=${perpage}`)
     },
@@ -397,6 +394,18 @@ const Api = {
     deleteScoreLock: (id) => {
         return user.delete(`/score-lock/id/${id}`)
     },
+    checkLock: (schoolYearId, term) => {
+        return user.get(`/score/check-lock?schoolYearId=${schoolYearId}&term=${term}`)
+    },
+    getSubjectScore: (studentId, subjectId, schoolYearId, term) => {
+        return user.get(`/score/student/subject-scores?studentId=${studentId}&subjectId=${subjectId}&schoolYearId=${schoolYearId}&term=${term}`)
+    },
+    getStudentScore: (studentId, schoolYearId, term) => {
+        return user.get(`/score/student/scores?studentId=${studentId}&schoolYearId=${schoolYearId}&term=${term}`)
+    },
+    editScore: (data) => {
+        return user.put(`/score/`, data)
+    }
 }
 
 export default Api
