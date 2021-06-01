@@ -41,16 +41,16 @@ exports.getStudentScore = async (studentId, schoolYearId, term) => {
  */
 exports.editScore = async (data) => {
     let students = data.students
-
-    let res = await knex.transaction(async trx => {
+    let count = 0;
+    await knex.transaction(async trx => {
         try {
             for (let i = 0; i < students.length; i++) {
                 let student = students[i]
 
                 //Check exists student
-                let existStudent = trx.where('studentId', student.studentId).from('Student').first()
+                let existStudent = await trx.where('studentId', student.studentId).from('Student').first()
                 if (existStudent === undefined || !existStudent) {
-                    let message = `Student id = ${student.studentId} not found`
+                    let message = `studentId = ${student.studentId} not found`
                     return Promise.reject(message)
                 }
 
@@ -62,7 +62,7 @@ exports.editScore = async (data) => {
                     let term = parseInt(scores[j].term)
 
                     if (kind < 0 || kind > 3 || score < 0 || score > 10 || term < 1 || term > 2) {
-                        let message = `Error with score/kind/term of student id = ${student.studentId}`
+                        let message = `Error with score/kind/term of studentId = ${student.studentId}`
                         return Promise.reject(message)
                     }
 
@@ -71,18 +71,19 @@ exports.editScore = async (data) => {
                     switch (scores[j].method) {
                         case "add":
                             //Check exists
-                            scoreExist = trx.where({
+                            scoreExist = await trx.where({
                                 'studentId': student.studentId,
                                 'schoolYearId': scores[j].schoolYearId,
                                 'subjectId': scores[j].subjectId,
                                 'kind': kind,
                                 'term': term
-                            }).from('Score')
-                            if (scoreExist || scoreExist != undefined) {
-                                let message = `Score existed in database`
+                            }).select().from('Score').first()
+
+                            if (scoreExist || scoreExist !=undefined) {
+                                let message = `Cannot add existed scoreId=${scoreExist.scoreId}`
                                 return Promise.reject(message)
                             }
-
+                            
                             //Add
                             await trx.insert({
                                 'studentId': student.studentId,
@@ -96,34 +97,34 @@ exports.editScore = async (data) => {
                             break;
 
                         case "edit":
-                            scoreExist = trx.where('scoreId', scores[j].scoreId).from('Score').first()
-                            
+                            scoreExist = await trx.where('scoreId', scores[j].scoreId).select().from('Score').first()
+
                             if (scoreExist === undefined || !scoreExist) {
-                                let message = `Student id = ${scores[j].scoreId} not found`
+                                let message = `scoreId = ${scores[j].scoreId} not found`
                                 return Promise.reject(message)
                             }
 
                             await trx.where('scoreId', scores[j].scoreId).update({
                                 'score': score,
                                 'teacherId': scores[j].teacherId
-                            })
+                            }).from('Score')
                             break;
 
                         case "delete":
-                            scoreExist = trx.where('scoreId', scores[j].scoreId).from('Score').first()
-                            
+                            scoreExist = await trx.where('scoreId', scores[j].scoreId).from('Score').first()
+
                             if (scoreExist === undefined || !scoreExist) {
-                                let message = `Student id = ${scores[j].scoreId} not found`
+                                let message = `scoreId = ${scores[j].scoreId} not found`
                                 return Promise.reject(message)
                             }
 
-                            await trx.where('scoreId', scores[j].scoreId).delete()
+                            await trx.where('scoreId', scores[j].scoreId).from('Score').delete()
                             break;
                         default:
                             let message = `Method not found`
                             return Promise.reject(message)
                     }
-
+                    count++;
                 }
             }
         } catch (error) { //Rollback
@@ -132,8 +133,7 @@ exports.editScore = async (data) => {
         }
     })
 
-    return res
-
+    return count
 }
 
 //Deprecated

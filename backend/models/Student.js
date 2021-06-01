@@ -1,19 +1,25 @@
 const knex = require('./database')
 
 exports.getStudentList = async (page, perpage) => {
-    return await knex.select().table('Student').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex.select().table('Student').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getStudent = async (studentId) => {
-    return await knex('Student').where('studentId', studentId).first()
+    return knex('Student').where('studentId', studentId).first()
 }
 
 exports.getStudentByCode = async (studentCode) => {
-    return await knex('Student').where('studentCode', studentCode).first()
+    return knex('Student').where('studentCode', studentCode).first()
 }
 
 exports.getStudentByName = async (studentName, page, perpage) => {
-    return await knex('Student').where('studentName', 'like', `%${studentName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex('Student').where('studentName', 'like', `%${studentName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
+exports.searchStudent = async (name, code) => {
+    return knex('Student')
+        .where('studentName', 'like', `%${name}%`)
+        .orWhere('studentCode', 'like', `%${code}%`)
 }
 
 exports.createStudent = async (data) => {
@@ -21,7 +27,7 @@ exports.createStudent = async (data) => {
     let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
     let dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
 
-    return await knex('Student').insert([
+    return knex('Student').insert([
         {
             studentCode: data.studentCode,
             studentName: data.studentName,
@@ -61,7 +67,7 @@ exports.updateStudent = async (id, data) => {
         dateOfUnion = await new Date(data.dateOfUnion).toISOString().slice(0, 10).replace('T', ' ')
     }
 
-    return await knex('Student')
+    return knex('Student')
         .where('studentId', id)
         .update({
             studentCode: data.studentCode,
@@ -86,6 +92,6 @@ exports.updateStudent = async (id, data) => {
 }
 
 exports.deleteStudent = async (studentId) => {
-    return await knex('Student').where('studentId', studentId).del()
+    return knex('Student').where('studentId', studentId).del()
 }
 

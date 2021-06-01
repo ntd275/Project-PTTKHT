@@ -1,7 +1,7 @@
 const knex = require('./database')
 
 exports.searchSpecialistAssignment = async (searchItems, page, perpage) => {
-    return await knex('SpecialistAssignment')
+    return knex('SpecialistAssignment')
         .join('Teacher', 'SpecialistAssignment.teacherId', 'Teacher.teacherId')
         .join('SpecialistTeam', 'SpecialistAssignment.specialistTeamId', 'SpecialistTeam.specialistTeamId')
         .join('SchoolYear', 'SpecialistAssignment.schoolYearId', 'SchoolYear.schoolYearId')
@@ -23,7 +23,7 @@ exports.searchSpecialistAssignment = async (searchItems, page, perpage) => {
 }
 
 exports.getSpecialistAssignmentList = async (page, perpage) => {
-    return await knex('SpecialistAssignment')
+    return knex('SpecialistAssignment')
         .join('Teacher', 'SpecialistAssignment.teacherId', 'Teacher.teacherId')
         .join('SpecialistTeam', 'SpecialistAssignment.specialistTeamId', 'SpecialistTeam.specialistTeamId')
         .join('SchoolYear', 'SpecialistAssignment.schoolYearId', 'SchoolYear.schoolYearId')
@@ -35,7 +35,7 @@ exports.getSpecialistAssignmentList = async (page, perpage) => {
 }
 
 exports.getSpecialistAssignment = async (specialistAssignmentId) => {
-    return await knex('SpecialistAssignment')
+    return knex('SpecialistAssignment')
         .join('Teacher', 'SpecialistAssignment.teacherId', 'Teacher.teacherId')
         .join('SpecialistTeam', 'SpecialistAssignment.specialistTeamId', 'SpecialistTeam.specialistTeamId')
         .join('SchoolYear', 'SpecialistAssignment.schoolYearId', 'SchoolYear.schoolYearId')
@@ -47,10 +47,10 @@ exports.getSpecialistAssignment = async (specialistAssignmentId) => {
 }
 
 exports.deleteSpecialistAssignment = async (specialistAssignmentId) => {
-    return await knex('SpecialistAssignment').where('specialistAssignmentId', specialistAssignmentId).del()
+    return knex('SpecialistAssignment').where('specialistAssignmentId', specialistAssignmentId).del()
 }
 exports.createSpecialistAssignment = async (data) => {
-    return await knex('SpecialistAssignment').insert([
+    return knex('SpecialistAssignment').insert([
         {
             teacherId: data.teacherId,
             schoolYearId: data.schoolYearId,

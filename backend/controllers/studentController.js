@@ -111,6 +111,34 @@ async function getStudentByCode(req, res) {
     }
 }
 
+async function searchStudent(req, res) {
+    try {
+        let name = decodeURI(req.query.name)
+        let code = decodeURI(req.query.code)
+
+        let students = await Student.searchStudent(name, code)
+
+        if (students.length == 0 || students == undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "Found no teacher"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: students
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createStudent(req, res) {
     try {
         let student = await Student.createStudent(req.body)
@@ -221,6 +249,7 @@ module.exports = {
     getStudent: getStudent,
     getStudentByCode: getStudentByCode,
     getStudentByName: getStudentByName,
+    searchStudent: searchStudent,
     createStudent: createStudent,
     updateStudent: updateStudent,
     deleteStudent: deleteStudent

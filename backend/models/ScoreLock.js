@@ -1,22 +1,22 @@
 const knex = require('./database')
 
 exports.getScoreLockList = async (page, perpage) => {
-    return await knex.select().table('ScoreLock').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex.select().table('ScoreLock').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getScoreLockById = async (id) => {
-    return await knex('ScoreLock').where('scoreLockId', id).first()
+    return knex('ScoreLock').where('scoreLockId', id).first()
 }
 
 exports.getScoreLock = async (schoolYearId, term) => {
-    return await knex('ScoreLock').where({
+    return knex('ScoreLock').where({
         schoolYearId: schoolYearId,
         term: term
     }).first()
 }
 
 exports.lock = async (schoolYearId, term) => {
-    return await knex('ScoreLock')
+    return knex('ScoreLock')
         .where({
             schoolYearId: schoolYearId,
             term: term
@@ -24,7 +24,7 @@ exports.lock = async (schoolYearId, term) => {
 }
 
 exports.unlock = async (schoolYearId, term) => {
-    return await knex('ScoreLock')
+    return knex('ScoreLock')
         .where({
             schoolYearId: schoolYearId,
             term: term
@@ -33,7 +33,7 @@ exports.unlock = async (schoolYearId, term) => {
 }
 
 exports.createScoreLock = async (data) => {
-    return await knex('ScoreLock').insert([
+    return knex('ScoreLock').insert([
         {
             schoolYearId: data.schoolYearId,
             lock: data.lock,
@@ -43,6 +43,6 @@ exports.createScoreLock = async (data) => {
 }
 
 exports.deleteScoreLock = async (id) => {
-    return await knex('ScoreLock').where('scoreLockId', id).del()
+    return knex('ScoreLock').where('scoreLockId', id).del()
 }
 

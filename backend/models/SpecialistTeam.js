@@ -1,19 +1,19 @@
 const knex = require('./database')
 
 exports.getSpecialistTeamList = async (page, perpage) => {
-    return await knex.select().table('SpecialistTeam').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex.select().table('SpecialistTeam').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getSpecialistTeam = async (id) => {
-    return await knex('SpecialistTeam').where('specialistTeamId', id).first()
+    return knex('SpecialistTeam').where('specialistTeamId', id).first()
 }
 
 exports.getSpecialistTeamByName = async(sTeamName, page, perpage) => {
-    return await knex('SpecialistTeam').where('specialistName', 'like', sTeamName).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex('SpecialistTeam').where('specialistName', 'like', sTeamName).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.createSpecialistTeam = async (data) => {
-    return await knex('SpecialistTeam').insert([
+    return knex('SpecialistTeam').insert([
         {
             specialistName: data.specialistName,
             description: data.description
@@ -22,7 +22,7 @@ exports.createSpecialistTeam = async (data) => {
 }
 
 exports.updateSpecialistTeam = async (id, data) => {
-    return await knex('SpecialistTeam')
+    return knex('SpecialistTeam')
     .where('specialistTeamId', id)
     .update({
         specialistName: data.specialistName,
@@ -31,6 +31,6 @@ exports.updateSpecialistTeam = async (id, data) => {
 }
 
 exports.deleteSpecialistTeam = async (specialistTeamId) => {
-    return await knex('SpecialistTeam').where('specialistTeamId', specialistTeamId).del()
+    return knex('SpecialistTeam').where('specialistTeamId', specialistTeamId).del()
 }
 

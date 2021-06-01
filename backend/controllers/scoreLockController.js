@@ -7,6 +7,13 @@ async function getScoreLockList(req, res) {
         let perpage = parseInt(req.query.perpage) || config.perPageItem
         let scoreLockList = await ScoreLock.getScoreLockList(page, perpage)
 
+        if (scoreLockList.length == 0 || scoreLockList == undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "No score lock exists"
+            })
+        }
+
         return res.status(200).json({
             success: true,
             result: scoreLockList
@@ -22,11 +29,18 @@ async function getScoreLockList(req, res) {
 
 async function getScoreLockById(req, res) {
     try {
-        let scoreLock = await ScoreLock.getScoreLockById(req.params.id)
+        let sLock = await ScoreLock.getScoreLockById(req.params.id)
+
+        if (sLock == undefined || sLock == null) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find score lock with id=${req.params.id}`
+            })
+        }
 
         return res.status(200).json({
             success: true,
-            result: scoreLock
+            result: sLock
         })
 
     } catch (error) {
@@ -41,6 +55,13 @@ async function getScoreLockById(req, res) {
 async function getScoreLock(req, res) {
     try {
         let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId)
+
+        if (sLock == undefined || sLock == null) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot find score lock for schoolYearId=${req.query.schoolYearId}`
+            })
+        }
 
         return res.status(200).json({
             success: true,
@@ -82,7 +103,7 @@ async function deleteScoreLock(req, res) {
         if (!count) {
             return res.status(404).json({
                 success: false,
-                message: "ScoreLock not found"
+                message: `Cannot delete scoreLockId=${req.params.id}`
             })
         }
 

@@ -1,15 +1,15 @@
 const knex = require('./database')
 
 exports.getSchoolYearList = async (page, perpage) => {
-    return await knex.select().table('SchoolYear').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+    return knex.select().table('SchoolYear').paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 //Get current school year is that has biggest schoolYearId (added latest)
 exports.getSchoolYear = async () => {
-    // let subQuery = await knex('SchoolYear').max('beginSemester1 as maxDate').first()
-    // return await knex('SchoolYear').where('beginSemester1', subQuery.maxDate).first()
+    // let subQuery = knex('SchoolYear').max('beginSemester1 as maxDate').first()
+    // return knex('SchoolYear').where('beginSemester1', subQuery.maxDate).first()
     let thisDate = await new Date().toISOString().slice(0,10).replace('T','')
-    return await knex('SchoolYear').where(function() {
+    return knex('SchoolYear').where(function() {
         this.where('beginSemester1','<=', thisDate)
             .andWhere('endSemester1','>=', thisDate)
     }).orWhere(function(){
@@ -19,7 +19,7 @@ exports.getSchoolYear = async () => {
 }
 
 exports.getSchoolYearById = async (schoolYearId) => {
-    return await knex('SchoolYear').where('schoolYearId', schoolYearId).first()
+    return knex('SchoolYear').where('schoolYearId', schoolYearId).first()
 }
 
 exports.createSchoolYear = async (schoolYear) => {
@@ -29,7 +29,7 @@ exports.createSchoolYear = async (schoolYear) => {
     let beginSemester2 = await new Date(schoolYear.beginSemester2).toISOString().slice(0,10).replace('T', ' ');
     let endSemester2 = await new Date(schoolYear.endSemester2).toISOString().slice(0,10).replace('T', ' ');
 
-    return await knex('SchoolYear').insert([
+    return knex('SchoolYear').insert([
         {
             schoolYear: schoolYear.schoolYear, 
             beginSemester1: beginSemester1,
@@ -42,7 +42,7 @@ exports.createSchoolYear = async (schoolYear) => {
 }
 
 exports.updateSchoolYear = async (id, data) => {
-    return await knex('SchoolYear')
+    return knex('SchoolYear')
         .where('schoolYearId', id)
         .update({
             schoolYear: data.schoolYear,
@@ -55,6 +55,6 @@ exports.updateSchoolYear = async (id, data) => {
 }
 
 exports.deleteSchoolYear = async (schoolYearId) => {
-    return await knex('SchoolYear').where('schoolYearId', schoolYearId).del()
+    return knex('SchoolYear').where('schoolYearId', schoolYearId).del()
 }
 

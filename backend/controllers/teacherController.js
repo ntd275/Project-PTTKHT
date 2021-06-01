@@ -111,6 +111,34 @@ async function getTeacherByName(req, res) {
     }
 }
 
+async function searchTeacher(req, res) {
+    try {
+        let name = decodeURI(req.query.name)
+        let code = decodeURI(req.query.code)
+
+        let teachers = await Teacher.searchTeacher(name, code)
+
+        if (teachers.length == 0 || teachers == undefined) {
+            return res.status(400).json({
+                success: false,
+                message: "Found no teacher"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: teachers
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function createTeacher(req, res) {
     try {
         let teacher = await Teacher.createTeacher(req.body)
@@ -217,6 +245,7 @@ module.exports = {
     getTeacher: getTeacher,
     getTeacherByCode: getTeacherByCode,
     getTeacherByName: getTeacherByName,
+    searchTeacher: searchTeacher,
     createTeacher: createTeacher,
     updateTeacher: updateTeacher,
     deleteTeacher: deleteTeacher

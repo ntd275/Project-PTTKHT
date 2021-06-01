@@ -39,8 +39,8 @@ async function updateHomeroomTeacherAssignment(req, res) {
 
 async function searchHomeroomTeacherAssignment(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page || config.pageItem)
+        let perpage = parseInt(req.query.perpage || config.perPageItem)
         let searchItems = {};
         searchItems.schoolYearId = req.query.schoolYearId;
         searchItems.teacherId = req.query.teacherId;
@@ -63,8 +63,8 @@ async function searchHomeroomTeacherAssignment(req, res) {
 
 async function getHomeroomTeacherAssignmentList(req, res) {
     try {
-        let page = req.query.page || config.pageItem
-        let perpage = req.query.perpage || config.perPageItem
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
         let homeroomTeacherAssignmentList = await HomeroomTeacherAssignment.getHomeroomTeacherAssignmentList(page, perpage)
 
         return res.status(200).json({
