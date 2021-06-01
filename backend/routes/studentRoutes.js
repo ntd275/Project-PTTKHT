@@ -10,6 +10,7 @@ studentRouter.get('/list', studentController.getStudentList)
 studentRouter.get('/id/:id', studentController.getStudent)
 studentRouter.get('/code/:code', studentController.getStudentByCode)
 studentRouter.get('/name/:name', studentController.getStudentByName)
+studentRouter.get('/search', studentController.searchStudent)
 
 // studentRouter.use(adminMiddleware)
 

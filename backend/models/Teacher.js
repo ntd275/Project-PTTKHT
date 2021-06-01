@@ -12,8 +12,14 @@ exports.getTeacherByCode = async (teacherCode) => {
     return knex('Teacher').where('teacherCode', teacherCode).first()
 }
 
-exports.getTeacherByName = async(teacherName, page, perpage) => {
+exports.getTeacherByName = async (teacherName, page, perpage) => {
     return knex('Teacher').where('teacherName', 'like', `%${teacherName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
+exports.searchTeacher = async (name, code) => {
+    return knex('Teacher')
+        .where('teacherName', 'like', `%${name}%`)
+        .orWhere('teacherCode', 'like', `%${code}%`)
 }
 
 exports.createTeacher = async (data) => {

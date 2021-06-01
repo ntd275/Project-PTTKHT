@@ -16,6 +16,12 @@ exports.getStudentByName = async (studentName, page, perpage) => {
     return knex('Student').where('studentName', 'like', `%${studentName}`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
+exports.searchStudent = async (name, code) => {
+    return knex('Student')
+        .where('studentName', 'like', `%${name}%`)
+        .orWhere('studentCode', 'like', `%${code}%`)
+}
+
 exports.createStudent = async (data) => {
     let dateOfBirth = await new Date(data.dateOfBirth).toISOString().slice(0, 10).replace('T', ' ')
     let dateOfParty = await new Date(data.dateOfParty).toISOString().slice(0, 10).replace('T', ' ')
