@@ -63,18 +63,11 @@ Returns:
 async function getHomeroomClass(req, res) {
     try {
         //req.query.key == teacherId
-        let homeroomClasses = await Class.getHomeroomClass(req.query.key)
-
-        if (homeroomClasses === undefined) {
-            return res.status(400).json({
-                success: false,
-                message: `Cannot find homeroom class with teacherId = ${req.query.key}`
-            })
-        }
+        let homeroomClass = await Class.getHomeroomClass(req.query.key)
 
         return res.status(200).json({
             success: true,
-            result: homeroomClasses
+            result: homeroomClass
         })
 
     } catch (error) {
