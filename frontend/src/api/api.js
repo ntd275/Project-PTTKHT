@@ -422,7 +422,7 @@ const Api = {
         return user.put(`/score/`, data)
     },
     getClassConduct: (searchCondition) => {
-        return user.get(`/conduct/class?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
+        return user.get(`/conduct/class?teacherId=${searchCondition.teacherId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
     },
     getStudentConduct: (searchCondition) => {
         return user.get(`/conduct/student?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
