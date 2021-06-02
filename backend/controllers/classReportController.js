@@ -107,7 +107,7 @@ async function getRankReport(req, res) {
             }
         }
         let homeroomTeacherAssignmentList = await HomeroomTeacherAssignment.searchHomeroomTeacherAssignment(searchItems, page, perpage)
-        let homeroomTeacher = homeroomTeacherAssignmentList.data ? homeroomTeacherAssignmentList.data[0].teacherName : ""
+        let homeroomTeacher = homeroomTeacherAssignmentList.data.length ? homeroomTeacherAssignmentList.data[0].teacherName : ""
         return res.status(200).json({
             success: true,
             data: data,
@@ -200,8 +200,8 @@ async function getSubjectReport(req, res) {
             }
         }
         let homeroomTeacherAssignmentList = await HomeroomTeacherAssignment.searchHomeroomTeacherAssignment(searchItems, page, perpage)
-        let homeroomTeacher = homeroomTeacherAssignmentList.data ? homeroomTeacherAssignmentList.data[0].teacherName : ""
-        
+        let homeroomTeacher = homeroomTeacherAssignmentList.data.length ? homeroomTeacherAssignmentList.data[0].teacherName : ""
+
         return res.status(200).json({
             success: true,
             data: data,

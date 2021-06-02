@@ -166,10 +166,10 @@ class Header extends React.Component {
                                     <Link to="/statistic-subject" className="dropdown-item">
                                         Thống kê kết quả môn học
                                     </Link>
-                                    <NavDropdown.Divider />
+                                    {/* <NavDropdown.Divider />
                                     <Link to="/" className="dropdown-item">
                                         Thống kê điểm bài thi theo cá nhân
-                                    </Link>
+                                    </Link> */}
                                 </NavDropdown>
                                 <NavDropdown
                                     title={
@@ -331,10 +331,10 @@ class Header extends React.Component {
                                 <Link to="/statistic-subject" className="dropdown-item">
                                     Thống kê kết quả môn học
                                 </Link>
-                                <NavDropdown.Divider />
+                                {/* <NavDropdown.Divider />
                                 <Link to="/" className="dropdown-item">
                                     Thống kê điểm bài thi theo cá nhân
-                                </Link>
+                                </Link> */}
                             </NavDropdown>
                             <Link to="/score-lock" className="nav-link">
                                 <div className="d-inline-block">
