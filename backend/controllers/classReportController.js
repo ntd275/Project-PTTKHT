@@ -1,6 +1,7 @@
 const Score = require('../models/Score')
 const Conduct = require('../models/Conduct')
 const StudentAssignment = require('../models/StudentAssignment')
+const HomeroomTeacherAssignment = require('../models/HomeroomTeacherAssignment')
 const Subject = require('../models/Subject')
 const config = require('../config/config')
 const SCORE_WEIGHT = [1, 1, 2, 3]
@@ -46,8 +47,8 @@ async function getStudentAvgScore(studentId, subjects, schoolYearId, term) {
 
 async function getRankReport(req, res) {
     try {
-        let page = parseInt(req.query.page) || config.pageItem
-        let perpage = parseInt(req.query.perpage) || config.perPageItem
+        let page = config.pageItem
+        let perpage = config.perPageItem
         let searchItems = {};
         searchItems.schoolYearId = req.query.schoolYearId;
         searchItems.classId = req.query.classId;
@@ -55,6 +56,7 @@ async function getRankReport(req, res) {
         let subjectList = await Subject.getSubjectList(page, perpage)
 
         let students = studentAssignmentList.data
+        // console.log(students)
         let subjects = subjectList.data
         let nStudents = students.length
         let data = []
@@ -100,13 +102,16 @@ async function getRankReport(req, res) {
                     (data[j].avgScore == data[i].avgScore && data[j].conductLevel < data[i].conductLevel)) {
                     let tempData = data[j]
                     data[j] = data[i]
-                    data[i] = data[j]
+                    data[i] = tempData
                 }
             }
         }
+        let homeroomTeacherAssignmentList = await HomeroomTeacherAssignment.searchHomeroomTeacherAssignment(searchItems, page, perpage)
+        let homeroomTeacher = homeroomTeacherAssignmentList.data ? homeroomTeacherAssignmentList.data[0].teacherName : ""
         return res.status(200).json({
             success: true,
-            data: data
+            data: data,
+            homeroomTeacher: homeroomTeacher
         })
     } catch (error) {
         console.log(error)
@@ -194,10 +199,13 @@ async function getSubjectReport(req, res) {
                 })
             }
         }
-
+        let homeroomTeacherAssignmentList = await HomeroomTeacherAssignment.searchHomeroomTeacherAssignment(searchItems, page, perpage)
+        let homeroomTeacher = homeroomTeacherAssignmentList.data ? homeroomTeacherAssignmentList.data[0].teacherName : ""
+        
         return res.status(200).json({
             success: true,
-            data: data
+            data: data,
+            homeroomTeacher: homeroomTeacher
         })
 
     } catch (error) {
