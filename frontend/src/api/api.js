@@ -292,7 +292,7 @@ const Api = {
     },
     searchHomeroomTeacherAssignment: (page, perpage, searchCondition) => {
         let url = `/homeroom-teacher-assignment/search?page=${page}&perpage=${perpage}`
-        console.log(searchCondition)
+        //console.log(searchCondition)
         if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
         if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
         if (searchCondition.classId) url += `&classId=${searchCondition.classId}`
@@ -420,6 +420,23 @@ const Api = {
     },
     editScore: (data) => {
         return user.put(`/score/`, data)
+    },
+    getClassConduct: (searchCondition) => {
+        return user.get(`/conduct/class?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
+    },
+    getStudentConduct: (searchCondition) => {
+        return user.get(`/conduct/student?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
+    },
+    assessConduct: (data) => {
+        return user.post(`/conduct`, {
+            studentId: data.studentId,
+            classId: data.classId,
+            teacherId: data.teacherId,
+            schoolYearId: data.schoolYearId,
+            conduct: data.conduct,
+            term: data.term,
+            note: data.note
+        })
     }
 }
 

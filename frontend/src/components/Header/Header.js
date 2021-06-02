@@ -130,7 +130,7 @@ class Header extends React.Component {
                                     }
                                     id="basic-nav-dropdown"
                                 >
-                                    <Link to="/" className="dropdown-item">
+                                    <Link to="/conduct-assesssment" className="dropdown-item">
                                         Cập nhật đánh giá hạnh kiểm
                                     </Link>
                                     <NavDropdown.Divider />

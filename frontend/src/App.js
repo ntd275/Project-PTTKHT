@@ -67,7 +67,7 @@ class App extends React.Component {
       } catch (err) {
         console.log(err)
         this.setUser(null)
-        //localStorage.removeItem('accessToken')
+        localStorage.removeItem('accessToken')
       }
     }
     this.setState({ loading: false })
@@ -122,7 +122,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/search-teaching-assignment" component={<SearchTeachingAssignment />} role={[2]} />
               <PrivateRouter exact path="/teaching-class-score" component={<TeachingClassScore />} role={[2, 1]} />
               <PrivateRouter exact path="/my-teaching-assignment" component={<MyTeachingAssignment />} role={[2, 1]} />
-
+              <PrivateRouter exact path="/conduct-assesssment" component={<ConductAssessment />} role={[2, 1]} />
 
 
               <Route path="/student/score">
@@ -132,9 +132,7 @@ class App extends React.Component {
                 <StudentPLL />
               </Route>
               {/* GVCN đánh giá hạnh kiểm */}
-              <Route path="/ConductAssessment">
-                <ConductAssessment />
-              </Route>
+
               {/* GVCN điểm danh */}
               <Route path="/StudentAttendance">
                 <StudentAttendance />

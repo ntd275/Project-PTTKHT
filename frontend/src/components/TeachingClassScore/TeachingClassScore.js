@@ -330,6 +330,9 @@ class TeachingClassScore extends Component {
     }
 
     submit = async () => {
+        if (!this.state.edited) {
+            return
+        }
         this.setState({
             submitLoading: true,
         })
