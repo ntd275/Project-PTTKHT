@@ -29,7 +29,7 @@ exports.getClassConduct = async (teacherId, schoolYearId, term) => {
         .join('HomeroomTeacherAssignment', 'StudentAssignment.classId', 'HomeroomTeacherAssignment.classId')
         .join('Class', 'Class.classId', 'HomeroomTeacherAssignment.classId')
         .join('Student', 'Student.studentId', 'Conduct.studentId')
-        .select('Conduct.conductId', 'Class.className',
+        .select('Conduct.conductId', 'Class.className', 'Conduct.studentId',
             'Student.studentCode', 'Student.studentName', 'Student.dateOfBirth', 'Student.address', 'Student.gender',
             'Conduct.conduct', 'Conduct.note'
         ).where({
