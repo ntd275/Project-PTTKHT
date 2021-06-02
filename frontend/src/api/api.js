@@ -443,6 +443,9 @@ const Api = {
     },
     getSubjectReport: (page, perpage, searchCondition) => {
         return user.get(`/class-report/subject?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
+    },
+    getStudentScoreSummary: (searchCondition) => {
+        return user.get(`/score/student/score-summary?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
     }
 }
 
