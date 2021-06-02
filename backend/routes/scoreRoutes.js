@@ -10,6 +10,7 @@ scoreRouter.use(authMiddleware.isAuth)
 scoreRouter.get('/check-lock', scoreController.checkLockScore)
 scoreRouter.get('/student/subject-scores', scoreController.getSubjectScore)
 scoreRouter.get('/student/scores', scoreController.getStudentScore)
+scoreRouter.get('/student/score-summary', scoreController.getStudentScoreSummary)
 
 // scoreRouter.use(teacherMiddleware.isTeacher)
 
