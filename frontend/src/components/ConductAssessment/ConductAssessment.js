@@ -144,6 +144,7 @@ class ConductAssessment extends Component {
             }
 
             this.setState({
+                class: _class.data.result.data[0],
                 loading: false,
                 conductList: conductList,
                 showList: true,
