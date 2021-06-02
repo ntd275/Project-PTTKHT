@@ -28,7 +28,7 @@ async function getStudentConduct(req, res) {
 }
 async function getClassConduct(req, res) {
     try {
-        let conducts = await Conduct.getClassConduct(req.query.classId, req.query.schoolYearId, req.query.term)
+        let conducts = await Conduct.getClassConduct(req.query.teacherId, req.query.schoolYearId, req.query.term)
 
         return res.status(200).json({
             success: true,

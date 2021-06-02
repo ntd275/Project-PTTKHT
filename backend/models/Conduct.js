@@ -23,12 +23,20 @@ exports.getConduct = async (studentId, schoolYearId, term) => {
     }).first()
 }
 
-exports.getClassConduct = async (classId, schoolYearId, term) => {
-    return knex('Conduct').where({
-        'classId': classId,
-        'schoolYearId': schoolYearId,
-        'term': term
-    })
+exports.getClassConduct = async (teacherId, schoolYearId, term) => {
+    return knex('Conduct')
+        .join('StudentAssignment', 'Conduct.studentId', 'StudentAssignment.studentId')
+        .join('HomeroomTeacherAssignment', 'StudentAssignment.classId', 'HomeroomTeacherAssignment.classId')
+        .join('Class', 'Class.classId', 'HomeroomTeacherAssignment.classId')
+        .join('Student', 'Student.studentId', 'Conduct.studentId')
+        .select('Conduct.conductId', 'Class.className',
+            'Student.studentCode', 'Student.studentName', 'Student.dateOfBirth', 'Student.address', 'Student.gender',
+            'Conduct.conduct', 'Conduct.note'
+        ).where({
+            "HomeroomTeacherAssignment.teacherId": teacherId,
+            "Conduct.schoolYearId": schoolYearId,
+            "Conduct.term": term
+        })
 }
 
 exports.createConduct = async (data) => {
