@@ -130,7 +130,7 @@ class ConductAssessment extends Component {
                         conduct: conduct.conduct,
                         note: conduct.note,
                         teacherId: conduct.teacherId,
-                        term: conduct.term,
+                        term: searchCondition.term,
                     }
                 } else {
                     conductList[i] = {
@@ -142,6 +142,7 @@ class ConductAssessment extends Component {
                     }
                 }
             }
+            console.log(conductList)
 
             this.setState({
                 class: _class.data.result.data[0],

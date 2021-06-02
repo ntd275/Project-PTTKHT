@@ -208,14 +208,14 @@ class ScoreLock extends Component {
                                 <option value="50">50</option>
                                 <option value="100">100</option>
                             </select>
-                            <div className="d-flex ml-auto">
+                            {/* <div className="d-flex ml-auto">
                                 <div className="input-group">
                                     <input type="text" className="form-control" placeholder="Tìm kiếm" />
                                     <div className="input-group-append">
                                         <button className="btn btn-primary" type="button"><BsSearch /></button>
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </form>
                     </div>
                 </div>

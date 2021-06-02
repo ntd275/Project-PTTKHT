@@ -422,7 +422,7 @@ const Api = {
         return user.put(`/score/`, data)
     },
     getClassConduct: (searchCondition) => {
-        return user.get(`/conduct/class?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
+        return user.get(`/conduct/class?teacherId=${searchCondition.teacherId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
     },
     getStudentConduct: (searchCondition) => {
         return user.get(`/conduct/student?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
@@ -443,6 +443,9 @@ const Api = {
     },
     getSubjectReport: (page, perpage, searchCondition) => {
         return user.get(`/class-report/subject?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
+    },
+    getStudentScoreSummary: (searchCondition) => {
+        return user.get(`/score/student/score-summary?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
     }
 }
 

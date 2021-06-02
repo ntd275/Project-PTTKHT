@@ -16,10 +16,10 @@ exports.getStudentByName = async (studentName, page, perpage) => {
     return knex('Student').where('studentName', 'like', `%${studentName}%`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
-exports.searchStudent = async (name, code) => {
+exports.searchStudent = async (query) => {
     return knex('Student')
-        .where('studentName', 'like', `%${name}%`)
-        .orWhere('studentCode', 'like', `%${code}%`)
+        .where('studentName', 'like', `%${query}%`)
+        .orWhere('studentCode', 'like', `%${query}%`)
 }
 
 exports.createStudent = async (data) => {

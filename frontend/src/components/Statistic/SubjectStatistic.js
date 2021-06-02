@@ -195,6 +195,7 @@ class SubjectStatistic extends Component {
         return row
     }
 
+
     render() {
         if (this.state.loading) {
             return (
@@ -221,7 +222,7 @@ class SubjectStatistic extends Component {
                 </div>
                 <div className="row mt-3">
                     <div className="col-9">
-                        <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
+                        <form className="form-inline" >
                             <label>Năm học:</label>
                             <div className="ml-1 select-school-year">
                                 <SelectSearch

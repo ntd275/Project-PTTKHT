@@ -113,17 +113,9 @@ async function getTeacherByName(req, res) {
 
 async function searchTeacher(req, res) {
     try {
-        let name = decodeURI(req.query.name)
-        let code = decodeURI(req.query.code)
-
-        let teachers = await Teacher.searchTeacher(name, code)
-
-        if (teachers.length == 0 || teachers == undefined) {
-            return res.status(400).json({
-                success: false,
-                message: "Found no teacher"
-            })
-        }
+        let query = decodeURI(req.query.query)
+        
+        let teachers = await Teacher.searchTeacher(query)
 
         return res.status(200).json({
             success: true,
