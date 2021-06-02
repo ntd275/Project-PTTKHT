@@ -113,17 +113,9 @@ async function getStudentByCode(req, res) {
 
 async function searchStudent(req, res) {
     try {
-        let name = decodeURI(req.query.name)
-        let code = decodeURI(req.query.code)
+        let query = req.query.query
 
-        let students = await Student.searchStudent(name, code)
-
-        if (students.length == 0 || students == undefined) {
-            return res.status(400).json({
-                success: false,
-                message: "Found no teacher"
-            })
-        }
+        let students = await Student.searchStudent(query)
 
         return res.status(200).json({
             success: true,
