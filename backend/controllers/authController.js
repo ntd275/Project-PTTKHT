@@ -42,6 +42,7 @@ exports.forgetPassword = async (req, res) => {
         try {
             // decode data của user đã mã hóa vào otpToken
             const { data } = await jwtHelper.verifyToken(config.otpToken, config.otpTokenSecret);
+            newPassword = bcrypt.hash(req.body.newPassword, config.saltRounds)
             let count = await Account.updatePassword(data.accountId, req.body.newPassword)
             if (count == 0) {
                 return res.status(418).json({
@@ -97,14 +98,14 @@ exports.sendOtp = async (req, res) => {
                         message: error.message || "Some errors occur while sending email"
                     });
                 } else {
-                    let email = "ntd275@gmail.com";
-                    // if (account.role == 0) {
-                    //     let student = await Student.getStudentByCode(account.userCode)
-                    //     email = student.email
-                    // } else {
-                    //     let teacher = await Teacher.getTeachertByCode(account.userCode)
-                    //     email = teacher.email
-                    // }
+                    // let email = "ntd275@gmail.com";
+                    if (account.role == 0) {
+                        let student = await Student.getStudentByCode(account.userCode)
+                        email = student.email
+                    } else {
+                        let teacher = await Teacher.getTeacherByCode(account.userCode)
+                        email = teacher.email
+                    }
                     let otp = Math.floor(100000 + Math.random() * 900000);
                     console.log("Email ", email)
                     console.log("OTP ", otp)
