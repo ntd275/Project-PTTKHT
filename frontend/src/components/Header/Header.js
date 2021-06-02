@@ -163,8 +163,8 @@ class Header extends React.Component {
                                         Thông kê danh sách theo hạng
                                     </Link>
                                     <NavDropdown.Divider />
-                                    <Link to="/" className="dropdown-item">
-                                        Thống kê kết quả theo lớp
+                                    <Link to="/statistic-subject" className="dropdown-item">
+                                        Thống kê kết quả môn học
                                     </Link>
                                     <NavDropdown.Divider />
                                     <Link to="/" className="dropdown-item">
@@ -328,8 +328,8 @@ class Header extends React.Component {
                                     Thông kê danh sách theo hạng
                                 </Link>
                                 <NavDropdown.Divider />
-                                <Link to="/" className="dropdown-item">
-                                    Thống kê kết quả theo lớp
+                                <Link to="/statistic-subject" className="dropdown-item">
+                                    Thống kê kết quả môn học
                                 </Link>
                                 <NavDropdown.Divider />
                                 <Link to="/" className="dropdown-item">

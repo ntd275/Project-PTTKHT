@@ -135,7 +135,7 @@ class ConductAssessment extends Component {
                 } else {
                     conductList[i] = {
                         ...conductList[i],
-                        conduct: "",
+                        conduct: 5,
                         note: "",
                         teacherId: this.state.teacher.teacherId,
                         term: this.state.searchCondition.term,

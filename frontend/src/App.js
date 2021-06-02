@@ -124,6 +124,8 @@ class App extends React.Component {
               <PrivateRouter exact path="/my-teaching-assignment" component={<MyTeachingAssignment />} role={[2, 1]} />
               <PrivateRouter exact path="/conduct-assesssment" component={<ConductAssessment />} role={[2, 1]} />
               <PrivateRouter exact path="/statistic-rank" component={<RankStatistic />} role={[2, 1]} />
+              <PrivateRouter exact path="/statistic-subject" component={<SubjectStatistic />} role={[2, 1]} />
+
 
 
               <Route path="/student/score">
@@ -139,12 +141,6 @@ class App extends React.Component {
                 <StudentAttendance />
               </Route>
 
-
-
-
-              <Route path="/statistic/subject">
-                <SubjectStatistic />
-              </Route>
               <Route path="/">
                 <Page404 />
               </Route>

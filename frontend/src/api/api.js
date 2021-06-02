@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const user = axios.create({ timeout: 10000 });
-const guest = axios.create({ timeout: 10000 });
+const user = axios.create({ timeout: 30000 });
+const guest = axios.create({ timeout: 30000 });
 
 guest.defaults.withCredentials = true;
 
@@ -439,7 +439,10 @@ const Api = {
         })
     },
     getRankReport: (page, perpage, searchCondition) => {
-        return user.get(`/class-report/rank?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}`)
+        return user.get(`/class-report/rank?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
+    },
+    getSubjectReport: (page, perpage, searchCondition) => {
+        return user.get(`/class-report/subject?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
     }
 }
 

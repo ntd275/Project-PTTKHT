@@ -119,8 +119,8 @@ class Subject extends React.Component {
 
   renderTableData() {
     let sttBase = this.state.perpage * (this.state.pagination.currentPage - 1) + 1
-    return this.state.subjectList.map((year, index) => {
-      const { subjectCode, subjectName } = year;
+    return this.state.subjectList.map((data, index) => {
+      const { subjectCode, subjectName } = data;
       return (
         <tr key={index}>
           <td>{sttBase + index}</td>
