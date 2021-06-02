@@ -83,6 +83,14 @@ exports.updateTeacher = async (id, data) => {
         })
 }
 
+exports.uploadImage = async (teacherCode, imagePath) => {
+    return knex('Teacher').where('teacherCode', teacherCode).update('image', imagePath)
+}
+
+exports.getImage = async (teacherCode) => {
+    return knex('Teacher').select("image").where('teacherCode', teacherCode).first()
+}
+
 exports.deleteTeacher = async (teacherId) => {
     return knex('Teacher').where('teacherId', teacherId).del()
 }

@@ -91,6 +91,14 @@ exports.updateStudent = async (id, data) => {
         })
 }
 
+exports.uploadImage = async (studentCode, imagePath) => {
+    return knex('Student').where('studentCode', studentCode).update("image", imagePath)
+}
+
+exports.getImage = async (studentCode) => {
+    return knex('Student').select("image").where('studentCode', studentCode).first()
+}
+
 exports.deleteStudent = async (studentId) => {
     return knex('Student').where('studentId', studentId).del()
 }
