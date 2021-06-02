@@ -159,7 +159,7 @@ class Header extends React.Component {
                                     }
                                     id="basic-nav-dropdown"
                                 >
-                                    <Link to="/" className="dropdown-item">
+                                    <Link to="/statistic-rank" className="dropdown-item">
                                         Thông kê danh sách theo hạng
                                     </Link>
                                     <NavDropdown.Divider />
@@ -324,7 +324,7 @@ class Header extends React.Component {
                                 }
                                 id="basic-nav-dropdown"
                             >
-                                <Link to="/" className="dropdown-item">
+                                <Link to="/statistic-rank" className="dropdown-item">
                                     Thông kê danh sách theo hạng
                                 </Link>
                                 <NavDropdown.Divider />

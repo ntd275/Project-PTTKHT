@@ -437,6 +437,9 @@ const Api = {
             term: data.term,
             note: data.note
         })
+    },
+    getRankReport: (page, perpage, searchCondition) => {
+        return user.get(`/class-report/rank?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}`)
     }
 }
 
