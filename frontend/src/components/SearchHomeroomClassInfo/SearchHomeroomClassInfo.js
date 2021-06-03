@@ -1,11 +1,8 @@
 import {
     BsArrowLeftShort,
-    BsArrowRepeat,
-    BsTrash,
 } from "react-icons/bs";
 import { Modal } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import { FaPencilAlt } from "react-icons/fa";
 import React from "react";
 import "../../css/SchoolYear.css";
 import { Button } from "react-bootstrap";

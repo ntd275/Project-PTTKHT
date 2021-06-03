@@ -142,7 +142,13 @@ class Header extends React.Component {
                                         Xuất phiếu liên lạc
                                     </Link>
                                     <NavDropdown.Divider />
-                                    <Link to="/my-teaching-assignment" className="dropdown-item">
+                                    <Link
+                                        to={{
+                                            pathname: "/my-teaching-assignment",
+                                            state: { kind: "edit" }
+                                        }}
+                                        className="dropdown-item"
+                                    >
                                         Nhập điểm
                                     </Link>
                                 </NavDropdown>
@@ -188,7 +194,13 @@ class Header extends React.Component {
                                         Xem thông tin lớp chủ nhiệm
                                     </Link>
                                     <NavDropdown.Divider />
-                                    <Link to="/" className="dropdown-item">
+                                    <Link
+                                        to={{
+                                            pathname: "/my-teaching-assignment",
+                                            state: { kind: "info" }
+                                        }}
+                                        className="dropdown-item"
+                                    >
                                         Tra cứu điểm các lớp giảng dạy
                                     </Link>
                                 </NavDropdown>
@@ -225,7 +237,7 @@ class Header extends React.Component {
                             </Nav>
                         </Navbar.Collapse>
                     </Navbar>
-                </header>
+                </header >
             )
         }
         return (

@@ -46,6 +46,7 @@ import MyTeachingAssignment from './components/MyTeachingAssignment/MyTeachingAs
 import HomeroomRankStatistic from './components/HomeRoomTeacherStatistic/RankStatistic'
 import HomeroomSubjectStatistic from './components/HomeRoomTeacherStatistic/SubjectStatistic'
 import SearchHomeroomClassInfo from './components/SearchHomeroomClassInfo/SearchHomeroomClassInfo'
+import SearchScore from './components/SearchScore/SearchScore'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -132,6 +133,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/homeroom-statistic-rank" component={<HomeroomRankStatistic />} role={[2, 1]} />
               <PrivateRouter exact path="/homeroom-statistic-subject" component={<HomeroomSubjectStatistic />} role={[2, 1]} />
               <PrivateRouter exact path="/search-homeroom-class-info" component={<SearchHomeroomClassInfo />} role={[2, 1]} />
+              <PrivateRouter exact path="/search-score" component={<SearchScore />} role={[2, 1]} />
               <Route path="/student/pll">
                 <StudentPLL />
               </Route>

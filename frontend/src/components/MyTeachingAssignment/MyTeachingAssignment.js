@@ -29,12 +29,14 @@ class MyTeachingAssignment extends Component {
             },
             loading: true,
             term: 1,
+            kind: "edit",
         };
     }
 
     async componentDidMount() {
         this.setState({
-            loading: true
+            loading: true,
+            kind: this.props.location.state.kind
         })
         try {
             let [schoolYearList, classList, subjectList, teacher] = await Promise.all([
@@ -208,9 +210,16 @@ class MyTeachingAssignment extends Component {
                     <td>{className}</td>
                     <td>{schoolYear}</td>
                     <td>{this.state.term}</td>
-                    <td className="text-center">
-                        <button className="btn btn-danger" onClick={() => this.inputScore(index)}>Nhập điểm</button>
-                    </td>
+                    {this.state.kind === "edit" &&
+                        <td className="text-center">
+                            <button className="btn btn-danger" onClick={() => this.inputScore(index)}>Nhập điểm</button>
+                        </td>
+                    }
+                    { this.state.kind !== "edit" &&
+                        <td className="text-center">
+                            <button className="btn btn-danger" onClick={() => this.viewScore(index)}>Xem điểm</button>
+                        </td>
+                    }
                 </tr>
             );
         });
@@ -218,6 +227,13 @@ class MyTeachingAssignment extends Component {
 
     inputScore = (index) => {
         this.props.history.push("/teaching-class-score", {
+            term: this.state.term,
+            ...this.state.teachingAssignmentList[index],
+        })
+    }
+
+    viewScore = (index) => {
+        this.props.history.push("/search-score", {
             term: this.state.term,
             ...this.state.teachingAssignmentList[index],
         })

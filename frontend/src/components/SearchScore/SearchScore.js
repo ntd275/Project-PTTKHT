@@ -8,7 +8,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { BsArrowLeftShort } from 'react-icons/bs'
 
 
-class TeachingClassScore extends Component {
+class SearchScore extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +28,7 @@ class TeachingClassScore extends Component {
         //console.log(this.props.location.state);
         if (!this.props.location.state) {
             this.props.history.push("/my-teaching-assignment", {
-                kind: "edit"
+                kind: "info"
             })
             return
         }
@@ -242,27 +242,27 @@ class TeachingClassScore extends Component {
             for (let i = 0; i < scoreMouth.length; i++) {
                 list.push(
                     <td className="td-score" key={"mouth" + i}>
-                        <input className="score-input form-control" type="text" value={scoreMouth[i].score} onChange={(e) => this.changeScore(index, 0, i, e)} />
+                        <input disabled className="score-input form-control" type="text" value={scoreMouth[i].score} onChange={(e) => this.changeScore(index, 0, i, e)} />
                     </td>
                 )
             }
             for (let i = 0; i < score15.length; i++) {
                 list.push(
                     <td className="td-score" key={"score15" + i}>
-                        <input className="score-input form-control" type="text" value={score15[i].score} onChange={(e) => this.changeScore(index, 1, i, e)} />
+                        <input disabled className="score-input form-control" type="text" value={score15[i].score} onChange={(e) => this.changeScore(index, 1, i, e)} />
                     </td>
                 )
             }
             for (let i = 0; i < score45.length; i++) {
                 list.push(
                     <td className="td-score" key={"score45" + i}>
-                        <input className="score-input form-control" type="text" value={score45[i].score} onChange={(e) => this.changeScore(index, 2, i, e)} />
+                        <input disabled className="score-input form-control" type="text" value={score45[i].score} onChange={(e) => this.changeScore(index, 2, i, e)} />
                     </td>
                 )
             }
             list.push(
                 <td className="td-score" key={"score-term"}>
-                    <input className="score-input form-control" type="text" value={scoreTerm.score} onChange={(e) => this.changeScore(index, 3, 0, e)} />
+                    <input disabled className="score-input form-control" type="text" value={scoreTerm.score} onChange={(e) => this.changeScore(index, 3, 0, e)} />
                 </td>
             )
             return (
@@ -276,240 +276,10 @@ class TeachingClassScore extends Component {
         });
     }
 
-    changeScore = (index, kind, pos, event) => {
-        let value = event.target.value;
-        let scoreList = this.state.scoreList
-        switch (kind) {
-            case 0: scoreList[index].scoreMouth[pos].score = value; scoreList[index].scoreMouth[pos].edited = true; break;
-            case 1: scoreList[index].score15[pos].score = value; scoreList[index].score15[pos].edited = true; break;
-            case 2: scoreList[index].score45[pos].score = value; scoreList[index].score45[pos].edited = true; break;
-            case 3: scoreList[index].scoreTerm.score = value; scoreList[index].scoreTerm.edited = true; break;
-            default:
-        }
-        this.setState({
-            edited: true,
-            scoreList: scoreList
-        })
-    }
 
-    validateScore = (score) => {
-        if (score === "") {
-            return true
-        }
-        if (isNaN(score)) {
-            store.addNotification({
-                title: "Lỗi ",
-                message: "Điểm nhập phải là số",
-                type: "warning",
-                container: "top-center",
-                dismiss: {
-                    duration: 5000,
-                    showIcon: true,
-                },
-                animationIn: ["animate__backInDown", "animate__animated"],
-                animationOut: ["animate__fadeOutUp", "animate__animated"],
-            })
-            return false
-        }
 
-        if (parseFloat(score) < 0 || parseFloat(score) > 10) {
-            store.addNotification({
-                title: "Lỗi ",
-                message: "Điểm nhập phải >= 0 và <= 10",
-                type: "warning",
-                container: "top-center",
-                dismiss: {
-                    duration: 5000,
-                    showIcon: true,
-                },
-                animationIn: ["animate__backInDown", "animate__animated"],
-                animationOut: ["animate__fadeOutUp", "animate__animated"],
-            })
-            return false
-        }
 
-        return true
-    }
 
-    submit = async () => {
-        if (!this.state.edited) {
-            return
-        }
-        this.setState({
-            submitLoading: true,
-        })
-        try {
-            let list = [];
-            let scoreList = this.state.scoreList;
-            for (let i = 0; i < scoreList.length; i++) {
-                let scores = []
-                for (let j = 0; j < scoreList[i].scoreMouth.length; j++) {
-                    let score = scoreList[i].scoreMouth[j];
-                    if (!score.edited) {
-                        continue
-                    }
-
-                    if (!this.validateScore(score.score)) {
-                        return
-                    }
-
-                    if (!score.scoreId) {
-                        if (score.score === "") {
-                            continue
-                        }
-                        scores.push({
-                            method: "add",
-                            ...score,
-                        })
-                        continue
-                    }
-
-                    if (score.score === "") {
-                        scores.push({
-                            method: "delete",
-                            ...score,
-                        })
-                        continue
-                    }
-
-                    scores.push({
-                        method: "edit",
-                        ...score,
-                    })
-                }
-
-                for (let j = 0; j < scoreList[i].score15.length; j++) {
-                    let score = scoreList[i].score15[j];
-                    if (!score.edited) {
-                        continue
-                    }
-                    if (!this.validateScore(score.score)) {
-                        return
-                    }
-                    if (!score.scoreId) {
-                        if (score.score === "") {
-                            continue
-                        }
-                        scores.push({
-                            method: "add",
-                            ...score,
-                        })
-                        continue
-                    }
-
-                    if (score.score === "") {
-                        scores.push({
-                            method: "delete",
-                            ...score,
-                        })
-                        continue
-                    }
-
-                    scores.push({
-                        method: "edit",
-                        ...score,
-                    })
-                }
-
-                for (let j = 0; j < scoreList[i].score45.length; j++) {
-                    let score = scoreList[i].score45[j];
-                    if (!score.edited) {
-                        continue
-                    }
-                    if (!this.validateScore(score.score)) {
-                        return
-                    }
-                    if (!score.scoreId) {
-                        if (score.score === "") {
-                            continue
-                        }
-
-                        scores.push({
-                            method: "add",
-                            ...score,
-                        })
-                        continue
-                    }
-
-                    if (score.score === "") {
-                        scores.push({
-                            method: "delete",
-                            ...score,
-                        })
-                        continue
-                    }
-
-                    scores.push({
-                        method: "edit",
-                        ...score,
-                    })
-                }
-
-                let score = scoreList[i].scoreTerm;
-                if (score.edited) {
-                    if (!this.validateScore(score.score)) {
-                        return
-                    }
-                    if (!score.scoreId) {
-                        scores.push({
-                            method: "add",
-                            ...score,
-                        })
-                    } else {
-                        if (score.score === "") {
-                            scores.push({
-                                method: "delete",
-                                ...score,
-                            })
-                        } else {
-                            scores.push({
-                                method: "edit",
-                                ...score,
-                            })
-                        }
-                    }
-                }
-                list.push({
-                    studentId: scoreList[i].studentId,
-                    scores: scores
-                })
-            }
-            await Api.editScore({ students: list })
-            await this.refresh()
-            store.addNotification({
-                title: "Thành công",
-                message: `Cập nhật điểm thành công`,
-                type: "success",
-                container: "top-center",
-                dismiss: {
-                    duration: 5000,
-                    //showIcon: true,
-                },
-                animationIn: ["animate__slideInDown", "animate__animated"],
-                animationOut: ["animate__fadeOutUp", "animate__animated"],
-            })
-            this.setState({ submitLoading: false, edited: false })
-        } catch (err) {
-            console.log(err)
-            this.setState({ submitLoading: false })
-            store.addNotification({
-                title: "Hệ thống có lỗi",
-                message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
-                type: "danger",
-                container: "top-center",
-                dismiss: {
-                    duration: 5000,
-                    showIcon: true,
-                },
-                animationIn: ["animate__backInDown", "animate__animated"],
-                animationOut: ["animate__fadeOutUp", "animate__animated"],
-            })
-        }
-    }
-
-    closeConfirm = () => {
-        this.setState({ showConfirm: false })
-    }
 
     render() {
         //console.log(this.state)
@@ -540,7 +310,7 @@ class TeachingClassScore extends Component {
                             <BsArrowLeftShort size={50} onClick={this.back} />
                         </div>
                         <div className="h3 align-self-center mb-0">
-                            Nhập điểm
+                            Tra cứu điểm
                         </div>
                     </div>
                 </div>
@@ -559,10 +329,6 @@ class TeachingClassScore extends Component {
                         <span className="align-middle">
                             <b>Môn: </b>{this.state.info.subjectName}
                         </span>
-                    </div>
-                    <div className="col-6">
-                        <button type="button" className="btn btn-primary mr-4">Nhập điểm từ file Excel</button>
-                        <button type="button" className="btn btn-primary">Xuất file điểm</button>
                     </div>
                 </div>
                 <hr />
@@ -586,7 +352,6 @@ class TeachingClassScore extends Component {
                                 </tbody>
                             </table>
                         </form>
-                        <button className="btn btn-primary" onClick={() => { this.submit(); this.setState({ submitLoading: false }) }}>Lưu</button>
                     </div>
                 </div>
             </div>
@@ -625,4 +390,4 @@ class Confirm extends React.Component {
     }
 }
 
-export default withRouter(TeachingClassScore);
+export default withRouter(SearchScore);
