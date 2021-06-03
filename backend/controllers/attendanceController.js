@@ -2,10 +2,30 @@
 const Attendance = require('../models/Attendance')
 const config = require('../config/config')
 
-async function getAttendance(req, res) {
+async function getAttendanceList(req, res) {
     try {
-        let attendances = Attendance.getAttendance(req.query.studentId, req.query.schoolYearId, req.query.term)
-        
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+        let attendances = await Attendance.getAttendanceList(page, perpage)
+
+        return res.status(200).json({
+            success: true,
+            result: attendances
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
+async function getStudentAttendance(req, res) {
+    try {
+        let attendances = await Attendance.getStudentAttendance(req.params.studentId, req.query.schoolYearId, req.query.term)
+
         if (attendances == null || attendances == {}) {
             return res.status(400).json({
                 success: false,
@@ -27,25 +47,40 @@ async function getAttendance(req, res) {
     }
 }
 
-async function attendStudent(req, res) {
+async function getClassAttendance(req, res) {
     try {
-        let attendance = req.body
+        var curr = new Date; // get current date
+        var firstD = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+        var lastD = first + 6; // last day is the first day + 6
+        //Convert to Date
+        var firstDay = new Date(curr.setDate(firstD)).toISOString().slice(0, 10).replace('T', ' ')
+        var lastDay = new Date(curr.setDate(lastD)).toISOString().slice(0, 10).replace('T', ' ')
 
-        if (attendance.attendanceId === null) {
-            let result = await Attendance.createAttendance(attendance)
+        let attendances = Attendance.getClassAttendance(req.query.classId, req.query.schoolYearId, req.query.term, firstDay, lastDay)
 
-            return res.status(200).json({
-                success: true,
-                result: result
-            })
-        }
+        return res.status(200).json({
+            success: true,
+            result: attendances
+        })
 
-        let count = await Attendance.updateAttendance(attendance)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
+async function attendStudents(req, res) {
+    try {
+        //Return number of row affected
+        let count = await Attendance.updateAttendance(req.body)
 
         if (count == 0) {
             return res.status(400).json({
                 success: false,
-                message: "Attendance not found"
+                message: `Cannot update attendances`
             })
         }
 
@@ -64,6 +99,8 @@ async function attendStudent(req, res) {
 }
 
 module.exports = {
-    getAttendance: getAttendance,
-    attendStudent: attendStudent,
+    getAttendanceList: getAttendanceList,
+    getStudentAttendance: getStudentAttendance,
+    getClassAttendance: getClassAttendance,
+    attendStudents: attendStudents,
 }

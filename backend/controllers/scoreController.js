@@ -3,6 +3,7 @@ const ScoreLock = require('../models/ScoreLock')
 const config = require('../config/config')
 const Subject = require('../models/Subject')
 const SCORE_WEIGHT = [1, 1, 2, 3]
+
 // điểm trung bình của học sinh trong kì 1 hoặc 2
 async function getStudentAvgScoreInSubjectTerm(studentId, subjectId, schoolYearId, term) {
     let subjectScores = await Score.getSubjectScore(studentId, subjectId, schoolYearId, term)
