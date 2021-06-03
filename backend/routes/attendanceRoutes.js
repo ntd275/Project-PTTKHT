@@ -11,6 +11,7 @@ attendanceRouter.use(authMiddleware.isAuth)
 
 attendanceRouter.get('/class', attendanceController.getClassAttendance)
 attendanceRouter.get('/student/:id', attendanceController.getStudentAttendance)
+attendanceRouter.get('/class/between', attendanceController.getClassAttendanceBetween)
 attendanceRouter.put('/', attendanceController.attendStudents)
 
 // attendanceRouter.use(adminMiddleware.isAdmin)

@@ -79,6 +79,29 @@ async function getClassAttendance(req, res) {
     }
 }
 
+async function getClassAttendanceBetween(req, res) {
+    try {
+        let classId = parseInt(req.query.classId)
+        let schoolYearId = parseInt(req.query.schoolYearId)
+        let t1 = new Date(req.query.firstDate).toISOString().slice(0, 10).replace('T', ' ')
+        let t2 = new Date(req.query.lastDate).toISOString().slice(0, 10).replace('T', ' ')
+
+        let attendances = await Attendance.getClassAttendanceBetween(classId, schoolYearId, t1, t2)
+
+        return res.status(200).json({
+            success: true,
+            result: attendances
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 async function attendStudents(req, res) {
     try {
         //Return number of row affected
@@ -110,4 +133,5 @@ module.exports = {
     getStudentAttendance: getStudentAttendance,
     getClassAttendance: getClassAttendance,
     attendStudents: attendStudents,
+    getClassAttendanceBetween: getClassAttendanceBetween
 }

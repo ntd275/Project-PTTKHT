@@ -27,6 +27,13 @@ exports.getClassAttendance = async (classId, schoolYearId, term, t1, t2) => {
     }).andWhereBetween('date', [t1, t2])
 }
 
+exports.getClassAttendanceBetween = async(classId, schoolYearId, t1, t2) => {
+    return knex('Attendance').where({
+        classId: classId,
+        schoolYearId: schoolYearId
+    }).andWhereBetween('date', [t1,t2])
+}
+
 /** Attendance type
  * Chỉ lưu những ngày mà học sinh bị đánh vắng
  * 0: vắng, có phép
