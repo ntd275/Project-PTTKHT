@@ -16,6 +16,7 @@ const scoreRouter = require('./scoreRoutes')
 const conductRouter = require('./conductRoutes')
 const classReportRouter = require('./classReportRoutes')
 const attendanceRouter = require('./attendanceRoutes')
+const phieuLienLacRouter = require('./phieuLienLacRoutes')
 
 module.exports = function (app) {
   app.use('/auth', authRouter)
@@ -35,6 +36,7 @@ module.exports = function (app) {
   app.use('/homeroom-teacher-assignment', homeroomTeacherAssignmentRouter)
   app.use('/class-report', classReportRouter)
   app.use('/attendance', attendanceRouter)
+  app.use('/pll', phieuLienLacRouter)
 
   app.use(notFound)
 }
