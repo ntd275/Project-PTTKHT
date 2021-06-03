@@ -327,7 +327,7 @@ class TeachingAssignment extends Component {
                             <BsArrowLeftShort size={50} onClick={this.back} />
                         </div>
                         <div className="h3 align-self-center mb-0">
-                            Quản lý phân công giảng dạy
+                            Tra cứu phân công giảng dạy
                         </div>
                     </div>
                 </div>
@@ -336,10 +336,6 @@ class TeachingAssignment extends Component {
                         <form className="form-inline" onSubmit={e => this.submitHandler(e)}>
                             <button type="button" className="btn btn-primary btn-sm" onClick={() => { this.refreshClear() }}>
                                 <BiRefresh size={this.state.iconSize} />Tải lại trang
-                            </button>
-                            {/* Button trigger modal */}
-                            <button type="button" className="btn btn-primary btn-sm ml-3" onClick={this.addTeachingAssignment}>
-                                <IoIosAdd size={this.state.iconSize} color="" />Thêm phân công
                             </button>
                             <label className="ml-4">Số lượng bản ghi mỗi trang:</label>
                             <select className="form-control-sm ml-3" value={this.state.perpage} onChange={this.changePerPage} style={{ width: "70px" }}>
