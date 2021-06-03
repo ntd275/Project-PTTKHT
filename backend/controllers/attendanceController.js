@@ -24,7 +24,12 @@ async function getAttendanceList(req, res) {
 
 async function getStudentAttendance(req, res) {
     try {
-        let attendances = await Attendance.getStudentAttendance(req.params.studentId, req.query.schoolYearId, req.query.term)
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+        let studentId = parseInt(req.params.id)
+        let schoolYearId = parseInt(req.query.schoolYearId)
+        let term = parseInt(req.query.term)
+        let attendances = await Attendance.getStudentAttendance(studentId, schoolYearId, term, page, perpage)
 
         if (attendances == null || attendances == {}) {
             return res.status(400).json({
@@ -49,14 +54,16 @@ async function getStudentAttendance(req, res) {
 
 async function getClassAttendance(req, res) {
     try {
-        var curr = new Date; // get current date
-        var firstD = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-        var lastD = first + 6; // last day is the first day + 6
-        //Convert to Date
-        var firstDay = new Date(curr.setDate(firstD)).toISOString().slice(0, 10).replace('T', ' ')
-        var lastDay = new Date(curr.setDate(lastD)).toISOString().slice(0, 10).replace('T', ' ')
+        let classId = parseInt(req.query.classId)
+        let schoolYearId = parseInt(req.query.schoolYearId)
+        let term = parseInt(req.query.term)
 
-        let attendances = Attendance.getClassAttendance(req.query.classId, req.query.schoolYearId, req.query.term, firstDay, lastDay)
+        let curr = new Date; // get current date
+        //Get start and end date of the week from Monday to Sunday
+        let firstDay = new Date(curr.setDate(curr.getDate() - curr.getDay() + 1)).toISOString().slice(0, 10).replace('T', ' ')
+        let lastDay = new Date(curr.setDate(curr.getDate() - curr.getDay() + 7)).toISOString().slice(0, 10).replace('T', ' ')
+
+        let attendances = await Attendance.getClassAttendance(classId, schoolYearId, term, firstDay, lastDay)
 
         return res.status(200).json({
             success: true,

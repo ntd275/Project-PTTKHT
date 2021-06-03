@@ -9,12 +9,14 @@ exports.getAttendanceById = async (attendanceId) => {
     return knex('Attendance').where('attendanceId', attendanceId).first()
 }
 
-exports.getStudentAttendance = async (studentId, schoolYearId, term) => {
-    return knex('Attendance').where({
-        studentId: studentId,
-        schoolYearId: schoolYearId,
-        term: term
-    })
+exports.getStudentAttendance = async (studentId, schoolYearId, term, page, perpage) => {
+    return knex('Attendance')
+        .where({
+            studentId: studentId,
+            schoolYearId: schoolYearId,
+            term: term
+        })
+        .paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getClassAttendance = async (classId, schoolYearId, term, t1, t2) => {
@@ -22,7 +24,7 @@ exports.getClassAttendance = async (classId, schoolYearId, term, t1, t2) => {
         classId: classId,
         schoolYearId: schoolYearId,
         term: term
-    }).whereBetween('date', t1, t2)
+    }).andWhereBetween('date', [t1, t2])
 }
 
 /** Attendance type
@@ -66,8 +68,8 @@ exports.updateAttendance = async (data) => {
                                 'studentId': student.studentId,
                                 'schoolYearId': attendances[j].schoolYearId,
                                 'classId': student.classId,
-                                'kind': kind,
-                                'term': term,
+                                'teacherId': attendances[j].teacherId,
+                                'term': attendances[j].term,
                                 'date': attendances[j].date
                             }).count('attendanceId as cnt')
                             if (attExist[0].cnt > 0) {
@@ -81,9 +83,9 @@ exports.updateAttendance = async (data) => {
                                 'teacherId': attendances[j].teacherId,
                                 'schoolYearId': attendances[j].schoolYearId,
                                 'date': attendances[j].date,
-                                'attendance': attendances[j].attendance,
+                                'attendance': attendance,
                                 'term': attendances[j].term
-                            })
+                            }).into('Attendance')
                             break;
 
                         case "edit":
@@ -95,7 +97,7 @@ exports.updateAttendance = async (data) => {
                             }
 
                             await trx.where('attendanceId', attendances[j].attendanceId).from('Attendance').update({
-                                'attendance': attendances[j].attendance
+                                'attendance': attendance
                             })
 
                             break;

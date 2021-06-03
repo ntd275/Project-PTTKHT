@@ -15,6 +15,7 @@ const scoreLockRouter = require('./scoreLockRoutes')
 const scoreRouter = require('./scoreRoutes')
 const conductRouter = require('./conductRoutes')
 const classReportRouter = require('./classReportRoutes')
+const attendanceRouter = require('./attendanceRoutes')
 
 module.exports = function (app) {
   app.use('/auth', authRouter)
@@ -33,6 +34,7 @@ module.exports = function (app) {
   app.use('/specialist-assignment', specialistAssignmentRouter)
   app.use('/homeroom-teacher-assignment', homeroomTeacherAssignmentRouter)
   app.use('/class-report', classReportRouter)
+  app.use('/attendance', attendanceRouter)
 
   app.use(notFound)
 }
