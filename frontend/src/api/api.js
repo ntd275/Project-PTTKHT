@@ -167,6 +167,9 @@ const Api = {
     searchStudentByName: (page, perpage, name) => {
         return user.get(`/student/name/${name}?page=${page}&perpage=${perpage}`)
     },
+    searchStudentByNameOrCode: (page, perpage, query) => {
+        return user.get(`/student/search?page=${page}&perpage=${perpage}&query=${query}`)
+    },
     addStudent: (data) => {
         return user.post(`/student/`, {
             studentCode: data.studentCode,
@@ -224,6 +227,9 @@ const Api = {
     },
     searchTeacherByName: (page, perpage, name) => {
         return user.get(`/teacher/name/${name}?page=${page}&perpage=${perpage}`)
+    },
+    searchTeacherByNameOrCode: (page, perpage, query) => {
+        return user.get(`/teacher/search?page=${page}&perpage=${perpage}&query=${query}`)
     },
     addTeacher: (data) => {
         return user.post(`/teacher/`, {

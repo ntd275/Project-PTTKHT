@@ -114,7 +114,7 @@ async function getTeacherByName(req, res) {
 async function searchTeacher(req, res) {
     try {
         let query = decodeURI(req.query.query)
-        
+
         let teachers = await Teacher.searchTeacher(query)
 
         return res.status(200).json({
@@ -182,7 +182,7 @@ async function updateTeacher(req, res) {
         // teacher.dateOfUnion = req.body.dateOfUnion || teacher.dateOfUnion
         // teacher.civilServantNumber = req.body.civilServantNumber || teacher.civilServantNumber
         // teacher.major = req.body.major || teacher.major
-        
+
         let count = await Teacher.updateTeacher(req.params.id, req.body)
 
         if (count == 0) { //Cannot update

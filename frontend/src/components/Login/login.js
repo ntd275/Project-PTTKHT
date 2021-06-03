@@ -15,6 +15,12 @@ class Login extends Component {
         };
     }
 
+    componentDidMount() {
+        if (this.context.user) {
+            this.props.history.push('/')
+        }
+    }
+
     changeHandler = (e) => {
         let name = e.target.name;
         let value = e.target.value;

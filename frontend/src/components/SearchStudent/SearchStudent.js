@@ -187,12 +187,12 @@ class Student extends React.Component {
         }
 
         this.timeout = setTimeout(async () => {
-            let req = this.lastReq = Api.searchStudentByName(1, this.state.perpage, value)
+            let req = this.lastReq = Api.searchStudentByNameOrCode(1, this.state.perpage, value)
             try {
                 let res = await req;
                 if (req === this.lastReq) {
                     this.setState({
-                        suggestions: res.data.result.data
+                        suggestions: res.data.result
                     });
                 }
             } catch (err) {
