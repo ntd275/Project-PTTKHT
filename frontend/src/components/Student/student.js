@@ -472,7 +472,7 @@ class Dialog extends React.Component {
     const isName = /^[a-zA-Z ]{2,}$/
     const isPId = /[0-9]{9,12}/
     const isCode = /^[a-zA-Z0-9]+$/
-    const isVNPhoneMobile = /^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/;
+    const isVNPhoneMobile = /[0-9]{1,10}/
     const isEmail = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
     if (!isName.test(removeAscent(this.props.data.studentName))) {
       store.addNotification({
@@ -522,7 +522,7 @@ class Dialog extends React.Component {
     if (!isVNPhoneMobile.test(this.props.data.phoneNumber) && this.props.data.phoneNumber.length > 0) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
-        message: `Số điện thoại học sinh không hợp lệ!`,
+        message: `Số điện thoại học sinh không hợp lệ! Chỉ bao gồm số, tối đa 10 chữ số`,
         type: "warning",
         container: "top-center",
         dismiss: {
@@ -567,7 +567,7 @@ class Dialog extends React.Component {
     if (!isVNPhoneMobile.test(this.props.data.fatherPhone) && this.props.data.fatherPhone.length > 0) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
-        message: `Số điện thoại bố không hợp lệ!`,
+        message: `Số điện thoại bố không hợp lệ! Chỉ bao gồm số, tối đa 10 chữ số`,
         type: "warning",
         container: "top-center",
         dismiss: {
@@ -612,7 +612,7 @@ class Dialog extends React.Component {
     if (!isVNPhoneMobile.test(this.props.data.motherPhone) && this.props.data.motherPhone.length > 0) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
-        message: `Số điện thoại mẹ không hợp lệ!`,
+        message: `Số điện thoại mẹ không hợp lệ! Chỉ bao gồm số, tối đa 10 chữ số`,
         type: "warning",
         container: "top-center",
         dismiss: {
