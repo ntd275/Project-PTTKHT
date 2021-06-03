@@ -134,16 +134,10 @@ class App extends React.Component {
               <PrivateRouter exact path="/homeroom-statistic-subject" component={<HomeroomSubjectStatistic />} role={[2, 1]} />
               <PrivateRouter exact path="/search-homeroom-class-info" component={<SearchHomeroomClassInfo />} role={[2, 1]} />
               <PrivateRouter exact path="/search-score" component={<SearchScore />} role={[2, 1]} />
+              <PrivateRouter exact path="/student-attendance" component={<StudentAttendance />} role={[2, 1]} />
               <Route path="/student/pll">
                 <StudentPLL />
               </Route>
-              {/* GVCN đánh giá hạnh kiểm */}
-
-              {/* GVCN điểm danh */}
-              <Route path="/StudentAttendance">
-                <StudentAttendance />
-              </Route>
-
               <Route path="/">
                 <Page404 />
               </Route>
