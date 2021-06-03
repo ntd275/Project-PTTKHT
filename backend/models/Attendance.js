@@ -9,20 +9,22 @@ exports.getAttendanceById = async (attendanceId) => {
     return knex('Attendance').where('attendanceId', attendanceId).first()
 }
 
-exports.getStudentAttendance = async (studentId, schoolYearId, term) => {
-    return knex('Attendance').where({
-        studentId: studentId,
-        schoolYearId: schoolYearId,
-        term: term
-    })
+exports.getStudentAttendance = async (studentId, schoolYearId, term, page, perpage) => {
+    return knex('Attendance')
+        .where({
+            studentId: studentId,
+            schoolYearId: schoolYearId,
+            term: term
+        })
+        .paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
 }
 
 exports.getClassAttendance = async (classId, schoolYearId, term, t1, t2) => {
-    return knex('Attendance').whereBetween('date', [t1, t2]).andWhere({
+    return knex('Attendance').where({
         classId: classId,
         schoolYearId: schoolYearId,
         term: term
-    })
+    }).andWhereBetween('date', [t1, t2])
 }
 
 /** Attendance type
