@@ -31,6 +31,7 @@ exports.getClassAttendance = async (classId, schoolYearId, term, t1, t2) => {
  * Chỉ lưu những ngày mà học sinh bị đánh vắng
  * 0: vắng, có phép
  * 1: vắng, không phép
+ * 2: không vắng. bỏ qua khi gặp trường hợp này
  */
 exports.updateAttendance = async (data) => {
     let count = 0
@@ -53,7 +54,7 @@ exports.updateAttendance = async (data) => {
                     let term = attendances[j].term
                     let attendance = attendances[j].attendance
 
-                    if (term < 0 || term > 2 || attendance < 0 || attendance > 1) {
+                    if (attendances[j].method != "delete" && (term < 0 || term > 2 || attendance < 0 || attendance > 1)) {
                         let message = `Error with attendance/term of studentId = ${student.studentId}`
                         return Promise.reject(message)
                     }
