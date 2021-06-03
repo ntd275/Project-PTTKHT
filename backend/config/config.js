@@ -16,6 +16,6 @@ exports.emailService = process.env.EMAIL_SERVICE || "gmail";
 exports.emailUser = process.env.EMAIL_USER || "team5rsit4613@gmail.com";
 exports.emailPassword = process.env.EMAIL_PASSWORD || "btl123456";
 exports.otpTokenLife = process.env.OTP_TOKEN_LIFE || "3m"
-exports.otpTokenSecret = process.env.OTP_TOKEN_SECRET || "room4u_otp_secret"
+exports.otpTokenSecret = process.env.OTP_TOKEN_SECRET || "OTP_TOKEN_SECRET"
 exports.pageItem = process.env.PAGE_ITEM || 1
 exports.perPageItem = process.env.PER_PAGE_ITEM || 50

@@ -43,9 +43,7 @@ exports.editAccount = async function (id, data) {
 }
 
 exports.updatePassword = async function (accountId, newPassword) {
-    let password = bcrypt.hash(newPassword, config.saltRounds)
-
-    return knex('Accounts').where('accountId', accountId).update('password', password)
+    return knex('Accounts').where('accountId', accountId).update('password', newPassword)
 }
 
 exports.deleteAccount = async function (accountId) {

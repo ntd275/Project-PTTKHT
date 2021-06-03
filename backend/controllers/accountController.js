@@ -189,7 +189,7 @@ async function changePassword(req, res) {
             })
         }
 
-        newPassword = bcrypt.hash(newPassword, config.saltRounds)
+        newPassword = await bcrypt.hash(newPassword, config.saltRounds)
         let count = await Account.updatePassword(accountId, newPassword)
         if (count == 0) {
             return res.status(418).json({

@@ -9,18 +9,30 @@ const { isAuth } = require('../middlewares/authentication')
 let nodemailer = require("nodemailer");
 
 let tokenList = {}
+let otpList = {}
 
 exports.checkOtp = async (req, res) => {
     const otpToken = req.body.otpToken
-    if (otpToken) {
+    // console.log(tokenList[otpToken])
+    if (otpToken && tokenList[otpToken]) {
         try {
             // decode data của user đã mã hóa vào otpToken
-            const { data } = await jwtHelper.verifyToken(config.otpToken, config.otpTokenSecret);
-            if (data) {
+            const data = await jwtHelper.verifyToken(otpToken, config.otpTokenSecret);
+            if (data && (req.body.otp == otpList[data.accountName])) {
+                let accessToken = await jwtHelper.generateToken(data, config.accessTokenSecret, config.accessTokenLife);
+                tokenList[accessToken] = data
                 return res.json({
                     success: true,
+                    accessToken: accessToken
+                });
+            } else {
+                // console.log(data, req.body.otp)
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid OTP",
                 });
             }
+
         } catch (error) {
             // otp hết hạn
             return res.status(400).json({
@@ -29,21 +41,23 @@ exports.checkOtp = async (req, res) => {
             });
         }
     } else {
+        // console.log(tokenList[req.body.otpToken])
         return res.status(400).send({
             success: false,
-            message: 'No otp token provided',
+            message: 'Invalid otp token provided',
         });
     }
 }
 
 exports.forgetPassword = async (req, res) => {
-    const otpToken = req.body.otpToken
-    if (otpToken) {
+    const accessToken = req.body.accessToken
+    // console.log(req.body.newPassword)
+    if (accessToken && tokenList[accessToken]) {
         try {
             // decode data của user đã mã hóa vào otpToken
-            const { data } = await jwtHelper.verifyToken(config.otpToken, config.otpTokenSecret);
-            newPassword = bcrypt.hash(req.body.newPassword, config.saltRounds)
-            let count = await Account.updatePassword(data.accountId, req.body.newPassword)
+            const data = await jwtHelper.verifyToken(accessToken, config.accessTokenSecret);
+            let newPassword = await bcrypt.hash(req.body.newPassword, config.saltRounds)
+            let count = await Account.updatePassword(data.accountId, newPassword)
             if (count == 0) {
                 return res.status(418).json({
                     success: false,
@@ -65,14 +79,14 @@ exports.forgetPassword = async (req, res) => {
     } else {
         return res.status(400).send({
             success: false,
-            message: 'No otp token provided',
+            message: 'Invalid access token provided',
         });
     }
 }
 
 exports.sendOtp = async (req, res) => {
     // option của tài khoản gửi email cho người dùng
-    console.log(req.body)
+    // console.log(req.body)
     const emailOption = {
         service: config.emailService,
         auth: {
@@ -107,8 +121,8 @@ exports.sendOtp = async (req, res) => {
                         email = teacher.email
                     }
                     let otp = Math.floor(100000 + Math.random() * 900000);
-                    console.log("Email ", email)
-                    console.log("OTP ", otp)
+                    // console.log("Email ", email)
+                    // console.log("OTP ", otp)
                     let mail = {
                         from: config.emailUser,
                         to: email,
@@ -123,11 +137,13 @@ exports.sendOtp = async (req, res) => {
                             });
                         } else {
                             account.password = undefined;
-                            let userData = account;
-                            let otpToken = await jwtHelper.generateToken(userData, config.otpTokenSecret, config.otpTokenLife);
+                            let data = account;
+                            let otpToken = await jwtHelper.generateToken(data, config.otpTokenSecret, config.otpTokenLife);
+                            tokenList[otpToken] = data
+                            otpList[account.accountName] = otp
+                            // console.log(tokenList[otpToken])
                             return res.json({
                                 success: true,
-                                otp: otp,
                                 otpToken: otpToken
                             });
                         }
