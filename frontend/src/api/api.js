@@ -458,6 +458,12 @@ const Api = {
     },
     getHomeroomClassInfo: (teacherId) => {
         return user.get(`/class/homeroom?key=${teacherId}`)
+    },
+    getClassAttendance: (searchCondition) => {
+        return user.get(`/attendance/class?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&term=2`)
+    },
+    updateAttendance: (data) => {
+        return user.put(`/attendance`, data)
     }
 }
 
