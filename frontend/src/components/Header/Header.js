@@ -184,7 +184,7 @@ class Header extends React.Component {
                                     }
                                     id="basic-nav-dropdown"
                                 >
-                                    <Link to="/" className="dropdown-item">
+                                    <Link to="/search-homeroom-class-info" className="dropdown-item">
                                         Xem thông tin lớp chủ nhiệm
                                     </Link>
                                     <NavDropdown.Divider />

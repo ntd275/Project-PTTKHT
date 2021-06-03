@@ -161,6 +161,9 @@ const Api = {
     getStudentList: (page, perpage) => {
         return user.get(`/student/list?page=${page}&perpage=${perpage}`)
     },
+    getStudent: (id) => {
+        return user.get(`/student/id/${id}`)
+    },
     getStudentByCode: (code) => {
         return user.get(`/student/code/${code}`)
     },
@@ -452,6 +455,9 @@ const Api = {
     },
     getStudentScoreSummary: (searchCondition) => {
         return user.get(`/score/student/score-summary?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
+    },
+    getHomeroomClassInfo: (teacherId) => {
+        return user.get(`/class/homeroom?key=${teacherId}`)
     }
 }
 
