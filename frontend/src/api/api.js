@@ -63,6 +63,18 @@ const Api = {
             username: username
         })
     },
+    checkOTP: (otpToken, otp) => {
+        return user.post('/auth/check-otp', {
+            otpToken: otpToken,
+            otp: otp
+        })
+    },
+    forgetPassword: (accessToken, newPassword) => {
+        return user.post('/auth/forget-password', {
+            accessToken: accessToken,
+            newPassword: newPassword
+        })
+    },
     getSchoolYearList: (page, perpage) => {
         return user.get(`/school-year/list?page=${page}&perpage=${perpage}`)
     },
