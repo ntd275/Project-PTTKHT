@@ -410,7 +410,7 @@ class Dialog extends React.Component {
     return null
   }
   validateData = () => {
-    if (this.props.data.schoolYear.length == 0) {
+    if (this.props.data.schoolYear.length === 0) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
         message: `Tên năm học không được bỏ trống!`,
@@ -473,7 +473,7 @@ class Dialog extends React.Component {
     return true;
   }
   addSchoolYear = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })
@@ -514,7 +514,7 @@ class Dialog extends React.Component {
   }
 
   editSchoolYear = async () => {
-    if(!this.validateData()) {
+    if (!this.validateData()) {
       return;
     }
     this.setState({ loading: true })

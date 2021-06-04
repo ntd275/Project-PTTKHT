@@ -397,7 +397,7 @@ class Dialog extends React.Component {
     return null
   }
   validateData = () => {
-    if (this.props.data.specialistName.length == 0) {
+    if (this.props.data.specialistName.length === 0) {
       store.addNotification({
         title: "Nhập dữ liệu không chính xác",
         message: `Tên tổ chuyên môn không được bỏ trống!`,

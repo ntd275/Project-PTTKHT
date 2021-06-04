@@ -7,7 +7,6 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import { withRouter } from 'react-router-dom'
 import { store } from 'react-notifications-component';
 import { BiRefresh } from 'react-icons/bi';
-import { BsSearch } from 'react-icons/bs';
 import { Modal, Button } from 'react-bootstrap';
 
 class ScoreLock extends Component {

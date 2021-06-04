@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Api from "../../api/api";
-import { FiEdit } from 'react-icons/fi';
 import { BiSearch, BiRefresh } from 'react-icons/bi';
 import { Modal, Button } from 'react-bootstrap';
 import '../../css/TeachingAssignment.css';

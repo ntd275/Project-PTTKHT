@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import Api from "../../api/api";
 import '../../css/Statistic/RankStatistic.css';
-import { store } from 'react-notifications-component';
-import Loading from '../Loading/Loading'
+import { store } from 'react-notifications-component'
 import SelectSearch, { fuzzySearch } from 'react-select-search';
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { withRouter } from 'react-router-dom'

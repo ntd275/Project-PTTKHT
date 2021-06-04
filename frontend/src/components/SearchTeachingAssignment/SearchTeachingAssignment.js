@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import Api from "../../api/api";
 import { BiSearch, BiRefresh, } from 'react-icons/bi';
-import { BsArrowLeftShort, BsTrash } from 'react-icons/bs'
-import { IoIosAdd } from 'react-icons/io';
+import { BsArrowLeftShort, } from 'react-icons/bs'
 import { Modal, Button } from 'react-bootstrap';
 import '../../css/TeachingAssignment.css';
 import { store } from 'react-notifications-component';

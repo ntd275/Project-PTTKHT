@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 class PasswordInput extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            password1 : '',
-            password2 : ''
+            password1: '',
+            password2: ''
         };
     }
     changeHandler = (e) => {
         let name = e.target.name;
         let value = e.target.value;
-        this.setState({ [name] : value });
+        this.setState({ [name]: value });
     }
     submitHandler = (e) => {
         let { password1, password2 } = this.state;
@@ -21,32 +21,32 @@ class PasswordInput extends Component {
     }
     render() {
         return (
-            
+
             <div className="container">
                 <div className="row" style={{ marginTop: "40px" }} >
                     <div className="col-6" style={{ margin: "auto" }}>
                         <form action="/" onSubmit={e => this.submitHandler(e)}>
                             <div className="form-group">
                                 <label >Mật khẩu mới:</label>
-                                <input type="password" className="form-control" 
-                                    name="password1" 
+                                <input type="password" className="form-control"
+                                    name="password1"
                                     onChange={e => this.changeHandler(e)}
                                 />
                             </div>
                             <div className="form-group">
                                 <label >Nhập lại mật khẩu mới:</label>
-                                <input type="password" className="form-control" 
-                                    name="password2" 
+                                <input type="password" className="form-control"
+                                    name="password2"
                                     onChange={e => this.changeHandler(e)}
                                 />
                             </div>
                             <button type="submit" className="btn btn-primary">Xác nhận</button>
                             <Link to="/login" style={{ margin: "10px" }}>Bỏ qua</Link>
                         </form>
-                    </div>  
+                    </div>
                 </div>
             </div>
-            
+
         );
     }
 }
