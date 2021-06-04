@@ -171,7 +171,7 @@ async function updateStudent(req, res) {
         student = await Student.getStudent(req.params.id)
         //Check exists
         if (student === undefined) {
-            return res.status(404).json({
+            return res.status(400).json({
                 success: false,
                 message: `Cannot find student with id = ${req.params.id}`
             })
