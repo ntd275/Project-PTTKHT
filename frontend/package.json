@@ -27,7 +27,8 @@
     "react-select-search": "^3.0.7",
     "react-to-pdf": "0.0.14",
     "react-to-print": "^2.12.6",
-    "web-vitals": "^1.1.1"
+    "web-vitals": "^1.1.1",
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",

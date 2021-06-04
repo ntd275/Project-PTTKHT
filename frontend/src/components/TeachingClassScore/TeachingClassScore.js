@@ -6,6 +6,7 @@ import { store } from 'react-notifications-component';
 import Loading from '../Loading/Loading'
 import { Modal, Button } from 'react-bootstrap'
 import { BsArrowLeftShort } from 'react-icons/bs'
+import XLSX from "xlsx";
 
 
 class TeachingClassScore extends Component {
@@ -513,6 +514,161 @@ class TeachingClassScore extends Component {
         this.setState({ showConfirm: false })
     }
 
+    exportFile = () => {
+        let data = []
+        data.push(["STT", "MSHS", "Họ tên", "Miệng", "", "", "", "", "15 phút", "", "", "", "", "1 tiết", "", "", "Thi"])
+        let scoreList = this.state.scoreList
+        scoreList.forEach((score, index) => {
+            let row = [index + 1, score.studentCode, score.studentName]
+            let scoreMouth = score.scoreMouth.map((e) => e.score)
+            row.push(...scoreMouth)
+            let score15 = score.score15.map((e) => e.score)
+            row.push(...score15)
+            let score45 = score.score45.map((e) => e.score)
+            row.push(...score45)
+            row.push(score.scoreTerm.score)
+            data.push(row)
+        })
+        let ws = XLSX.utils.aoa_to_sheet(data)
+        ws['!merges'] = [
+            {
+                s: { r: 0, c: 3 },
+                e: { r: 0, c: 7 }
+            },
+            {
+                s: { r: 0, c: 8 },
+                e: { r: 0, c: 12 }
+            },
+            {
+                s: { r: 0, c: 13 },
+                e: { r: 0, c: 15 }
+            },
+        ]
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Score");
+        // /* generate XLSX file and send to client */
+        XLSX.writeFile(wb, "score.xlsx");
+    }
+
+    SheetJSFT = [
+        "xlsx", "xlsb", "xlsm", "xls", "xml", "csv", "txt", "ods", "fods", "uos", "sylk", "dif", "dbf", "prn", "qpw", "123", "wb*", "wq*", "html", "htm"
+    ].map(x => `.${x}`).join(",");
+
+    importFile = (e) => {
+        const files = e.target.files;
+        if (!files || !files[0]) {
+            return
+        }
+        const file = files[0]
+        const reader = new FileReader();
+        const rABS = !!reader.readAsBinaryString;
+        reader.onload = (e) => {
+            const bstr = e.target.result;
+            const wb = XLSX.read(bstr, { type: rABS ? 'binary' : 'array' });
+            /* Get first worksheet */
+            const wsname = wb.SheetNames[0];
+            const ws = wb.Sheets[wsname];
+            /* Convert array of arrays */
+            const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+            let scoreList = this.state.scoreList
+            console.log(scoreList, data)
+            try {
+                for (let i = 1; i < data.length; i++) {
+                    let scoreNew = data[i]
+                    let scoreOld = scoreList[i - 1]
+                    console.log(scoreNew, scoreOld)
+                    if (scoreOld.studentCode !== scoreNew[1]) {
+                        store.addNotification({
+                            title: "Lỗi",
+                            message: "File nhập không đúng định dạng",
+                            type: "danger",
+                            container: "top-center",
+                            dismiss: {
+                                duration: 5000,
+                                showIcon: true,
+                            },
+                            animationIn: ["animate__backInDown", "animate__animated"],
+                            animationOut: ["animate__fadeOutUp", "animate__animated"],
+                        })
+                        this.refresh()
+                        return
+                    }
+                    for (let j = 3; j <= 7; j++) {
+                        if (scoreOld.scoreMouth[j - 3].score !== scoreNew[j]) {
+                            scoreOld.scoreMouth[j - 3].edited = true;
+                            if (!scoreNew[j]) {
+                                scoreOld.scoreMouth[j - 3].score = ""
+                            } else {
+                                scoreOld.scoreMouth[j - 3].score = scoreNew[j]
+                            }
+                        }
+                    }
+                    for (let i = 8; i <= 12; i++) {
+                        if (scoreOld.score15[i - 8].score !== scoreNew[i]) {
+                            scoreOld.score15[i - 8].edited = true;
+                            if (!scoreNew[i]) {
+                                scoreOld.score15[i - 8].score = ""
+                            } else {
+                                scoreOld.score15[i - 8].score = scoreNew[i]
+                            }
+                        }
+                    }
+                    for (let i = 13; i <= 15; i++) {
+                        if (scoreOld.score45[i - 13].score !== scoreNew[i]) {
+                            scoreOld.score45[i - 13].edited = true;
+                            if (!scoreNew[i]) {
+                                scoreOld.score45[i - 13].score = ""
+                            } else {
+                                scoreOld.score45[i - 13].score = scoreNew[i]
+                            }
+                        }
+                    }
+                    if (scoreOld.scoreTerm.score !== scoreNew[16]) {
+                        scoreOld.scoreTerm.edited = true;
+                        if (!scoreNew[16]) {
+                            scoreOld.scoreTerm.score = ""
+                        } else {
+                            scoreOld.scoreTerm.score = scoreNew[16]
+                        }
+                    }
+                }
+                this.setState({
+                    scoreList: scoreList,
+                    edited: true,
+                })
+                store.addNotification({
+                    title: "Thành công",
+                    message: `Nhập file thành công!    Kết quả được hiển thị ở bảng.     Ấn lưu để lưu lại`,
+                    type: "success",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        //showIcon: true,
+                    },
+                    animationIn: ["animate__slideInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+
+            } catch (err) {
+                console.log(err);
+                store.addNotification({
+                    title: "Lỗi",
+                    message: "File nhập không đúng định dạng",
+                    type: "danger",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                this.refresh()
+            }
+        };
+        if (rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
+    }
+
     render() {
         //console.log(this.state)
         if (this.state.loading) {
@@ -563,15 +719,22 @@ class TeachingClassScore extends Component {
                         </span>
                     </div>
                     <div className="col-6">
-                        <button type="button" className="btn btn-primary mr-4">Nhập điểm từ file Excel</button>
-                        <button type="button" className="btn btn-primary">Xuất file điểm</button>
+                        <input
+                            type="file"
+                            ref={el => this.inputRef = el}
+                            onChange={this.importFile}
+                            style={{ display: "none" }}
+                            accept={this.SheetJSFT}
+                        />
+                        <button type="button" className="btn btn-primary mr-4" onClick={() => { this.inputRef.click() }} >Nhập điểm từ file Excel</button>
+                        <button type="button" className="btn btn-primary" onClick={() => this.exportFile()}>Xuất file điểm</button>
                     </div>
                 </div>
                 <hr />
                 <div className="row mt-3">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
                         <form className="text-center">
-                            <table className="table table-bordered table-striped">
+                            <table id="score-table" className="table table-bordered table-striped">
                                 <thead className="text-center">
                                     <tr>
                                         <th>STT</th>
@@ -580,7 +743,7 @@ class TeachingClassScore extends Component {
                                         <th colSpan="5">Miệng</th>
                                         <th colSpan="5">15 phút</th>
                                         <th colSpan="3">1 tiết</th>
-                                        <th>thi</th>
+                                        <th>Thi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
