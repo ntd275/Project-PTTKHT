@@ -14,6 +14,7 @@ import { withRouter } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 import AppContext from '../../context/AppContext'
 import SelectSearch, { fuzzySearch } from 'react-select-search';
+import packagejson from '../../../package.json';
 class SearchHomeroomClassInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -536,8 +537,9 @@ class Dialog extends React.Component {
                                     <div className="row">
                                         <div className="col">
                                             <Form.Group>
-                                                <Form.File id="exampleFormControlFile1" label="Ảnh" disabled={this.props.kind === "info"} />
+                                                <Form.Label>Ảnh</Form.Label>
                                             </Form.Group>
+                                            <img src={packagejson.proxy + "\\" + this.props.data.image} alt="avatar" style={{ width: "100%", height: "auto" }} />
                                         </div>
                                         <div className="col">
                                             <Form.Group>

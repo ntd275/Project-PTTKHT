@@ -214,26 +214,26 @@ async function changePassword(req, res) {
 
 async function uploadImage(req, res) {
     try {
-        let userCode = req.params.userCode
-        let avatarPath = req.file.path
-
+        //let userCode = req.params.userCode
+        // console.log(req)
         if (req.file == undefined) {
             return res.status(400).json({
                 success: false,
                 message: "You must upload a file"
             })
         }
+        let avatarPath = req.file.path
 
-        let count = 0;
-        if (userCode[0] == 'H' && userCode[1] == 'S') { //Student
-            count = await Student.uploadImage(userCode, avatarPath)
-        } else if (userCode[0] == 'G' && userCode[1] == 'V') { //Teacher
-            count = await Teacher.uploadImage(userCode, avatarPath)
-        }
+        // let count = 0;
+        // if (userCode[0] == 'H' && userCode[1] == 'S') { //Student
+        //     count = await Student.uploadImage(userCode, avatarPath)
+        // } else if (userCode[0] == 'G' && userCode[1] == 'V') { //Teacher
+        //     count = await Teacher.uploadImage(userCode, avatarPath)
+        // }
 
         return res.status(200).json({
             success: true,
-            result: count
+            result: avatarPath
         })
 
     } catch (error) {

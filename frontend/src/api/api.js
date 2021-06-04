@@ -492,6 +492,15 @@ const Api = {
     getPLL: (searchCondition) => {
 
         return user.get(`/pll?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
+    },
+    uploadImage: (image) => {
+        let data = new FormData();
+        data.append("avatar", image)
+        return user.post(`/account/upload-image/`, data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
     }
 }
 

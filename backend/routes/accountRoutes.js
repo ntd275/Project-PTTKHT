@@ -11,7 +11,7 @@ accountRouter.get('/id/:id', accountController.getAccount)
 accountRouter.get('/username/:username', accountController.getAccountByUsername)
 accountRouter.post('/check-password/:id', accountController.checkPassword)
 accountRouter.put('/change-password/:id', accountController.changePassword)
-accountRouter.post('/upload-image/:userCode', imageHelper, accountController.uploadImage)
+accountRouter.post('/upload-image/', imageHelper, accountController.uploadImage)
 accountRouter.get('/image/:userCode', accountController.getImage)
 
 // accountRouter.use(adminMiddleware.isAdmin)

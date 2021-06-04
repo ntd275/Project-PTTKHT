@@ -18,6 +18,9 @@ import { store } from 'react-notifications-component';
 import Loading from '../Loading/Loading'
 import { withRouter } from 'react-router-dom'
 import DatePicker from "react-datepicker";
+import ImageUploader from 'react-images-upload';
+import packagejson from '../../../package.json';
+
 class Student extends React.Component {
   constructor(props) {
     super(props);
@@ -38,7 +41,7 @@ class Student extends React.Component {
         permanentResidence: "",
         gender: 1,
         pId: "",
-        image: "http://localhost:3000/user.png",
+        image: "public/images/default_avatar.jpg",
         dateOfBirth: new Date(),
         email: "",
         phoneNumber: "",
@@ -178,7 +181,7 @@ class Student extends React.Component {
         permanentResidence: "",
         gender: 1,
         pId: "",
-        image: "http://localhost:3000/user.png",
+        image: "/public/images/default_avatar.jpg",
         dateOfBirth: new Date(),
         email: "",
         phoneNumber: "",
@@ -648,6 +651,10 @@ class Dialog extends React.Component {
     }
     this.setState({ loading: true })
     try {
+      if (this.props.data.image[0] instanceof File) {
+        let res = await Api.uploadImage(this.props.data.image[0])
+        this.props.data.image = res.data.result
+      }
       await Api.addStudent(this.props.data)
       //console.log(res)
       this.setState({ loading: false })
@@ -689,6 +696,10 @@ class Dialog extends React.Component {
     }
     this.setState({ loading: true })
     try {
+      if (this.props.data.image[0] instanceof File) {
+        let res = await Api.uploadImage(this.props.data.image[0])
+        this.props.data.image = res.data.result
+      }
       await Api.editStudent(this.props.data)
       //console.log(res)
       this.setState({ loading: false })
@@ -864,8 +875,20 @@ class Dialog extends React.Component {
                   <div className="row">
                     <div className="col">
                       <Form.Group>
-                        <Form.File id="exampleFormControlFile1" label="Ảnh" disabled={this.props.kind === "info"} />
+                        <Form.Label>Ảnh</Form.Label>
                       </Form.Group>
+                      {this.props.kind === "info" ?
+                        <img src={packagejson.proxy + "\\" + this.props.data.image} alt="avatar" style={{ width: "100%", height: "auto" }} /> :
+                        <ImageUploader
+                          withIcon={true}
+                          buttonText='Choose images'
+                          onChange={(pic) => this.changeHandler({ target: { name: "image", value: pic } })}
+                          imgExtension={['.jpg', '.gif', '.png', '.gif', 'jpeg']}
+                          maxFileSize={5242880}
+                          singleImage={true}
+                          withPreview={true}
+                        />
+                      }
                     </div>
                     <div className="col">
                       <Form.Group>

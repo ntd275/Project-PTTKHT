@@ -4,6 +4,7 @@ import Api from '../../api/api'
 import AppContext from '../../context/AppContext'
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { withRouter } from 'react-router-dom'
+import packagejson from '../../../package.json';
 
 class AccountInfo extends Component {
 
@@ -65,7 +66,7 @@ class AccountInfo extends Component {
                 <hr />
                 <div className="row mt-3" >
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                        <img src={accountInfo.image} alt="Ảnh" style={{ width: "100%", height: "auto" }} />
+                        <img src={packagejson.proxy + "\\" + this.state.accountInfo.image} alt="avatar" style={{ width: "100%", height: "auto" }} />
                     </div>
                     <div className="panel-account-info col-9">
                         <div className="row">

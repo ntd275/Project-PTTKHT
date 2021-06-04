@@ -15,6 +15,7 @@ import { withRouter } from 'react-router-dom'
 import DatePicker from "react-datepicker";
 import Autosuggest from 'react-autosuggest';
 import { BiSearch } from 'react-icons/bi';
+import packagejson from '../../../package.json';
 
 class Student extends React.Component {
     constructor(props) {
@@ -494,8 +495,9 @@ class Dialog extends React.Component {
                                     <div className="row">
                                         <div className="col">
                                             <Form.Group>
-                                                <Form.File id="exampleFormControlFile1" label="Ảnh" disabled={this.props.kind === "info"} />
+                                                <Form.Label>Ảnh</Form.Label>
                                             </Form.Group>
+                                            <img src={packagejson.proxy + "\\" + this.props.data.image} alt="avatar" style={{ width: "100%", height: "auto" }} />
                                         </div>
                                         <div className="col">
                                             <Form.Group>
