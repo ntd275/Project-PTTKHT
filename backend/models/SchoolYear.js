@@ -61,7 +61,7 @@ exports.deleteSchoolYear = async (schoolYearId) => {
     let count = 0
     await knex.transaction(async trx => {
         try {
-            count = await knex('ScoreLock').where('schoolYearId', schoolYearId).del()
+            count = await trx.from('ScoreLock').where('schoolYearId', schoolYearId).del()
 
             if (!count) {
                 return Promise.reject({
@@ -70,7 +70,7 @@ exports.deleteSchoolYear = async (schoolYearId) => {
                 })
             }
 
-            count = await knex('SchoolYear').where('schoolYearId', schoolYearId).del()
+            count = await trx.from('SchoolYear').where('schoolYearId', schoolYearId).del()
 
             if (!count) {
                 return Promise.reject({
@@ -83,5 +83,7 @@ exports.deleteSchoolYear = async (schoolYearId) => {
             return Promise.reject(error)
         }
     })
+
+    return count
 }
 
