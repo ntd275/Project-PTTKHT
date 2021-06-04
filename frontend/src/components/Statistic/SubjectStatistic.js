@@ -266,7 +266,7 @@ class SubjectStatistic extends Component {
                     </div>
                     {this.state.showReport &&
                         <div className="col-3">
-                            <Pdf targetRef={ref} filename="rank-report.pdf" scale={0.7} y={7}>
+                            <Pdf targetRef={ref} filename="subject-report.pdf" scale={0.7} y={7}>
                                 {({ toPdf }) => <button type="button" className="btn btn-primary mr-2" onClick={toPdf}>Xuất file</button>}
                             </Pdf>
                             <ReactToPrint
@@ -283,7 +283,7 @@ class SubjectStatistic extends Component {
                 <hr />
                 {this.state.showReport &&
                     <div ref={ref} style={{ overflow: "auto" }} >
-                        <div ref={el => (this.componentRef = el)} className="container-fluid text-center"  id="report" style={{ width: "280mm" }}>
+                        <div ref={el => (this.componentRef = el)} className="container-fluid text-center" id="report" style={{ width: "280mm" }}>
                             <div className="row">
                                 <div className="col-12 text-center statistic-title">
                                     <div>

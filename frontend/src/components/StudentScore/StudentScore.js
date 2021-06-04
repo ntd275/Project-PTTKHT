@@ -87,7 +87,7 @@ class StudentScore extends Component {
             console.log(res, studentAssignment)
             this.setState({
                 scoreList: res.data.data,
-                studentAssignment: studentAssignment.data.result.data[0],
+                studentAssignment: studentAssignment.data.result.data[0] || {},
                 loading: false,
             })
         } catch (err) {
@@ -150,7 +150,7 @@ class StudentScore extends Component {
         for (let i = 0; i < scoreList.length; i++) {
             let { subjectName, score1, score2, avgScore1, avgScore2, avgScoreYear } = scoreList[i];
             row.push(
-                <tr className="text-center">
+                <tr className="text-center" key={i}>
                     <td>{i + 1}</td>
                     <td>{subjectName}</td>
                     <td>{score1[0][0]}</td>
@@ -255,7 +255,7 @@ class StudentScore extends Component {
                     </div>
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
                         <div>
-                            <b>Lớp: </b> {this.state.studentAssignment.className}
+                            <b>Lớp: </b> {this.state.studentAssignment && this.state.studentAssignment.className}
                         </div>
                     </div>
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">

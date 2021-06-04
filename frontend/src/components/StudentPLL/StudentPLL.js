@@ -292,7 +292,7 @@ class StudentPLL extends Component {
                             <button onClick={() => this.refresh()} type="button" className="btn btn-primary ml-auto">Xem phiếu liên lạc</button>
                             {this.state.showReport &&
                                 <div className="col-3">
-                                    <Pdf targetRef={ref} filename="rank-report.pdf" scale={0.52} y={7}>
+                                    <Pdf targetRef={ref} filename="phieu-lien-lac.pdf" scale={0.52} y={7}>
                                         {({ toPdf }) => <button type="button" className="btn btn-primary ml-3" onClick={toPdf}>Xuất file phiếu liên lạc</button>}
                                     </Pdf>
                                 </div>

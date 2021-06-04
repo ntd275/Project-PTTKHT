@@ -309,7 +309,7 @@ class SubjectStatistic extends Component {
                     </div>
                     {this.state.showReport &&
                         <div className="col-3">
-                            <Pdf targetRef={ref} filename="rank-report.pdf" scale={0.7} y={7}>
+                            <Pdf targetRef={ref} filename="subject-report.pdf" scale={0.7} y={7}>
                                 {({ toPdf }) => <button type="button" className="btn btn-primary mr-2" onClick={toPdf}>Xuất file</button>}
                             </Pdf>
                             <ReactToPrint
