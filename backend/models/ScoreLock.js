@@ -8,7 +8,7 @@ exports.getScoreLockById = async (id) => {
     return knex('ScoreLock').where('lock_Id', id).first()
 }
 
-exports.getScoreLock = async (schoolYearId, term) => {
+exports.getScoreLockBySchoolYear = async (schoolYearId) => {
     return knex('ScoreLock').where({
         schoolYearId: schoolYearId,
         term: term

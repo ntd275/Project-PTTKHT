@@ -1,4 +1,5 @@
 const SchoolYear = require('../models/SchoolYear')
+const ScoreLock = require('../models/ScoreLock')
 const config = require('../config/config')
 const { json } = require('express')
 
@@ -115,12 +116,13 @@ async function updateSchoolYear(req, res) {
 
 async function deleteSchoolYear(req, res) {
     try {
+
         let count = await SchoolYear.deleteSchoolYear(req.params.id)
 
         if (!count) {
-            return res.status(404).json({
+            return res.status(409).json({
                 success: false,
-                message: "School year not found"
+                message: `Cannot delete schoolYearId = ${req.params.id}`
             })
         }
 

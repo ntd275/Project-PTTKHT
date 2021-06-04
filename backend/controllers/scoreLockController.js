@@ -54,7 +54,7 @@ async function getScoreLockById(req, res) {
 
 async function getScoreLock(req, res) {
     try {
-        let sLock = await ScoreLock.getScoreLock(req.query.schoolYearId)
+        let sLock = await ScoreLock.getScoreLockBySchoolYear(req.query.schoolYearId)
 
         if (sLock == undefined || sLock == null) {
             return res.status(400).json({
