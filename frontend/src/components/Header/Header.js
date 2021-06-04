@@ -144,7 +144,7 @@ class Header extends React.Component {
                                     <NavDropdown.Divider />
                                     <Link
                                         to={{
-                                            pathname: "/my-teaching-assignment",
+                                            pathname: "/my-teaching-assignment-edit",
                                             state: { kind: "edit" }
                                         }}
                                         className="dropdown-item"

@@ -6,7 +6,8 @@ import SelectSearch, { fuzzySearch } from 'react-select-search';
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { withRouter } from 'react-router-dom'
 import AppContext from '../../context/AppContext'
-
+import Pdf from "react-to-pdf";
+const ref = React.createRef()
 class StudentPLL extends Component {
     constructor(props) {
         super(props);
@@ -289,159 +290,167 @@ class StudentPLL extends Component {
                                 />
                             </div>
                             <button onClick={() => this.refresh()} type="button" className="btn btn-primary ml-auto">Xem phiếu liên lạc</button>
-                            <button type="button" className="btn btn-primary ml-3">Xuất file phiếu liên lạc</button>
+                            {this.state.showReport &&
+                                <div className="col-3">
+                                    <Pdf targetRef={ref} filename="rank-report.pdf" scale={0.52} y={7}>
+                                        {({ toPdf }) => <button type="button" className="btn btn-primary ml-3" onClick={toPdf}>Xuất file phiếu liên lạc</button>}
+                                    </Pdf>
+                                </div>
+                            }
                         </div>
                     </div>
 
                 </div>
                 <hr />
                 {this.state.showReport &&
-                    <div style={{ overflow: "auto" }}>
-                        <div className="row mt-3">
-                            <div className="col-12 text-center pll-title">
-                                <div>
-                                    <b>Phiếu liên lạc điện tử</b><br />
+                    <div ref={ref} className="d-flex" style={{ overflow: "auto" }} >
+                        <div style={{ width: "380mm" }} className="ml-auto mr-auto">
+                            <div className="row mt-3">
+                                <div className="col-12 text-center pll-title">
+                                    <div>
+                                        <b>Phiếu liên lạc điện tử</b><br />
                             Trường Trung học cơ sở ABC
                         </div>
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-                                <div>
-                                    <b>Học sinh: </b>{student.studentName}
                                 </div>
                             </div>
-                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-                                <div>
-                                    <b>Ngày sinh: </b>{this.formatDate(new Date(student.dateOfBirth))}
+                            <div className="row mt-2">
+                                <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+                                    <div>
+                                        <b>Học sinh: </b>{student.studentName}
+                                    </div>
+                                </div>
+                                <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+                                    <div>
+                                        <b>Ngày sinh: </b>{this.formatDate(new Date(student.dateOfBirth))}
+                                    </div>
+                                </div>
+                                <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+                                    <div>
+                                        <b>Lớp: </b> { } {_class.className}
+                                    </div>
+                                </div>
+                                <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
+                                    <div>
+                                        <b>Năm học: </b>{_class.schoolYear}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-                                <div>
-                                    <b>Lớp: </b> { } {_class.className}
+                            <div className="row mt-3">
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <table className="table table-bordered student-score-summary">
+                                        <thead className="text-center">
+                                            <tr>
+                                                <th rowSpan="2">STT</th>
+                                                <th rowSpan="2" className="subject">Môn học</th>
+                                                <th colSpan="14">Học kỳ 1</th>
+                                                <th colSpan="14">Học kỳ 2</th>
+                                                <th rowSpan="2">TB kỳ 1</th>
+                                                <th rowSpan="2">TB kỳ 2</th>
+                                                <th rowSpan="2">TB năm</th>
+                                            </tr>
+                                            <tr>
+                                                <th colSpan="5">Miệng</th>
+                                                <th colSpan="5">15 phút</th>
+                                                <th colSpan="3">1 tiết</th>
+                                                <th >Thi</th>
+                                                <th colSpan="5">Miệng</th>
+                                                <th colSpan="5">15 phút</th>
+                                                <th colSpan="3">1 tiết</th>
+                                                <th >Thi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.renderTableData()}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center">
-                                <div>
-                                    <b>Năm học: </b>{_class.schoolYear}
+                            <div className="row mt-2">
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <table className="table table-bordered">
+                                        <thead className="text-center">
+                                            <tr>
+                                                <th >Tổng kết</th>
+                                                <th >Điểm trung bình</th>
+                                                <th >Học lực</th>
+                                                <th >Hạnh kiểm</th>
+                                                <th >Xếp hạng</th>
+                                                <th >Danh hiệu</th>
+                                                <th >Vắng có phép</th>
+                                                <th >Vắng không phép</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="text-center">
+                                                <td>Học kỳ 1</td>
+                                                <td>{PLL.result1.avgScore}</td>
+                                                <td>{PLL.result1.scoreTitle}</td>
+                                                <td>{PLL.result1.conductTitle}</td>
+                                                <td>{PLL.result1.rank}</td>
+                                                <td>{PLL.result1.title}</td>
+                                                <td>{PLL.result1.nVangCoPhep}</td>
+                                                <td>{PLL.result1.nVangKoPhep}</td>
+                                            </tr>
+                                            <tr className="text-center">
+                                                <td>Học kỳ 2</td>
+                                                <td>{PLL.result2.avgScore}</td>
+                                                <td>{PLL.result2.scoreTitle}</td>
+                                                <td>{PLL.result2.conductTitle}</td>
+                                                <td>{PLL.result2.rank}</td>
+                                                <td>{PLL.result2.title}</td>
+                                                <td>{PLL.result2.nVangCoPhep}</td>
+                                                <td>{PLL.result2.nVangKoPhep}</td>
+                                            </tr>
+                                            <tr className="text-center">
+                                                <td>Cả năm</td>
+                                                <td>{PLL.result0.avgScore}</td>
+                                                <td>{PLL.result0.scoreTitle}</td>
+                                                <td>{PLL.result0.conductTitle}</td>
+                                                <td>{PLL.result0.rank}</td>
+                                                <td>{PLL.result0.title}</td>
+                                                <td>{PLL.result0.nVangCoPhep}</td>
+                                                <td>{PLL.result0.nVangKoPhep}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <table className="table table-bordered student-score-summary">
-                                    <thead className="text-center">
-                                        <tr>
-                                            <th rowSpan="2">STT</th>
-                                            <th rowSpan="2" className="subject">Môn học</th>
-                                            <th colSpan="14">Học kỳ 1</th>
-                                            <th colSpan="14">Học kỳ 2</th>
-                                            <th rowSpan="2">TB kỳ 1</th>
-                                            <th rowSpan="2">TB kỳ 2</th>
-                                            <th rowSpan="2">TB năm</th>
-                                        </tr>
-                                        <tr>
-                                            <th colSpan="5">Miệng</th>
-                                            <th colSpan="5">15 phút</th>
-                                            <th colSpan="3">1 tiết</th>
-                                            <th >Thi</th>
-                                            <th colSpan="5">Miệng</th>
-                                            <th colSpan="5">15 phút</th>
-                                            <th colSpan="3">1 tiết</th>
-                                            <th >Thi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.renderTableData()}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <table className="table table-bordered">
-                                    <thead className="text-center">
-                                        <tr>
-                                            <th >Tổng kết</th>
-                                            <th >Điểm trung bình</th>
-                                            <th >Học lực</th>
-                                            <th >Hạnh kiểm</th>
-                                            <th >Xếp hạng</th>
-                                            <th >Danh hiệu</th>
-                                            <th >Vắng có phép</th>
-                                            <th >Vắng không phép</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className="text-center">
-                                            <td>Học kỳ 1</td>
-                                            <td>{PLL.result1.avgScore}</td>
-                                            <td>{PLL.result1.scoreTitle}</td>
-                                            <td>{PLL.result1.conductTitle}</td>
-                                            <td>{PLL.result1.rank}</td>
-                                            <td>{PLL.result1.title}</td>
-                                            <td>{PLL.result1.nVangCoPhep}</td>
-                                            <td>{PLL.result1.nVangKoPhep}</td>
-                                        </tr>
-                                        <tr className="text-center">
-                                            <td>Học kỳ 2</td>
-                                            <td>{PLL.result2.avgScore}</td>
-                                            <td>{PLL.result2.scoreTitle}</td>
-                                            <td>{PLL.result2.conductTitle}</td>
-                                            <td>{PLL.result2.rank}</td>
-                                            <td>{PLL.result2.title}</td>
-                                            <td>{PLL.result2.nVangCoPhep}</td>
-                                            <td>{PLL.result2.nVangKoPhep}</td>
-                                        </tr>
-                                        <tr className="text-center">
-                                            <td>Cả năm</td>
-                                            <td>{PLL.result0.avgScore}</td>
-                                            <td>{PLL.result0.scoreTitle}</td>
-                                            <td>{PLL.result0.conductTitle}</td>
-                                            <td>{PLL.result0.rank}</td>
-                                            <td>{PLL.result0.title}</td>
-                                            <td>{PLL.result0.nVangCoPhep}</td>
-                                            <td>{PLL.result0.nVangKoPhep}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <table className="table table-bordered">
-                                    <thead className="text-center">
-                                        <tr>
-                                            <th colSpan="2">Ý kiến PHHS</th>
-                                            <th colSpan="2">Ý kiến GVCN</th>
-                                            <th colSpan="2">Kết quả cuối năm</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className="text-left">
-                                            <td colSpan="2"></td>
-                                            <td colSpan="2">{PLL.result1.note} {"\n"} {PLL.result2.note}</td>
-                                            <td colSpan="2">
-                                                Được lên lớp:<br />{PLL.result0.isGradeUp}
+                            <div className="row mt-2">
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <table className="table table-bordered">
+                                        <thead className="text-center">
+                                            <tr>
+                                                <th colSpan="2">Ý kiến PHHS</th>
+                                                <th colSpan="2">Ý kiến GVCN</th>
+                                                <th colSpan="2">Kết quả cuối năm</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr className="text-left">
+                                                <td colSpan="2"></td>
+                                                <td colSpan="2">{PLL.result1.note} {"\n"} {PLL.result2.note}</td>
+                                                <td colSpan="2">
+                                                    Được lên lớp:<br />{PLL.result0.isGradeUp}
                                         Thi lại môn:
                                     </td>
-                                        </tr>
-                                        <tr className="text-center">
-                                            <td colSpan="3">
-                                                <b>Hiệu trưởng</b>
-                                            </td>
-                                            <td colSpan="3">
-                                                Hà Nội, ngày {this.state.date.getDate() < 10 ? "0" + this.state.date.getDate() : this.state.date.getDate()} tháng {this.state.date.getMonth() < 9 ? "0" + (this.state.date.getMonth() + 1) : this.state.date.getMonth() + 1} năm {this.state.date.getFullYear()}<br />
+                                            </tr>
+                                            <tr className="text-center">
+                                                <td colSpan="3">
+                                                    <b>Hiệu trưởng</b>
+                                                </td>
+                                                <td colSpan="3">
+                                                    Hà Nội, ngày {this.state.date.getDate() < 10 ? "0" + this.state.date.getDate() : this.state.date.getDate()} tháng {this.state.date.getMonth() < 9 ? "0" + (this.state.date.getMonth() + 1) : this.state.date.getMonth() + 1} năm {this.state.date.getFullYear()}<br />
                         Giáo viên chủ nhiệm<br />
-                                                <br />
-                                                <br />
-                                                <br />
-                                                <br />
-                                                {this.state.teacher.teacherName}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                    <br />
+                                                    <br />
+                                                    <br />
+                                                    <br />
+                                                    {this.state.teacher.teacherName}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -62,7 +62,9 @@ class TeachingClassScore extends Component {
                     animationIn: ["animate__backInDown", "animate__animated"],
                     animationOut: ["animate__fadeOutUp", "animate__animated"],
                 })
-                this.props.history.push("/my-teaching-assignment")
+                this.props.history.push("/my-teaching-assignment", {
+                    kind: "edit"
+                })
                 return
             }
             await this.refresh()

@@ -47,24 +47,6 @@ class SearchScore extends Component {
         let info = this.props.location.state
         this.setState({ info: info })
         try {
-            let checkLock = await Api.checkLock(info.schoolYearId, info.term)
-            console.log(checkLock)
-            if (checkLock.data.result.lock) {
-                store.addNotification({
-                    title: "Không thể nhập điểm",
-                    message: "Hiện tại đang khóa nhập điểm vui lòng chờ đến thời điểm nhập điểm hoặc liên hệ quản trị viên",
-                    type: "warning",
-                    container: "top-center",
-                    dismiss: {
-                        duration: 5000,
-                        showIcon: true,
-                    },
-                    animationIn: ["animate__backInDown", "animate__animated"],
-                    animationOut: ["animate__fadeOutUp", "animate__animated"],
-                })
-                this.props.history.push("/my-teaching-assignment")
-                return
-            }
             await this.refresh()
             this.setState({ loading: false })
         } catch (err) {

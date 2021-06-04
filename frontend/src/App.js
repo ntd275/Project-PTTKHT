@@ -48,6 +48,7 @@ import HomeroomSubjectStatistic from './components/HomeRoomTeacherStatistic/Subj
 import SearchHomeroomClassInfo from './components/SearchHomeroomClassInfo/SearchHomeroomClassInfo'
 import SearchScore from './components/SearchScore/SearchScore'
 import StudentPLL from './components/StudentPLL/StudentPLL'
+import MyTeachingAssignmentEdit from './components/MyTeachingAssignmentEdit/MyTeachingAssignmentEdit'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -127,6 +128,7 @@ class App extends React.Component {
               <PrivateRouter exact path="/search-teaching-assignment" component={<SearchTeachingAssignment />} role={[2]} />
               <PrivateRouter exact path="/teaching-class-score" component={<TeachingClassScore />} role={[2, 1]} />
               <PrivateRouter exact path="/my-teaching-assignment" component={<MyTeachingAssignment />} role={[2, 1]} />
+              <PrivateRouter exact path="/my-teaching-assignment-edit" component={<MyTeachingAssignmentEdit />} role={[2, 1]} />
               <PrivateRouter exact path="/conduct-assesssment" component={<ConductAssessment />} role={[2, 1]} />
               <PrivateRouter exact path="/statistic-rank" component={<RankStatistic />} role={[2]} />
               <PrivateRouter exact path="/statistic-subject" component={<SubjectStatistic />} role={[2]} />

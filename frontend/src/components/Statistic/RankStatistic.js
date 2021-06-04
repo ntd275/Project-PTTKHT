@@ -5,8 +5,9 @@ import { store } from 'react-notifications-component'
 import SelectSearch, { fuzzySearch } from 'react-select-search';
 import { BsArrowLeftShort } from 'react-icons/bs'
 import { withRouter } from 'react-router-dom'
-
-
+import Pdf from "react-to-pdf";
+import ReactToPrint from 'react-to-print';
+const ref = React.createRef()
 class RankStatistic extends Component {
     constructor(props) {
         super(props);
@@ -240,71 +241,82 @@ class RankStatistic extends Component {
                             <button type="submit" className="btn btn-primary ml-3" onClick={(e) => { e.preventDefault(); this.refresh() }}>Xem kết quả</button>
                         </form>
                     </div>
-                    <div className="col-3">
-                        <button type="button" className="btn btn-primary mr-2">Xuất file</button>
-                        <button type="button" className="btn btn-primary mr-2">In thống kê</button>
-                    </div>
+                    {this.state.showReport &&
+                        <div className="col-3">
+                            <Pdf targetRef={ref} filename="rank-report.pdf" scale={0.7} y={7}>
+                                {({ toPdf }) => <button type="button" className="btn btn-primary mr-2" onClick={toPdf}>Xuất file</button>}
+                            </Pdf>
+                            <ReactToPrint
+                                trigger={() => {
+
+                                    return <button type="button" className="btn btn-primary mr-2">In thống kê</button>;
+                                }}
+                                content={ () => this.componentRef}
+                            />
+                        </div>
+                    }
                 </div>
                 <hr />
                 {this.state.showReport &&
-                    <div className="row">
-                        <div className="col-12 text-center statistic-title">
-                            <div>
-                                <b>Danh sách học sinh theo xếp hạng</b><br />
+                    <div ref={ref} style={{ overflow: "auto" }} >
+                        <div id="report" ref={el => (this.componentRef = el)} className="container-fluid" style={{ width: "280mm" }}>
+                            <div className="row">
+                                <div className="col-12 text-center statistic-title">
+                                    <div>
+                                        <b>Danh sách học sinh theo xếp hạng</b><br />
                             Trường Trung học cơ sở ABC
                         </div>
-                        </div>
-                    </div>
-                }
-                {this.state.showReport &&
-                    <div className="row mt-3">
-                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
-                            <span className="mr-5 ml-5">
-                                <b>Lớp: </b> {this.state.classList.find(e => e.classId === this.state.searchCondition.classId) && this.state.classList.find(e => e.classId === this.state.searchCondition.classId).className}
-                            </span>
-                            <span className="mr-5 ml-5">
-                                <b>Học kỳ: </b> {this.state.searchCondition.term === 0 ? "Cả năm" : this.state.searchCondition.term}
-                            </span>
-                            <span className="mr-5 ml-5">
-                                <b>Năm học: </b> {this.state.schoolYearList.find(e => e.schoolYearId === this.state.searchCondition.schoolYearId) && this.state.schoolYearList.find(e => e.schoolYearId === this.state.searchCondition.schoolYearId).schoolYear}
-                            </span>
-                            <span className="mr-5 ml-5">
-                                <b>Giáo viên chủ nhiệm: </b> {this.state.homeroomTeacher}
-                            </span>
-                        </div>
-                    </div>
-                }
-                {this.state.showReport &&
-                    <div className="row mt-4">
-                        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <table className="table table-bordered">
-                                <thead className="text-center">
-                                    <tr>
-                                        <th>Xếp hạng</th>
-                                        <th>Họ tên</th>
-                                        <th>Giới tính</th>
-                                        <th>Điểm trung bình</th>
-                                        <th>Hạnh kiểm</th>
-                                        <th>Học lực</th>
-                                        <th>Danh hiệu</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.renderTableData()}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                }
-                {this.state.showReport &&
-                    <div className="row mt-3 mb-2 justify-content-end">
-                        <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-center">
-                            Hà Nội, ngày {this.state.date.getDate()} tháng {this.state.date.getMonth() + 1} năm {this.state.date.getFullYear()}<br />
+                                </div>
+                            </div>
+
+                            <div className="row mt-3">
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                                    <span className="mr-5 ml-5">
+                                        <b>Lớp: </b> {this.state.classList.find(e => e.classId === this.state.searchCondition.classId) && this.state.classList.find(e => e.classId === this.state.searchCondition.classId).className}
+                                    </span>
+                                    <span className="mr-5 ml-5">
+                                        <b>Học kỳ: </b> {this.state.searchCondition.term === 0 ? "Cả năm" : this.state.searchCondition.term}
+                                    </span>
+                                    <span className="mr-5 ml-5">
+                                        <b>Năm học: </b> {this.state.schoolYearList.find(e => e.schoolYearId === this.state.searchCondition.schoolYearId) && this.state.schoolYearList.find(e => e.schoolYearId === this.state.searchCondition.schoolYearId).schoolYear}
+                                    </span>
+                                    <span className="mr-5 ml-5">
+                                        <b>Giáo viên chủ nhiệm: </b> {this.state.homeroomTeacher}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div className="row mt-4">
+                                <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <table className="table table-bordered">
+                                        <thead className="text-center">
+                                            <tr>
+                                                <th>Xếp hạng</th>
+                                                <th>Họ tên</th>
+                                                <th>Giới tính</th>
+                                                <th>Điểm trung bình</th>
+                                                <th>Hạnh kiểm</th>
+                                                <th>Học lực</th>
+                                                <th>Danh hiệu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {this.renderTableData()}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div className="row mt-3 mb-2 justify-content-end">
+                                <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5 text-center">
+                                    Hà Nội, ngày {this.state.date.getDate()} tháng {this.state.date.getMonth() + 1} năm {this.state.date.getFullYear()}<br />
                         Giáo viên chủ nhiệm<br />
-                            <br />
-                            <br />
-                            <br />
-                            {this.state.homeroomTeacher}
+                                    <br />
+                                    <br />
+                                    <br />
+                                    {this.state.homeroomTeacher}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 }
