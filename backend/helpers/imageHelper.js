@@ -27,7 +27,7 @@ const checkFileType = (req, file, callback) => {
 const uploadImage = multer({
     storage: storage,
     limits: {
-        fileSize: 1000000
+        fileSize: 5000000
     },
     fileFilter: checkFileType
 }).single('avatar')

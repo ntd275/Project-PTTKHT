@@ -36,7 +36,7 @@ exports.editAccount = async function (id, data) {
         .where('accountId', id)
         .update({
             role: data.role,
-            accountName: data.username,
+            accountName: data.accountName,
             password: data.password,
             userCode: data.userCode
         })

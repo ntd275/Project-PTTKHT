@@ -99,6 +99,9 @@ async function addAccount(req, res) {
 async function editAccount(req, res) {
     try {
         //Return number of affected row
+        let newPassword = await bcrypt.hash(req.body.password, config.saltRounds)
+        req.body.password = newPassword
+        console.log(req.body)
         let count = await Account.editAccount(req.params.id, req.body)
 
         if (count == 0) {
