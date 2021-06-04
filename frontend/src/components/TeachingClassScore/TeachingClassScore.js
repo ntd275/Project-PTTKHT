@@ -580,7 +580,7 @@ class TeachingClassScore extends Component {
                                         <th colSpan="5">Miệng</th>
                                         <th colSpan="5">15 phút</th>
                                         <th colSpan="3">1 tiết</th>
-                                        <th>thi</th>
+                                        <th>Thi</th>
                                     </tr>
                                 </thead>
                                 <tbody>

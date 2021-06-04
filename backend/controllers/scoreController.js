@@ -34,20 +34,18 @@ async function getStudentScoreSummary(req, res) {
         let i
         let data = []
         for (i = 0; i < subjects.length; i++) {
-            if (subjects[i].subjectCode != "THEDUC") {
-                let [avgScore1, score1] = await getStudentAvgScoreInSubjectTerm(req.query.studentId, subjects[i].subjectId, req.query.schoolYearId, 1)
-                let [avgScore2, score2] = await getStudentAvgScoreInSubjectTerm(req.query.studentId, subjects[i].subjectId, req.query.schoolYearId, 2)
-                let avgScoreYear = (avgScore1 && avgScore2) ? (parseFloat(((avgScore1 + avgScore2 * 2) / 3).toFixed(1))) : ""
+            let [avgScore1, score1] = await getStudentAvgScoreInSubjectTerm(req.query.studentId, subjects[i].subjectId, req.query.schoolYearId, 1)
+            let [avgScore2, score2] = await getStudentAvgScoreInSubjectTerm(req.query.studentId, subjects[i].subjectId, req.query.schoolYearId, 2)
+            let avgScoreYear = (avgScore1 && avgScore2) ? (parseFloat(((avgScore1 + avgScore2 * 2) / 3).toFixed(1))) : ""
 
-                data.push({
-                    subjectName: subjects[i].subjectName,
-                    avgScore1: avgScore1,
-                    score1: score1,
-                    avgScore2: avgScore2,
-                    score2: score2,
-                    avgScoreYear: avgScoreYear
-                })
-            }
+            data.push({
+                subjectName: subjects[i].subjectName,
+                avgScore1: avgScore1,
+                score1: score1,
+                avgScore2: avgScore2,
+                score2: score2,
+                avgScoreYear: avgScoreYear
+            })
         }
 
         return res.status(200).json({
