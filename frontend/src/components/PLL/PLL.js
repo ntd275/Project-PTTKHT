@@ -7,7 +7,7 @@ import { BsArrowLeftShort } from 'react-icons/bs'
 import { withRouter } from 'react-router-dom'
 import AppContext from '../../context/AppContext'
 
-class StudentPLL extends Component {
+class PLL extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,8 +20,7 @@ class StudentPLL extends Component {
             showReport: false,
             scoreList: [],
             PLL: {},
-            date: new Date(),
-            teacher: {}
+            date: new Date()
         };
     }
 
@@ -30,20 +29,31 @@ class StudentPLL extends Component {
             loading: true
         })
         try {
-            let [schoolYearList, student] = await Promise.all([
+            let [schoolYearList, teacher] = await Promise.all([
                 Api.getSchoolYearList(1, 1000000),
-                Api.getStudentByCode(this.context.user.userCode)
+                Api.getTeacherByCode(this.context.user.userCode)
             ]);
             let searchCondition = {
                 schoolYearId: schoolYearList.data.result.data[schoolYearList.data.result.data.length - 1].schoolYearId,
-                studentId: student.data.result.studentId,
+                teacherId: teacher.data.result.teacherId,
+            }
+            let homeroomClass = await Api.searchHomeroomTeacherAssignment(1, 1000000, searchCondition)
+            let studentList
+            if (homeroomClass.data.result.data.length) {
+                searchCondition.classId = homeroomClass.data.result.data[0].classId
+                studentList = await Api.searchStudentAssignment(1, 1000000, searchCondition)
+                if (studentList.data.result.data.length) {
+                    searchCondition.studentId = studentList.data.result.data[0].studentId
+                }
             }
             console.log(searchCondition)
             this.setState({
+                classList: homeroomClass.data.result.data,
                 schoolYearList: schoolYearList.data.result.data,
+                studentList: studentList.data.result.data,
                 searchCondition: searchCondition,
                 loading: false,
-                student: student.data.result
+                homeroomTeacher: teacher.data.result,
             })
         } catch (err) {
             console.log(err)
@@ -85,12 +95,10 @@ class StudentPLL extends Component {
     refresh = async (searchCondition) => {
         this.setState({ loading: true, showReport: false })
         try {
-
-            let studentAssignment = await Api.searchStudentAssignment(1, 1000000, searchCondition || this.state.searchCondition)
-            if (studentAssignment.data.result.data.length === 0) {
+            if (!this.state.searchCondition.classId) {
                 store.addNotification({
                     title: "Thông báo",
-                    message: "Bạn không có phiếu liên lạc trong thời điểm này",
+                    message: "Bạn không là giáo viên chủ nhiệm lớp trong năm học này",
                     type: "info",
                     container: "top-center",
                     dismiss: {
@@ -106,15 +114,28 @@ class StudentPLL extends Component {
                 })
                 return
             }
-            let [res, score, teacher] = await Promise.all([
+            if (!this.state.searchCondition.studentId) {
+                store.addNotification({
+                    title: "Thông báo",
+                    message: "Danh sách học sinh rỗng",
+                    type: "info",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                this.setState({ loading: false, showReport: false })
+                return
+            }
+            let [res, score] = await Promise.all([
                 Api.getPLL(searchCondition || this.state.searchCondition),
-                Api.getStudentScoreSummary(searchCondition || this.state.searchCondition),
-                Api.searchHomeroomTeacherAssignment(1, 1000000, searchCondition || this.state.searchCondition)
+                Api.getStudentScoreSummary(searchCondition || this.state.searchCondition)
             ])
             console.log(res, score)
             this.setState({
-                teacher: teacher.data.result.data[0],
-                studentAssignment: studentAssignment.data.result.data[0],
                 scoreList: score.data.data,
                 PLL: res.data,
                 showReport: true,
@@ -151,18 +172,66 @@ class StudentPLL extends Component {
         return options
     }
 
+    getClassOption = () => {
+        let list = this.state.classList
+        let options = []
+        for (let i = 0; i < list.length; i++) {
+            let { classId, className } = list[i];
+            options.push({
+                name: className,
+                value: classId
+            })
+        }
+        return options
+    }
+
+    getStudentOption = () => {
+        let list = this.state.studentList
+        let options = []
+        for (let i = 0; i < list.length; i++) {
+            let { studentId, studentName, studentCode } = list[i];
+            options.push({
+                name: studentName + " - " + studentCode,
+                value: studentId
+            })
+        }
+        return options
+    }
+
     changeSearchCondition = async (name, value) => {
         //console.log(name, value)
         let searchCondition = this.state.searchCondition
         searchCondition[name] = value
         if (name === "schoolYearId") {
             this.setState({ loading: true, showReport: false })
+            searchCondition.classId = undefined;
+            searchCondition.studentId = undefined;
             try {
-                let studentAssignment = await Api.searchStudentAssignment(1, 1000000, searchCondition || this.state.searchCondition)
-                if (studentAssignment.data.result.data.length === 0) {
+                let classList = await Api.searchHomeroomTeacherAssignment(1, 1000000, searchCondition)
+                let studentList
+                if (classList.data.result.data.length) {
+                    searchCondition.classId = classList.data.result.data[0].classId
+                    studentList = await Api.searchStudentAssignment(1, 1000000, searchCondition)
+                    if (studentList.data.result.data.length) {
+                        searchCondition.studentId = studentList.data.result.data[0].studentId
+                    } else {
+                        store.addNotification({
+                            title: "Thông báo",
+                            message: "Danh sách học sinh rỗng",
+                            type: "info",
+                            container: "top-center",
+                            dismiss: {
+                                duration: 5000,
+                                showIcon: true,
+                            },
+                            animationIn: ["animate__backInDown", "animate__animated"],
+                            animationOut: ["animate__fadeOutUp", "animate__animated"],
+                        })
+                    }
+                } else {
                     store.addNotification({
                         title: "Thông báo",
-                        message: "Bạn không có phiếu liên lạc trong thời điểm này",
+                        message: "Bạn không là giáo viên chủ nhiệm lớp trong năm học này",
                         type: "info",
                         container: "top-center",
                         dismiss: {
@@ -175,7 +244,8 @@ class StudentPLL extends Component {
                 }
                 this.setState({
                     loading: false,
-                    studentAssignment: studentAssignment.data.result.data[0],
+                    classList: classList.data.result.data,
+                    studentList: studentList.data.result.data,
                     searchCondition: searchCondition,
                 })
             } catch (err) {
@@ -259,8 +329,8 @@ class StudentPLL extends Component {
         }
 
         let { PLL } = this.state
-        let student = this.state.student
-        let _class = this.state.studentAssignment
+        let student = this.state.studentList.find(e => e.studentId === this.state.searchCondition.studentId)
+        let _class = this.state.classList.find(e => e.classId === this.state.searchCondition.classId)
         return (
             <div className="container-fluid">
                 <div className="row">
@@ -286,6 +356,31 @@ class StudentPLL extends Component {
                                     placeholder=" "
                                     value={this.state.searchCondition.schoolYearId}
                                     onChange={v => this.changeSearchCondition("schoolYearId", v)}
+                                />
+                            </div>
+                            <label className="ml-2">Lớp:</label>
+                            <div className="ml-1 select-class">
+                                <SelectSearch
+                                    options={this.getClassOption()}
+                                    search
+                                    filterOptions={fuzzySearch}
+                                    emptyMessage="Không tìm thấy"
+                                    placeholder=" "
+                                    value={this.state.searchCondition.classId}
+                                    onChange={v => this.changeSearchCondition("classId", v)}
+                                    disabled={true}
+                                />
+                            </div>
+                            <label className="ml-2">Học sinh:</label>
+                            <div className="ml-1 select-student">
+                                <SelectSearch
+                                    options={this.getStudentOption()}
+                                    search
+                                    filterOptions={fuzzySearch}
+                                    emptyMessage="Không tìm thấy"
+                                    placeholder=" "
+                                    value={this.state.searchCondition.studentId}
+                                    onChange={v => this.changeSearchCondition("studentId", v)}
                                 />
                             </div>
                             <button onClick={() => this.refresh()} type="button" className="btn btn-primary ml-auto">Xem phiếu liên lạc</button>
@@ -420,7 +515,9 @@ class StudentPLL extends Component {
                                     <tbody>
                                         <tr className="text-left">
                                             <td colSpan="2"></td>
-                                            <td colSpan="2">{PLL.result1.note} {"\n"} {PLL.result2.note}</td>
+                                            <td colSpan="2">
+                                                {PLL.result1.note} {"\n"} {PLL.result2.note}
+                                            </td>
                                             <td colSpan="2">
                                                 Được lên lớp:<br />{PLL.result0.isGradeUp}
                                         Thi lại môn:
@@ -437,7 +534,7 @@ class StudentPLL extends Component {
                                                 <br />
                                                 <br />
                                                 <br />
-                                                {this.state.teacher.teacherName}
+                                                {this.state.homeroomTeacher.teacherName}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -451,6 +548,6 @@ class StudentPLL extends Component {
     }
 }
 
-StudentPLL.contextType = AppContext
+PLL.contextType = AppContext
 
-export default withRouter(StudentPLL);
+export default withRouter(PLL);

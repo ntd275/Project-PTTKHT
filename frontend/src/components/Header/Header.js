@@ -66,7 +66,7 @@ class Header extends React.Component {
                                         Tra cứu điểm
                                     </Link>
                                     <NavDropdown.Divider />
-                                    <Link to="/" className="dropdown-item">
+                                    <Link to="/student-pll" className="dropdown-item">
                                         Tra cứu phiếu liên lạc
                                     </Link>
                                 </NavDropdown>
@@ -138,7 +138,7 @@ class Header extends React.Component {
                                         Điểm danh
                                     </Link>
                                     <NavDropdown.Divider />
-                                    <Link to="/" className="dropdown-item">
+                                    <Link to="/pll" className="dropdown-item">
                                         Xuất phiếu liên lạc
                                     </Link>
                                     <NavDropdown.Divider />

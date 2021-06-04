@@ -15,7 +15,7 @@ import AccountInfo from './components/AccountInfo/AccountInfo';
 import ForgetPassword from './components/ForgetPassword/forgetPassword';
 import ChangePassword from './components/ChangePassword/ChangePassword';
 import StudentScore from './components/StudentScore/StudentScore';
-import StudentPLL from './components/StudentPLL/StudentPLL';
+import PLL from './components/PLL/PLL';
 import RankStatistic from './components/Statistic/RankStatistic';
 import SubjectStatistic from './components/Statistic/SubjectStatistic';
 import TeachingClassScore from './components/TeachingClassScore/TeachingClassScore';
@@ -47,6 +47,7 @@ import HomeroomRankStatistic from './components/HomeRoomTeacherStatistic/RankSta
 import HomeroomSubjectStatistic from './components/HomeRoomTeacherStatistic/SubjectStatistic'
 import SearchHomeroomClassInfo from './components/SearchHomeroomClassInfo/SearchHomeroomClassInfo'
 import SearchScore from './components/SearchScore/SearchScore'
+import StudentPLL from './components/StudentPLL/StudentPLL'
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -135,9 +136,8 @@ class App extends React.Component {
               <PrivateRouter exact path="/search-homeroom-class-info" component={<SearchHomeroomClassInfo />} role={[2, 1]} />
               <PrivateRouter exact path="/search-score" component={<SearchScore />} role={[2, 1]} />
               <PrivateRouter exact path="/student-attendance" component={<StudentAttendance />} role={[2, 1]} />
-              <Route path="/student/pll">
-                <StudentPLL />
-              </Route>
+              <PrivateRouter exact path="/pll" component={<PLL />} role={[2, 1]} />
+              <PrivateRouter exact path="/student-pll" component={<StudentPLL />} role={[0]} />
               <Route path="/">
                 <Page404 />
               </Route>

@@ -225,6 +225,9 @@ const Api = {
     getTeacherList: (page, perpage) => {
         return user.get(`/teacher/list?page=${page}&perpage=${perpage}`)
     },
+    getTeacher: (id) => {
+        return user.get(`/teacher/id/${id}`)
+    },
     getTeacherByCode: (code) => {
         return user.get(`/teacher/code/${code}`)
     },
@@ -460,10 +463,23 @@ const Api = {
         return user.get(`/class/homeroom?key=${teacherId}`)
     },
     getClassAttendance: (searchCondition) => {
-        return user.get(`/attendance/class?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&term=2`)
+        let getDateString = (date) => {
+            let d = new Date(date)
+            let dd = d.getDate()
+            let mm = d.getMonth() + 1
+            let yyyy = d.getFullYear()
+            if (dd < 10) { dd = '0' + dd }
+            if (mm < 10) { mm = '0' + mm }
+            return yyyy + "-" + mm + "-" + dd
+        }
+        return user.get(`/attendance/class/between?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&&firstDate=${getDateString(searchCondition.beginDate)}&lastDate=${getDateString(searchCondition.endDate)}`)
     },
     updateAttendance: (data) => {
         return user.put(`/attendance`, data)
+    },
+    getPLL: (searchCondition) => {
+
+        return user.get(`/pll?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
     }
 }
 

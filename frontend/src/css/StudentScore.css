@@ -2,7 +2,7 @@
     min-width: 150px;
 }
 
-.student-score-summary td{
+.student-score-summary td,.student-score-summary th{
     padding: 0.75rem 0.1rem !important;
     min-width: 30px !important; 
 } 
