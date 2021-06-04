@@ -15,6 +15,13 @@ exports.getScoreLockBySchoolYear = async (schoolYearId) => {
     }).first()
 }
 
+exports.getScoreLock = async (schoolYearId, term) => {
+    return knex('ScoreLock').where({
+        schoolYearId: schoolYearId,
+        term: term
+    }).first()
+}
+
 exports.lock = async (schoolYearId, term) => {
     return knex('ScoreLock')
         .where({
