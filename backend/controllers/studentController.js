@@ -133,10 +133,19 @@ async function searchStudent(req, res) {
 
 async function createStudent(req, res) {
     try {
+        //Check existed
+        let existedStudent = await Student.getStudentByCode(req.body.studentCode)
+        if (existedStudent != undefined || existedStudent != null) {
+            return res.status(409).json({
+                success: false,
+                message: `Student with code = ${req.body.studentCode} existed`
+            })
+        }
+
         let student = await Student.createStudent(req.body)
 
         if (student.length == 0) {
-            return res.status(400).json({
+            return res.status(409).json({
                 success: false,
                 message: "Cannot create student"
             })
@@ -162,30 +171,11 @@ async function updateStudent(req, res) {
         student = await Student.getStudent(req.params.id)
         //Check exists
         if (student === undefined) {
-            return res.status(400).json({
+            return res.status(404).json({
                 success: false,
                 message: `Cannot find student with id = ${req.params.id}`
             })
         }
-        // //Get update info from request
-        // student.studentCode = req.body.studentCode || student.studentCode
-        // student.studentName = req.body.studentName || student.studentName
-        // student.dateOfBirth = req.body.dateOfBirth || student.dateOfBirth
-        // student.gender = req.body.gender || student.gender
-        // student.pId = req.body.pId || student.pId
-        // student.image = req.body.image || student.image
-        // student.address = req.body.address || student.address
-        // student.permanentResidence = req.body.permanentResidence || student.permanentResidence
-        // student.email = req.body.email || student.email
-        // student.phoneNumber = req.body.phoneNumber || student.phoneNumber
-        // student.dateOfParty = req.body.dateOfParty || student.dateOfParty
-        // student.dateOfUnion = req.body.dateOfUnion || student.dateOfUnion
-        // student.fatherName = req.body.fatherName || student.fatherName
-        // student.fatherPhone = req.body.fatherPhone || student.fatherPhone
-        // student.fatherMail = req.body.fatherMail || student.fatherMail
-        // student.motherName = req.body.motherName || student.motherName
-        // student.motherPhone = req.body.motherPhone || student.motherPhone
-        // student.motherMail = req.body.motherMail || student.motherMail
 
         let count = await Student.updateStudent(req.params.id, req.body)
         

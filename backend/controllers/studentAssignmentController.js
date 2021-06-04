@@ -99,6 +99,14 @@ async function transformClass(req, res) {
 
     } catch (error) {
         console.log(error)
+
+        if (error.errno = 1062) {
+            return res.status(409).json({
+                success: false,
+                message: error
+            })
+        }
+
         return res.status(500).json({
             success: false,
             message: error

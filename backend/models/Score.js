@@ -88,10 +88,11 @@ exports.editScore = async (data) => {
                                 'term': term
                             }).count('scoreId as cnt').from('Score')
 
-                            console.log(scoreExist);
-
                             if (scoreExist[0].cnt >= maxScoreNum[kind]) {
-                                let message = `Cannot add more score kind = ${kind}`
+                                let message = {
+                                    'errno': 409,
+                                    'message': `Cannot add more score kind = ${kind}`
+                                }
                                 return Promise.reject(message)
                             }                           
 
@@ -111,7 +112,10 @@ exports.editScore = async (data) => {
                             scoreExist = await trx.where('scoreId', scores[j].scoreId).select().from('Score').first()
 
                             if (scoreExist === undefined || !scoreExist) {
-                                let message = `scoreId = ${scores[j].scoreId} not found`
+                                let message = {
+                                    'errno': 409,
+                                    'message': `scoreId = ${scores[j].scoreId} not found`
+                                }
                                 return Promise.reject(message)
                             }
 
@@ -125,7 +129,10 @@ exports.editScore = async (data) => {
                             scoreExist = await trx.where('scoreId', scores[j].scoreId).from('Score').first()
 
                             if (scoreExist === undefined || !scoreExist) {
-                                let message = `scoreId = ${scores[j].scoreId} not found`
+                                let message = {
+                                    'errno': 409,
+                                    'message': `scoreId = ${scores[j].scoreId} not found`
+                                }
                                 return Promise.reject(message)
                             }
 
