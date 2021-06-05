@@ -12,7 +12,7 @@ module.exports = {
       user: config.userDB,
       password: config.passwordDB,
       database: config.db,
-      timezone: "+07:00"
+      timezone: "+00:00"
     },
     acquireConnectionTimeout: 30000
   },
