@@ -1,4 +1,7 @@
 import axios from 'axios';
+import packagejson from "../../package.json"
+
+const baseUrl = packagejson.proxy.charAt(packagejson.proxy.length - 1) === "/" ? packagejson.proxy.slice(0, -1) : packagejson.proxy
 
 const user = axios.create({ timeout: 30000 });
 const guest = axios.create({ timeout: 30000 });
@@ -6,6 +9,7 @@ const guest = axios.create({ timeout: 30000 });
 guest.defaults.withCredentials = true;
 
 user.interceptors.request.use(function (config) {
+    console.log(config)
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
         config.headers["x-access-token"] = accessToken;
@@ -36,50 +40,50 @@ user.interceptors.response.use(function (response) {
 
 const Api = {
     login: (username, password) => {
-        return guest.post('/auth/login', { username: username, password: password })
+        return guest.post(`${baseUrl}/auth/login`, { username: username, password: password })
     },
     refreshToken: () => {
-        return guest.post('/auth/refresh-token')
+        return guest.post(`${baseUrl}/auth/refresh-token`)
     },
     checkAuth: () => {
-        return user.get('/auth/check-auth')
+        return user.get(`${baseUrl}/auth/check-auth`)
     },
     getAccountInfo: (id) => {
-        return user.get(`/account/id/${id}`)
+        return user.get(`${baseUrl}/account/id/${id}`)
     },
     checkPassword: (id, password) => {
-        return user.post(`/account/check-password/${id}`, {
+        return user.post(`${baseUrl}/account/check-password/${id}`, {
             password: password,
         })
     },
     changePassword: (id, oldPassword, newPassword) => {
-        return user.put(`/account/change-password/${id}`, {
+        return user.put(`${baseUrl}/account/change-password/${id}`, {
             old_password: oldPassword,
             new_password: newPassword
         })
     },
     sendOTP: (username) => {
-        return user.post('/auth/send-otp', {
+        return user.post(`${baseUrl}/auth/send-otp`, {
             username: username
         })
     },
     checkOTP: (otpToken, otp) => {
-        return user.post('/auth/check-otp', {
+        return user.post(`${baseUrl}/auth/check-otp`, {
             otpToken: otpToken,
             otp: otp
         })
     },
     forgetPassword: (accessToken, newPassword) => {
-        return user.post('/auth/forget-password', {
+        return user.post(`${baseUrl}/auth/forget-password`, {
             accessToken: accessToken,
             newPassword: newPassword
         })
     },
     getSchoolYearList: (page, perpage) => {
-        return user.get(`/school-year/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/school-year/list?page=${page}&perpage=${perpage}`)
     },
     addSchoolYear: (data) => {
-        return user.post(`/school-year/`, {
+        return user.post(`${baseUrl}/school-year/`, {
             schoolYear: data.schoolYear,
             beginSemester1: data.startFirstSemester,
             endSemester1: data.finishFirstSemester,
@@ -89,7 +93,7 @@ const Api = {
         })
     },
     editSchoolYear: (data) => {
-        return user.put(`/school-year/id/${data.schoolYearId}`, {
+        return user.put(`${baseUrl}/school-year/id/${data.schoolYearId}`, {
             schoolYear: data.schoolYear,
             beginSemester1: data.startFirstSemester,
             endSemester1: data.finishFirstSemester,
@@ -99,16 +103,16 @@ const Api = {
         })
     },
     deleteSchoolYear: (id) => {
-        return user.delete(`/school-year/id/${id}`)
+        return user.delete(`${baseUrl}/school-year/id/${id}`)
     },
     getClassList: (page, perpage) => {
-        return user.get(`/class/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/class/list?page=${page}&perpage=${perpage}`)
     },
     searchClassByName: (page, perpage, name) => {
-        return user.get(`/class/name/${name}?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/class/name/${name}?page=${page}&perpage=${perpage}`)
     },
     addClass: (data) => {
-        return user.post(`/class/`, {
+        return user.post(`${baseUrl}/class/`, {
             className: data.className,
             classCode: data.classCode,
             description: data.description,
@@ -116,7 +120,7 @@ const Api = {
         })
     },
     editClass: (data) => {
-        return user.put(`/class/id/${data.classId}`, {
+        return user.put(`${baseUrl}/class/id/${data.classId}`, {
             className: data.className,
             classCode: data.classCode,
             description: data.description,
@@ -124,69 +128,69 @@ const Api = {
         })
     },
     deleteClass: (id) => {
-        return user.delete(`/class/id/${id}`)
+        return user.delete(`${baseUrl}/class/id/${id}`)
     },
     getSubjectList: (page, perpage) => {
-        return user.get(`/subject/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/subject/list?page=${page}&perpage=${perpage}`)
     },
     searchSubjectByName: (page, perpage, name) => {
-        return user.get(`/subject/name/${name}?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/subject/name/${name}?page=${page}&perpage=${perpage}`)
     },
     addSubject: (data) => {
-        return user.post(`/subject/`, {
+        return user.post(`${baseUrl}/subject/`, {
             subjectName: data.subjectName,
             subjectCode: data.subjectCode,
             description: data.description,
         })
     },
     editSubject: (data) => {
-        return user.put(`/subject/id/${data.subjectId}`, {
+        return user.put(`${baseUrl}/subject/id/${data.subjectId}`, {
             subjectName: data.subjectName,
             subjectCode: data.subjectCode,
             description: data.description,
         })
     },
     deleteSubject: (id) => {
-        return user.delete(`/subject/id/${id}`)
+        return user.delete(`${baseUrl}/subject/id/${id}`)
     },
     getSpecialistTeamList: (page, perpage) => {
-        return user.get(`/specialist-team/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/specialist-team/list?page=${page}&perpage=${perpage}`)
     },
     searchSpecialistTeamByName: (page, perpage, name) => {
-        return user.get(`/specialist-team/name/${name}?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/specialist-team/name/${name}?page=${page}&perpage=${perpage}`)
     },
     addSpecialistTeam: (data) => {
-        return user.post(`/specialist-team/`, {
+        return user.post(`${baseUrl}/specialist-team/`, {
             specialistName: data.specialistName,
             description: data.description
         })
     },
     editSpecialistTeam: (data) => {
-        return user.put(`/specialist-team/id/${data.specialistTeamId}`, {
+        return user.put(`${baseUrl}/specialist-team/id/${data.specialistTeamId}`, {
             specialistName: data.specialistName,
             description: data.description
         })
     },
     deleteSpecialistTeam: (id) => {
-        return user.delete(`/specialist-team/id/${id}`)
+        return user.delete(`${baseUrl}/specialist-team/id/${id}`)
     },
     getStudentList: (page, perpage) => {
-        return user.get(`/student/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/student/list?page=${page}&perpage=${perpage}`)
     },
     getStudent: (id) => {
-        return user.get(`/student/id/${id}`)
+        return user.get(`${baseUrl}/student/id/${id}`)
     },
     getStudentByCode: (code) => {
-        return user.get(`/student/code/${code}`)
+        return user.get(`${baseUrl}/student/code/${code}`)
     },
     searchStudentByName: (page, perpage, name) => {
-        return user.get(`/student/name/${name}?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/student/name/${name}?page=${page}&perpage=${perpage}`)
     },
     searchStudentByNameOrCode: (page, perpage, query) => {
-        return user.get(`/student/search?page=${page}&perpage=${perpage}&query=${query}`)
+        return user.get(`${baseUrl}/student/search?page=${page}&perpage=${perpage}&query=${query}`)
     },
     addStudent: (data) => {
-        return user.post(`/student/`, {
+        return user.post(`${baseUrl}/student/`, {
             studentCode: data.studentCode,
             studentName: data.studentName,
             address: data.address,
@@ -209,7 +213,7 @@ const Api = {
         })
     },
     editStudent: (data) => {
-        return user.put(`/student/id/${data.studentId}`, {
+        return user.put(`${baseUrl}/student/id/${data.studentId}`, {
             studentCode: data.studentCode,
             studentName: data.studentName,
             address: data.address,
@@ -232,25 +236,25 @@ const Api = {
         })
     },
     deleteStudent: (id) => {
-        return user.delete(`/student/id/${id}`)
+        return user.delete(`${baseUrl}/student/id/${id}`)
     },
     getTeacherList: (page, perpage) => {
-        return user.get(`/teacher/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/teacher/list?page=${page}&perpage=${perpage}`)
     },
     getTeacher: (id) => {
-        return user.get(`/teacher/id/${id}`)
+        return user.get(`${baseUrl}/teacher/id/${id}`)
     },
     getTeacherByCode: (code) => {
-        return user.get(`/teacher/code/${code}`)
+        return user.get(`${baseUrl}/teacher/code/${code}`)
     },
     searchTeacherByName: (page, perpage, name) => {
-        return user.get(`/teacher/name/${name}?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/teacher/name/${name}?page=${page}&perpage=${perpage}`)
     },
     searchTeacherByNameOrCode: (page, perpage, query) => {
-        return user.get(`/teacher/search?page=${page}&perpage=${perpage}&query=${query}`)
+        return user.get(`${baseUrl}/teacher/search?page=${page}&perpage=${perpage}&query=${query}`)
     },
     addTeacher: (data) => {
-        return user.post(`/teacher/`, {
+        return user.post(`${baseUrl}/teacher/`, {
             teacherCode: data.teacherCode,
             teacherName: data.teacherName,
             address: data.address,
@@ -268,7 +272,7 @@ const Api = {
         })
     },
     editTeacher: (data) => {
-        return user.put(`/teacher/id/${data.teacherId}`, {
+        return user.put(`${baseUrl}/teacher/id/${data.teacherId}`, {
             teacherCode: data.teacherCode,
             teacherName: data.teacherName,
             address: data.address,
@@ -286,10 +290,10 @@ const Api = {
         })
     },
     deleteTeacher: (id) => {
-        return user.delete(`/teacher/id/${id}`)
+        return user.delete(`${baseUrl}/teacher/id/${id}`)
     },
     getTeachingAssignmentList: (page, perpage) => {
-        return user.get(`/teaching-assignment/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/teaching-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchTeachingAssignment: (page, perpage, searchCondition) => {
         let url = `/teaching-assignment/search?page=${page}&perpage=${perpage}`
@@ -301,7 +305,7 @@ const Api = {
         return user.get(url)
     },
     addTeachingAssignment: (data) => {
-        return user.post(`/teaching-assignment/`, {
+        return user.post(`${baseUrl}/teaching-assignment/`, {
             schoolYearId: data.schoolYearId,
             teacherId: data.teacherId,
             classId: data.classId,
@@ -309,10 +313,10 @@ const Api = {
         })
     },
     deleteTeachingAssignment: (id) => {
-        return user.delete(`/teaching-assignment/id/${id}`)
+        return user.delete(`${baseUrl}/teaching-assignment/id/${id}`)
     },
     getHomeroomTeacherAssignmentList: (page, perpage) => {
-        return user.get(`/homeroom-teacher-assignment/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/homeroom-teacher-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchHomeroomTeacherAssignment: (page, perpage, searchCondition) => {
         let url = `/homeroom-teacher-assignment/search?page=${page}&perpage=${perpage}`
@@ -323,24 +327,24 @@ const Api = {
         return user.get(url)
     },
     addHomeroomTeacherAssignment: (data) => {
-        return user.post(`/homeroom-teacher-assignment`, {
+        return user.post(`${baseUrl}/homeroom-teacher-assignment`, {
             schoolYearId: data.schoolYearId,
             teacherId: data.teacherId,
             classId: data.classId,
         })
     },
     editHomeroomTeacherAssignment: (data) => {
-        return user.put(`/homeroom-teacher-assignment/id/${data.homeroomTeacherAssignmentId}`, {
+        return user.put(`${baseUrl}/homeroom-teacher-assignment/id/${data.homeroomTeacherAssignmentId}`, {
             schoolYearId: data.schoolYearId,
             teacherId: data.teacherId,
             classId: data.classId,
         })
     },
     deleteHomeroomTeacherAssignment: (id) => {
-        return user.delete(`/homeroom-teacher-assignment/id/${id}`)
+        return user.delete(`${baseUrl}/homeroom-teacher-assignment/id/${id}`)
     },
     getSpecialistAssignmentList: (page, perpage) => {
-        return user.get(`/specialist-assignment/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/specialist-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchSpecialistAssignment: (page, perpage, searchCondition) => {
         let url = `/specialist-assignment/search?page=${page}&perpage=${perpage}`
@@ -351,17 +355,17 @@ const Api = {
         return user.get(url)
     },
     addSpecialistAssignment: (data) => {
-        return user.post(`/specialist-assignment`, {
+        return user.post(`${baseUrl}/specialist-assignment`, {
             schoolYearId: data.schoolYearId,
             teacherId: data.teacherId,
             specialistTeamId: data.specialistTeamId
         })
     },
     deleteSpecialistAssignment: (id) => {
-        return user.delete(`/specialist-assignment/id/${id}`)
+        return user.delete(`${baseUrl}/specialist-assignment/id/${id}`)
     },
     getStudentAssignmentList: (page, perpage) => {
-        return user.get(`/student-assignment/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/student-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchStudentAssignment: (page, perpage, searchCondition) => {
         let url = `/student-assignment/search?page=${page}&perpage=${perpage}`
@@ -372,25 +376,25 @@ const Api = {
         return user.get(url)
     },
     addStudentAssignment: (data) => {
-        return user.post(`/student-assignment`, {
+        return user.post(`${baseUrl}/student-assignment`, {
             schoolYearId: data.schoolYearId,
             studentId: data.studentId,
             classId: data.classId
         })
     },
     deleteStudentAssignment: (id) => {
-        return user.delete(`/student-assignment/id/${id}`)
+        return user.delete(`${baseUrl}/student-assignment/id/${id}`)
     },
     tranferClass: (list) => {
-        return user.post(`/student-assignment/transform-class`, {
+        return user.post(`${baseUrl}/student-assignment/transform-class`, {
             data: list
         })
     },
     getAccountList: (page, perpage) => {
-        return user.get(`/account/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/account/list?page=${page}&perpage=${perpage}`)
     },
     addAccount: (data) => {
-        return user.post(`/account/`, {
+        return user.post(`${baseUrl}/account/`, {
             accountName: data.accountName,
             password: data.password,
             userCode: data.userCode,
@@ -398,7 +402,7 @@ const Api = {
         })
     },
     editAccount: (data) => {
-        return user.put(`/account/${data.accountId}`, {
+        return user.put(`${baseUrl}/account/${data.accountId}`, {
             accountName: data.accountName,
             password: data.password,
             userCode: data.userCode,
@@ -406,53 +410,53 @@ const Api = {
         })
     },
     deleteAccount: (id) => {
-        return user.delete(`/account/${id}`)
+        return user.delete(`${baseUrl}/account/${id}`)
     },
     getScoreLockList: (page, perpage) => {
-        return user.get(`/score-lock/list?page=${page}&perpage=${perpage}`)
+        return user.get(`${baseUrl}/score-lock/list?page=${page}&perpage=${perpage}`)
     },
     addScoreLock: (data) => {
-        return user.post(`/score-lock/`, {
+        return user.post(`${baseUrl}/score-lock/`, {
             schoolYearId: data.schoolYearId,
             term: data.term,
             lock: data.lock
         })
     },
     lockScoreLock: (data) => {
-        return user.put(`/score-lock/lock/`, {
+        return user.put(`${baseUrl}/score-lock/lock/`, {
             schoolYearId: data.schoolYearId,
             term: data.term,
         })
     },
     unlockScoreLock: (data) => {
-        return user.put(`/score-lock/unlock/`, {
+        return user.put(`${baseUrl}/score-lock/unlock/`, {
             schoolYearId: data.schoolYearId,
             term: data.term,
         })
     },
     deleteScoreLock: (id) => {
-        return user.delete(`/score-lock/id/${id}`)
+        return user.delete(`${baseUrl}/score-lock/id/${id}`)
     },
     checkLock: (schoolYearId, term) => {
-        return user.get(`/score/check-lock?schoolYearId=${schoolYearId}&term=${term}`)
+        return user.get(`${baseUrl}/score/check-lock?schoolYearId=${schoolYearId}&term=${term}`)
     },
     getSubjectScore: (studentId, subjectId, schoolYearId, term) => {
-        return user.get(`/score/student/subject-scores?studentId=${studentId}&subjectId=${subjectId}&schoolYearId=${schoolYearId}&term=${term}`)
+        return user.get(`${baseUrl}/score/student/subject-scores?studentId=${studentId}&subjectId=${subjectId}&schoolYearId=${schoolYearId}&term=${term}`)
     },
     getStudentScore: (studentId, schoolYearId, term) => {
-        return user.get(`/score/student/scores?studentId=${studentId}&schoolYearId=${schoolYearId}&term=${term}`)
+        return user.get(`${baseUrl}/score/student/scores?studentId=${studentId}&schoolYearId=${schoolYearId}&term=${term}`)
     },
     editScore: (data) => {
-        return user.put(`/score/`, data)
+        return user.put(`${baseUrl}/score/`, data)
     },
     getClassConduct: (searchCondition) => {
-        return user.get(`/conduct/class?teacherId=${searchCondition.teacherId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
+        return user.get(`${baseUrl}/conduct/class?teacherId=${searchCondition.teacherId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
     },
     getStudentConduct: (searchCondition) => {
-        return user.get(`/conduct/student?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
+        return user.get(`${baseUrl}/conduct/student?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}&term=${searchCondition.term}`)
     },
     assessConduct: (data) => {
-        return user.post(`/conduct`, {
+        return user.post(`${baseUrl}/conduct`, {
             studentId: data.studentId,
             classId: data.classId,
             teacherId: data.teacherId,
@@ -463,16 +467,16 @@ const Api = {
         })
     },
     getRankReport: (page, perpage, searchCondition) => {
-        return user.get(`/class-report/rank?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
+        return user.get(`${baseUrl}/class-report/rank?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
     },
     getSubjectReport: (page, perpage, searchCondition) => {
-        return user.get(`/class-report/subject?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
+        return user.get(`${baseUrl}/class-report/subject?page=${page}&perpage=${perpage}&schoolYearId=${searchCondition.schoolYearId}&classId=${searchCondition.classId}&term=${searchCondition.term}`)
     },
     getStudentScoreSummary: (searchCondition) => {
-        return user.get(`/score/student/score-summary?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
+        return user.get(`${baseUrl}/score/student/score-summary?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
     },
     getHomeroomClassInfo: (teacherId) => {
-        return user.get(`/class/homeroom?key=${teacherId}`)
+        return user.get(`${baseUrl}/class/homeroom?key=${teacherId}`)
     },
     getClassAttendance: (searchCondition) => {
         let getDateString = (date) => {
@@ -484,19 +488,19 @@ const Api = {
             if (mm < 10) { mm = '0' + mm }
             return yyyy + "-" + mm + "-" + dd
         }
-        return user.get(`/attendance/class/between?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&&firstDate=${getDateString(searchCondition.beginDate)}&lastDate=${getDateString(searchCondition.endDate)}`)
+        return user.get(`${baseUrl}/attendance/class/between?classId=${searchCondition.classId}&schoolYearId=${searchCondition.schoolYearId}&&firstDate=${getDateString(searchCondition.beginDate)}&lastDate=${getDateString(searchCondition.endDate)}`)
     },
     updateAttendance: (data) => {
-        return user.put(`/attendance`, data)
+        return user.put(`${baseUrl}/attendance`, data)
     },
     getPLL: (searchCondition) => {
 
-        return user.get(`/pll?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
+        return user.get(`${baseUrl}/pll?studentId=${searchCondition.studentId}&schoolYearId=${searchCondition.schoolYearId}`)
     },
     uploadImage: (image) => {
         let data = new FormData();
         data.append("avatar", image)
-        return user.post(`/account/upload-image/`, data, {
+        return user.post(`${baseUrl}/account/upload-image/`, data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

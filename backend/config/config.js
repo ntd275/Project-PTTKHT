@@ -19,3 +19,4 @@ exports.otpTokenLife = process.env.OTP_TOKEN_LIFE || "3m"
 exports.otpTokenSecret = process.env.OTP_TOKEN_SECRET || "OTP_TOKEN_SECRET"
 exports.pageItem = process.env.PAGE_ITEM || 1
 exports.perPageItem = process.env.PER_PAGE_ITEM || 50
+exports.frontendHost = (process.env.FRONTEND_HOST && process.env.FRONTEND_HOST.split(" ")) || ["http://localhost:3000", "http://localhost:3000/", "http://localhost:3001"]
