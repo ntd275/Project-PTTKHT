@@ -296,7 +296,7 @@ const Api = {
         return user.get(`${baseUrl}/teaching-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchTeachingAssignment: (page, perpage, searchCondition) => {
-        let url = `/teaching-assignment/search?page=${page}&perpage=${perpage}`
+        let url = `${baseUrl}/teaching-assignment/search?page=${page}&perpage=${perpage}`
         //console.log(searchCondition)
         if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
         if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
@@ -319,7 +319,7 @@ const Api = {
         return user.get(`${baseUrl}/homeroom-teacher-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchHomeroomTeacherAssignment: (page, perpage, searchCondition) => {
-        let url = `/homeroom-teacher-assignment/search?page=${page}&perpage=${perpage}`
+        let url = `${baseUrl}/homeroom-teacher-assignment/search?page=${page}&perpage=${perpage}`
         //console.log(searchCondition)
         if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
         if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
@@ -347,7 +347,7 @@ const Api = {
         return user.get(`${baseUrl}/specialist-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchSpecialistAssignment: (page, perpage, searchCondition) => {
-        let url = `/specialist-assignment/search?page=${page}&perpage=${perpage}`
+        let url = `${baseUrl}/specialist-assignment/search?page=${page}&perpage=${perpage}`
         console.log(searchCondition)
         if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
         if (searchCondition.teacherId) url += `&teacherId=${searchCondition.teacherId}`
@@ -368,7 +368,7 @@ const Api = {
         return user.get(`${baseUrl}/student-assignment/list?page=${page}&perpage=${perpage}`)
     },
     searchStudentAssignment: (page, perpage, searchCondition) => {
-        let url = `/student-assignment/search?page=${page}&perpage=${perpage}`
+        let url = `${baseUrl}/student-assignment/search?page=${page}&perpage=${perpage}`
         console.log(searchCondition)
         if (searchCondition.schoolYearId) url += `&schoolYearId=${searchCondition.schoolYearId}`
         if (searchCondition.studentId) url += `&studentId=${searchCondition.studentId}`
