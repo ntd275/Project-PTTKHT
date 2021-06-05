@@ -504,6 +504,21 @@ class Dialog extends React.Component {
         } catch (err) {
             console.log(err)
             this.setState({ loading: false })
+            if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
+                store.addNotification({
+                    title: "Thêm tài khoản thất bại",
+                    message: "Tên tài khoản đã sử dụng hoặc giáo viên/học sinh này đã có tài khoản",
+                    type: "warning",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
             store.addNotification({
                 title: "Hệ thống có lỗi",
                 message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
@@ -521,6 +536,22 @@ class Dialog extends React.Component {
 
     editAccount = async () => {
         this.setState({ loading: true })
+        if (!this.props.data.password) {
+            store.addNotification({
+                title: "Cập nhật tài khoản thất bại",
+                message: "Mật khẩu không được để trống",
+                type: "warning",
+                container: "top-center",
+                dismiss: {
+                    duration: 5000,
+                    showIcon: true,
+                },
+                animationIn: ["animate__backInDown", "animate__animated"],
+                animationOut: ["animate__fadeOutUp", "animate__animated"],
+            })
+            this.setState({ loading: false })
+            return
+        }
         try {
             await Api.editAccount(this.props.data)
             //console.log(res)
@@ -542,6 +573,21 @@ class Dialog extends React.Component {
         } catch (err) {
             console.log(err)
             this.setState({ loading: false })
+            if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
+                store.addNotification({
+                    title: "Cập nhật tài khoản thất bại",
+                    message: "Tên tài khoản đã sử dụng hoặc giáo viên/học sinh này đã có tài khoản",
+                    type: "warning",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
             store.addNotification({
                 title: "Hệ thống có lỗi",
                 message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",

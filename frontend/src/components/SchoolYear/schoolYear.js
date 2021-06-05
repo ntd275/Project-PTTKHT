@@ -340,6 +340,21 @@ class ConfirmDelete extends React.Component {
     } catch (err) {
       console.log(err)
       this.setState({ loading: false })
+      if (err.response && err.response.data.message.code === "ER_ROW_IS_REFERENCED_2") {
+        store.addNotification({
+          title: "Không thể xóa",
+          message: "Năm học này đã có dữ liệu! Để xóa trước hết cần xóa hết dữ liệu trong năm học này",
+          type: "warning",
+          container: "top-center",
+          dismiss: {
+            duration: 5000,
+            showIcon: true,
+          },
+          animationIn: ["animate__backInDown", "animate__animated"],
+          animationOut: ["animate__fadeOutUp", "animate__animated"],
+        })
+        return
+      }
       store.addNotification({
         title: "Hệ thống có lỗi",
         message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",

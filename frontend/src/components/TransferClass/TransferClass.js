@@ -241,6 +241,10 @@ class TransferClass extends Component {
                     })
                 }
             }
+            if (list.length === 0) {
+                this.setState({ loadingModal: false })
+                return
+            }
             await Api.tranferClass(list)
             store.addNotification({
                 title: "Thành công",
@@ -262,6 +266,21 @@ class TransferClass extends Component {
         } catch (err) {
             console.log(err)
             this.setState({ loadingModal: false })
+            if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
+                store.addNotification({
+                    title: "Kết chuyển thất bại",
+                    message: "Có học sinh trong danh sách chọn đã được phân vào một lớp trong kỳ kết chuyên lên",
+                    type: "warning",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
             store.addNotification({
                 title: "Hệ thống có lỗi",
                 message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",

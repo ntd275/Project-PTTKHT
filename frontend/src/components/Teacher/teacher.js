@@ -380,6 +380,21 @@ class ConfirmDelete extends React.Component {
     } catch (err) {
       console.log(err)
       this.setState({ loading: false })
+      if (err.response && err.response.data.message.code === "ER_ROW_IS_REFERENCED_2") {
+        store.addNotification({
+          title: "Không thể xóa",
+          message: "Giáo viên này đã có dữ liệu! Để xóa trước hết cần xóa hết dữ liệu liên quan đến giáo viên này",
+          type: "warning",
+          container: "top-center",
+          dismiss: {
+            duration: 5000,
+            showIcon: true,
+          },
+          animationIn: ["animate__backInDown", "animate__animated"],
+          animationOut: ["animate__fadeOutUp", "animate__animated"],
+        })
+        return
+      }
       store.addNotification({
         title: "Hệ thống có lỗi",
         message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
@@ -578,6 +593,21 @@ class Dialog extends React.Component {
     } catch (err) {
       console.log(err)
       this.setState({ loading: false })
+      if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
+        store.addNotification({
+          title: "Thêm thất bại",
+          message: "Mã giáo viên đã được sử dụng vui lòng chọn mã khác",
+          type: "warning",
+          container: "top-center",
+          dismiss: {
+            duration: 5000,
+            showIcon: true,
+          },
+          animationIn: ["animate__backInDown", "animate__animated"],
+          animationOut: ["animate__fadeOutUp", "animate__animated"],
+        })
+        return
+      }
       store.addNotification({
         title: "Hệ thống có lỗi",
         message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
@@ -623,6 +653,21 @@ class Dialog extends React.Component {
     } catch (err) {
       console.log(err)
       this.setState({ loading: false })
+      if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
+        store.addNotification({
+          title: "Sửa thất bại",
+          message: "Mã giáo viên đã được sử dụng vui lòng chọn mã khác",
+          type: "warning",
+          container: "top-center",
+          dismiss: {
+            duration: 5000,
+            showIcon: true,
+          },
+          animationIn: ["animate__backInDown", "animate__animated"],
+          animationOut: ["animate__fadeOutUp", "animate__animated"],
+        })
+        return
+      }
       store.addNotification({
         title: "Hệ thống có lỗi",
         message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
@@ -754,7 +799,7 @@ class Dialog extends React.Component {
                         <Form.Control
                           as="select"
                           name="gender"
-                          value={this.props.data.subjectName}
+                          value={this.props.data.gender}
                           onChange={this.changeHandler}
                           readOnly={this.props.kind === "info"}
                         >

@@ -41,7 +41,7 @@ async function getSpecialistTeam(req, res) {
  * @param {*} req req.params.name: Tên giáo viên được encoded
  * @returns list of specialist teams
  */
- async function getSpecialistTeamByName(req, res) {
+async function getSpecialistTeamByName(req, res) {
     try {
         let sTeamName = decodeURI(req.params.name)
         let page = parseInt(req.query.page) || config.pageItem
@@ -105,7 +105,7 @@ async function deleteSpecialistTeam(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: err
+            message: error
         })
     }
 }
