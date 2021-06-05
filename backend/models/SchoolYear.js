@@ -63,21 +63,21 @@ exports.deleteSchoolYear = async (schoolYearId) => {
         try {
             count = await trx.from('ScoreLock').where('schoolYearId', schoolYearId).del()
 
-            if (!count) {
-                return Promise.reject({
-                    'success': false,
-                    'message': 'deleteSchoolYear: cannot delete ScoreLock'
-                })
-            }
+            // if (!count) {
+            //     return Promise.reject({
+            //         'success': false,
+            //         'message': 'deleteSchoolYear: cannot delete ScoreLock'
+            //     })
+            // }
 
             count = await trx.from('SchoolYear').where('schoolYearId', schoolYearId).del()
 
-            if (!count) {
-                return Promise.reject({
-                    'success': false,
-                    'message': 'deleteSchoolYear: cannot delete ScoreLock'
-                })
-            }
+            // if (!count) {
+            //     return Promise.reject({
+            //         'success': false,
+            //         'message': 'deleteSchoolYear: cannot delete ScoreLock'
+            //     })
+            // }
         } catch (error) {
             console.log(error);
             return Promise.reject(error)
