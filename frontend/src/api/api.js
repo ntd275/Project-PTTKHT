@@ -9,7 +9,7 @@ const guest = axios.create({ timeout: 30000 });
 guest.defaults.withCredentials = true;
 
 user.interceptors.request.use(function (config) {
-    console.log(config)
+    //console.log(config)
     const accessToken = localStorage.getItem("accessToken");
     if (accessToken) {
         config.headers["x-access-token"] = accessToken;

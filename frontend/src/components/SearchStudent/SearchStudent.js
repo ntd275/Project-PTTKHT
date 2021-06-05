@@ -468,8 +468,8 @@ class Dialog extends React.Component {
                                                 <Form.Label>Giới tính</Form.Label>
                                                 <Form.Control
                                                     as="select"
-                                                    name="subjectName"
-                                                    value={this.props.data.subjectName}
+                                                    name="gender"
+                                                    value={this.props.data.gender}
                                                     onChange={this.changeHandler}
                                                     readOnly={this.props.kind === "info"}
                                                 >

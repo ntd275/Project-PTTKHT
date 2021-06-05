@@ -6,6 +6,7 @@ import { store } from 'react-notifications-component';
 import Loading from '../Loading/Loading'
 import { Modal, Button } from 'react-bootstrap'
 import { BsArrowLeftShort } from 'react-icons/bs'
+import XLSX from "xlsx";
 
 
 class SearchScore extends Component {
@@ -258,7 +259,41 @@ class SearchScore extends Component {
         });
     }
 
-
+    exportFile = () => {
+        let data = []
+        data.push(["STT", "MSHS", "Họ tên", "Miệng", "", "", "", "", "15 phút", "", "", "", "", "1 tiết", "", "", "Thi"])
+        let scoreList = this.state.scoreList
+        scoreList.forEach((score, index) => {
+            let row = [index + 1, score.studentCode, score.studentName]
+            let scoreMouth = score.scoreMouth.map((e) => e.score)
+            row.push(...scoreMouth)
+            let score15 = score.score15.map((e) => e.score)
+            row.push(...score15)
+            let score45 = score.score45.map((e) => e.score)
+            row.push(...score45)
+            row.push(score.scoreTerm.score)
+            data.push(row)
+        })
+        let ws = XLSX.utils.aoa_to_sheet(data)
+        ws['!merges'] = [
+            {
+                s: { r: 0, c: 3 },
+                e: { r: 0, c: 7 }
+            },
+            {
+                s: { r: 0, c: 8 },
+                e: { r: 0, c: 12 }
+            },
+            {
+                s: { r: 0, c: 13 },
+                e: { r: 0, c: 15 }
+            },
+        ]
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Score");
+        // /* generate XLSX file and send to client */
+        XLSX.writeFile(wb, "score.xlsx");
+    }
 
 
 
@@ -311,6 +346,9 @@ class SearchScore extends Component {
                         <span className="align-middle">
                             <b>Môn: </b>{this.state.info.subjectName}
                         </span>
+                    </div>
+                    <div className="col-6">
+                        <button type="button" className="btn btn-primary" onClick={() => this.exportFile()}>Xuất file điểm</button>
                     </div>
                 </div>
                 <hr />
