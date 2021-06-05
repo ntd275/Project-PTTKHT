@@ -475,21 +475,7 @@ class ConfirmDelete extends React.Component {
         } catch (err) {
             console.log(err)
             this.setState({ loading: false })
-            if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
-                store.addNotification({
-                    title: "Thêm phân công thất bại",
-                    message: "Phân công này đã tồn tại",
-                    type: "warning",
-                    container: "top-center",
-                    dismiss: {
-                        duration: 5000,
-                        showIcon: true,
-                    },
-                    animationIn: ["animate__backInDown", "animate__animated"],
-                    animationOut: ["animate__fadeOutUp", "animate__animated"],
-                })
-                return
-            }
+
             store.addNotification({
                 title: "Hệ thống có lỗi",
                 message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
@@ -583,6 +569,21 @@ class Dialog extends React.Component {
         } catch (err) {
             console.log(err)
             this.setState({ loading: false })
+            if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
+                store.addNotification({
+                    title: "Thêm phân công thất bại",
+                    message: "Phân công này đã tồn tại",
+                    type: "warning",
+                    container: "top-center",
+                    dismiss: {
+                        duration: 5000,
+                        showIcon: true,
+                    },
+                    animationIn: ["animate__backInDown", "animate__animated"],
+                    animationOut: ["animate__fadeOutUp", "animate__animated"],
+                })
+                return
+            }
             store.addNotification({
                 title: "Hệ thống có lỗi",
                 message: "Vui lòng liên hệ quản trị viên hoặc thử lại sau",
