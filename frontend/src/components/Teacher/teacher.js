@@ -181,8 +181,8 @@ class Teacher extends React.Component {
         dateOfBirth: new Date(),
         email: "",
         phoneNumber: "",
-        dateOfParty: new Date(),
-        dateOfUnion: new Date(),
+        dateOfParty: null,
+        dateOfUnion: null,
         major: ""
       }
     })
@@ -190,9 +190,9 @@ class Teacher extends React.Component {
 
   editTeacher = async (index) => {
     let teacher = this.state.teacherList[index]
-    teacher.dateOfBirth = new Date(teacher.dateOfBirth)
-    teacher.dateOfUnion = new Date(teacher.dateOfUnion)
-    teacher.dateOfParty = new Date(teacher.dateOfParty)
+    teacher.dateOfBirth = teacher.dateOfBirth && new Date(teacher.dateOfBirth)
+    teacher.dateOfUnion = teacher.dateOfUnion && new Date(teacher.dateOfUnion)
+    teacher.dateOfParty = teacher.dateOfUnion && new Date(teacher.dateOfParty)
     this.setState({
       showModal: true,
       modalKind: "edit",
@@ -206,9 +206,9 @@ class Teacher extends React.Component {
 
   deleteTeacher = (index) => {
     let teacher = this.state.teacherList[index]
-    teacher.dateOfBirth = new Date(teacher.dateOfBirth)
-    teacher.dateOfUnion = new Date(teacher.dateOfUnion)
-    teacher.dateOfParty = new Date(teacher.dateOfParty)
+    teacher.dateOfBirth = teacher.dateOfBirth && new Date(teacher.dateOfBirth)
+    teacher.dateOfUnion = teacher.dateOfUnion && new Date(teacher.dateOfUnion)
+    teacher.dateOfParty = teacher.dateOfUnion && new Date(teacher.dateOfParty)
     this.setState({
       showDelete: true,
       modalData: {
@@ -219,9 +219,9 @@ class Teacher extends React.Component {
 
   showInfo = (index) => {
     let teacher = this.state.teacherList[index]
-    teacher.dateOfBirth = new Date(teacher.dateOfBirth)
-    teacher.dateOfUnion = new Date(teacher.dateOfUnion)
-    teacher.dateOfParty = new Date(teacher.dateOfParty)
+    teacher.dateOfBirth = teacher.dateOfBirth && new Date(teacher.dateOfBirth)
+    teacher.dateOfUnion = teacher.dateOfUnion && new Date(teacher.dateOfUnion)
+    teacher.dateOfParty = teacher.dateOfUnion && new Date(teacher.dateOfParty)
     this.setState({
       showModal: true,
       modalKind: "info",

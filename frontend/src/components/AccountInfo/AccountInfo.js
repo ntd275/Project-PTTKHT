@@ -98,7 +98,7 @@ class AccountInfo extends Component {
                                 <div className="label-account-info mr-2">Ngày sinh:</div>
                             </div>
                             <div className="col-6">
-                                <div className="account-info mr-2">{this.formatDate(new Date(this.state.accountInfo.dateOfBirth))}</div>
+                                <div className="account-info mr-2">{this.state.accountInfo.dateOfBirth && this.formatDate(new Date(this.state.accountInfo.dateOfBirth))}</div>
                             </div>
                         </div>
                         <div className="row">
@@ -138,7 +138,7 @@ class AccountInfo extends Component {
                                 <div className="label-account-info mr-2">Ngày vào Đoàn:</div>
                             </div>
                             <div className="col-6">
-                                <div className="account-info mr-2">{this.formatDate(new Date(accountInfo.dateOfUnion))}</div>
+                                <div className="account-info mr-2">{accountInfo.dateOfUnion && this.formatDate(new Date(accountInfo.dateOfUnion))}</div>
                             </div>
                         </div>
                         <div className="row">
@@ -146,7 +146,7 @@ class AccountInfo extends Component {
                                 <div className="label-account-info mr-2">Ngày vào Đảng:</div>
                             </div>
                             <div className="col-6">
-                                <div className="account-info mr-2">{this.formatDate(new Date(accountInfo.dateOfParty))}</div>
+                                <div className="account-info mr-2">{accountInfo.dateOfParty && this.formatDate(new Date(accountInfo.dateOfParty))}</div>
                             </div>
                         </div>
                         <div className="row">

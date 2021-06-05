@@ -200,9 +200,9 @@ class Student extends React.Component {
 
   editStudent = async (index) => {
     let student = this.state.studentList[index]
-    student.dateOfBirth = new Date(student.dateOfBirth)
-    student.dateOfUnion = new Date(student.dateOfUnion)
-    student.dateOfParty = new Date(student.dateOfParty)
+    student.dateOfBirth = student.dateOfBirth && new Date(student.dateOfBirth)
+    student.dateOfUnion = student.dateOfUnion && new Date(student.dateOfUnion)
+    student.dateOfParty = student.dateOfParty && new Date(student.dateOfParty)
     this.setState({
       showModal: true,
       modalKind: "edit",
@@ -216,9 +216,9 @@ class Student extends React.Component {
 
   deleteStudent = (index) => {
     let student = this.state.studentList[index]
-    student.dateOfBirth = new Date(student.dateOfBirth)
-    student.dateOfUnion = new Date(student.dateOfUnion)
-    student.dateOfParty = new Date(student.dateOfParty)
+    student.dateOfBirth = student.dateOfBirth && new Date(student.dateOfBirth)
+    student.dateOfUnion = student.dateOfUnion && new Date(student.dateOfUnion)
+    student.dateOfParty = student.dateOfParty && new Date(student.dateOfParty)
     this.setState({
       showDelete: true,
       modalData: {
@@ -229,9 +229,9 @@ class Student extends React.Component {
 
   showInfo = (index) => {
     let student = this.state.studentList[index]
-    student.dateOfBirth = new Date(student.dateOfBirth)
-    student.dateOfUnion = new Date(student.dateOfUnion)
-    student.dateOfParty = new Date(student.dateOfParty)
+    student.dateOfBirth = student.dateOfBirth && new Date(student.dateOfBirth)
+    student.dateOfUnion = student.dateOfUnion && new Date(student.dateOfUnion)
+    student.dateOfParty = student.dateOfParty && new Date(student.dateOfParty)
     this.setState({
       showModal: true,
       modalKind: "info",
