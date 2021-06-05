@@ -150,12 +150,12 @@ async function editScore(req, res) {
     } catch (error) {
         console.log(error)
 
-        if (error.errno == 409) {
-            return res.status(error.errno).json({
-                success: false,
-                message: error.message
-            })
-        }
+        // if (error.errno == 409) {
+        //     return res.status(error.errno).json({
+        //         success: false,
+        //         message: error.message
+        //     })
+        // }
 
         return res.status(500).json({
             success: false,

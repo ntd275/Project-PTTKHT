@@ -134,13 +134,13 @@ async function searchStudent(req, res) {
 async function createStudent(req, res) {
     try {
         //Check existed
-        let existedStudent = await Student.getStudentByCode(req.body.studentCode)
-        if (existedStudent != undefined || existedStudent != null) {
-            return res.status(409).json({
-                success: false,
-                message: `Student with code = ${req.body.studentCode} existed`
-            })
-        }
+        // let existedStudent = await Student.getStudentByCode(req.body.studentCode)
+        // if (existedStudent != undefined || existedStudent != null) {
+        //     return res.status(409).json({
+        //         success: false,
+        //         message: `Student with code = ${req.body.studentCode} existed`
+        //     })
+        // }
 
         let student = await Student.createStudent(req.body)
 

@@ -656,7 +656,7 @@ class Dialog extends React.Component {
       if (err.response && err.response.data.message.code === "ER_DUP_ENTRY") {
         store.addNotification({
           title: "Sửa thất bại",
-          message: "Mã giáo viên đã được sử dụng vui lòng chọn mã khác",
+          message: "Mã giáo viên/Email đã được sử dụng",
           type: "warning",
           container: "top-center",
           dismiss: {
