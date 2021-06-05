@@ -1,5 +1,5 @@
-const jwtHelper = require('../Helpers/jwtToken')
-const config = require('../Config/config')
+const jwtHelper = require('../helpers/jwtToken')
+const config = require('../config/config')
 const debug = console.log.bind(console);
 const accessTokenSecret = config.accessTokenSecret
 

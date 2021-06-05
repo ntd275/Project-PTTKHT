@@ -177,7 +177,7 @@ class Teacher extends React.Component {
         permanentResidence: "",
         gender: 1,
         pId: "",
-        image: "http://localhost:3000/user.png",
+        image: "public/images/default_avatar.jpg",
         dateOfBirth: new Date(),
         email: "",
         phoneNumber: "",
