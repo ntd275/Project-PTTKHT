@@ -160,7 +160,7 @@ class Teacher extends React.Component {
         let teacher = this.state.teacherList[index]
         teacher.dateOfBirth = teacher.dateOfBirth && new Date(teacher.dateOfBirth)
         teacher.dateOfUnion = teacher.dateOfUnion && new Date(teacher.dateOfUnion)
-        teacher.dateOfParty = teacher.dateOfUnion && new Date(teacher.dateOfParty)
+        teacher.dateOfParty = teacher.dateOfParty && new Date(teacher.dateOfParty)
         this.setState({
             showModal: true,
             modalKind: "info",
