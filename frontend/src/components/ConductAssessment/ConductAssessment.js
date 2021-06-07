@@ -214,7 +214,7 @@ class ConductAssessment extends Component {
         return dd + '/' + mm + '/' + yyyy
     }
 
-    conductName = ["Tốt", "Khá", "Trung bình", "Yếu", "Kém"]
+    conductName = ["Tốt", "Khá", "Trung bình", "Yếu"]
 
     renderTableData() {
         let sttBase = 1
@@ -226,7 +226,7 @@ class ConductAssessment extends Component {
                     <td>{studentCode}</td>
                     <td>{studentName}</td>
                     <td>{this.formatDate(new Date(dateOfBirth))}</td>
-                    <td>{gender ? "Name" : "Nữ"}</td>
+                    <td>{gender ? "Nam" : "Nữ"}</td>
                     <td>{address}</td>
                     <td>{this.conductName[conduct]}</td>
                     <td>{note}</td>
@@ -502,7 +502,7 @@ class Dialog extends React.Component {
                                     <Form.Group>
                                         <Form.Label>Hạnh kiểm</Form.Label>
                                         <SelectSearch
-                                            options={[{ name: "Tốt", value: 0 }, { name: "Khá", value: 1 }, { name: "Trung bình", value: 2 }, { name: "Yếu", value: 3 }, { name: "Kém", value: 4 }]}
+                                            options={[{ name: "Tốt", value: 0 }, { name: "Khá", value: 1 }, { name: "Trung bình", value: 2 }, { name: "Yếu", value: 3 }]}
                                             search
                                             filterOptions={fuzzySearch}
                                             emptyMessage="Không tìm thấy"
