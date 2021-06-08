@@ -200,6 +200,7 @@ class ConductAssessment extends Component {
     changeSearchCondition = (name, value) => {
         console.log(name, value)
         let searchCondition = this.state.searchCondition
+		searchCondition.classId = null
         searchCondition[name] = value
         this.setState({ searchCondition: searchCondition })
         this.refresh(searchCondition)
