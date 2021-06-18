@@ -275,6 +275,34 @@ async function getImage(req, res) {
     }
 }
 
+async function searchByUsername(req, res) {
+    try {
+        let page = parseInt(req.query.page) || config.pageItem
+        let perpage = parseInt(req.query.perpage) || config.perPageItem
+
+        let accountList = await Account.searchByAccountName(req.query.username, page, perpage)
+
+        if (accountList.length == 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No account found"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            result: accountList
+        })
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message: error
+        })
+    }
+}
+
 module.exports = {
     getAccountList: getAccountList,
     getAccount: getAccount,
@@ -285,5 +313,6 @@ module.exports = {
     checkPassword: checkPassword,
     changePassword: changePassword,
     uploadImage: uploadImage,
-    getImage: getImage
+    getImage: getImage,
+    searchByUsername: searchByUsername
 }

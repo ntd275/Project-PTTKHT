@@ -13,7 +13,7 @@ accountRouter.post('/check-password/:id', accountController.checkPassword)
 accountRouter.put('/change-password/:id', accountController.changePassword)
 accountRouter.post('/upload-image/', imageHelper, accountController.uploadImage)
 accountRouter.get('/image/:userCode', accountController.getImage)
-
+accountRouter.get('/search', accountController.searchByUsername)
 // accountRouter.use(adminMiddleware.isAdmin)
 
 accountRouter.get('/list', accountController.getAccountList)

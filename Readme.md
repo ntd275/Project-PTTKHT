@@ -24,5 +24,5 @@ Bước 3: Chạy lệnh ```npm start``` để chạy frontend
 ### Build and run
 Bước 1: Mở thư mục frontend ```cd frontend```   
 Bước 2: Chạy lệnh ```npm install``` để tải node_modules   
-Bước 3: Chạy lệnh ```npm run build``` để build frontend
-Bước 4: Ch
+Bước 3: Chạy lệnh ```npm run build``` để build frontend         
+Bước 4: Chạy lệnh ```serve -s build -l 3000``` để chạy frontend, nếu không được hãy thử ```npm install serve -g``` và thử lại hoặc ```npx serve -s build -l 3000```

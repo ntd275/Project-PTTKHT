@@ -50,6 +50,10 @@ exports.deleteAccount = async function (accountId) {
     return knex('Accounts').where('accountId', accountId).del()
 }
 
+exports.searchByAccountName = async function(accountName, page, perpage) {
+    return knex('Accounts').where('accountName', 'like', `%${accountName}%`).paginate({ perPage: perpage, currentPage: page, isLengthAware: true })
+}
+
 // exports.dropTable = async function () {
 //     return knex.schema.dropTable('Accounts');
 // };

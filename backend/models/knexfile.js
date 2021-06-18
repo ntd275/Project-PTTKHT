@@ -1,17 +1,15 @@
 // Update with your config settings.
 const config = require('../config/config')
 
-// console.log(config);
-
 module.exports = {
 
   development: {
     client: 'mysql',
     connection: {
-      host: config.dbHost,
-      user: config.userDB,
-      password: config.passwordDB,
-      database: config.db,
+      host: "20.188.120.110",
+      user: "root",
+      password: "A123456a@",
+      database: "SOLIENLACDIENTU",
       timezone: "+00:00"
     },
     acquireConnectionTimeout: 30000

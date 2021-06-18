@@ -75,8 +75,20 @@ exports.editScore = async (data) => {
                         return Promise.reject(message)
                     }
 
-                    let scoreExist = null
+                    //Check lock
+                    let sLock = await trx.from('ScoreLock').where({
+                        'schoolYearId': scores[j].schoolYearId,
+                        'term': term
+                    }).first()
+
+                    if (sLock.lock == 1) {
+                        let message = `ScoreLock is locked with schoolYearId = ${scores[j].schoolYearId} and term = ${term}`
+                        return Promise.reject(message)
+                    }
+                    
                     //Check & update score
+                    let scoreExist = null
+                    
                     switch (scores[j].method) {
                         case "add":
                             //Check exists
